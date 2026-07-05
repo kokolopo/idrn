@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IDRN — Infrastruktur Risiko Asuransi Nasional</title>
+</head>
+<body>
+
+<!-- ================== LOGIN ================== -->
+<div id="page-login">
+  <div class="lg-top">
+    <div class="mark"><svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg"><path d="M6 5 L47 49 L47 105 L6 105 Z" fill="currentColor"/><path d="M53 5 H94 V105 L53 53 Z" fill="currentColor"/></svg></div>
+    <div><h1>Insurance Digital Risk Network</h1><small>THE TRUST LAYER OF INDONESIAN INSURANCE</small></div>
+    <span class="env-badge">LINGKUNGAN DEMONSTRASI</span>
+  </div>
+  <div class="lg-watermark"><svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg"><g fill="#ffffff"><path d="M20 25 L85 96 L85 192 L20 192 Z"/><path d="M112 25 H177 V192 L112 102 Z"/><text x="212" y="152" font-family="Georgia,'Times New Roman',serif" font-size="128" font-weight="700" letter-spacing="8">IDRN</text><text x="216" y="192" font-family="Georgia,'Times New Roman',serif" font-size="20" letter-spacing="1.5">The Trust Layer Of Indonesian Insurance</text></g></svg></div>
+  <div class="lg-body">
+    <div class="lg-hero">
+      <div class="lg-lockup"><svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
+        <path d="M14 18 L72 82 L72 168 L14 168 Z"/>
+        <path d="M96 18 H154 V168 L96 92 Z"/>
+        <text x="188" y="134" font-family="Georgia,'Times New Roman',serif" font-size="118" font-weight="700" letter-spacing="6">IDRN</text>
+        <text x="192" y="172" font-family="Georgia,'Times New Roman',serif" font-size="20" letter-spacing="1.6">The Trust Layer Of Indonesian Insurance</text>
+      </svg></div>
+      <div class="eyebrow">DIPERCAYA PENYELENGGARA & PENGAWAS</div>
+      <h2>Satu jaringan.<br>Seluruh risiko klaim nasional, terpantau.</h2>
+      <p>IDRN menghubungkan penyelenggara asuransi, penilai klaim, dan pengawas dalam satu infrastruktur scoring risiko, deteksi klaim ganda lintas perusahaan, dan integrity anchor dokumen yang divalidasi multi-pihak.</p>
+      <div class="lg-stats">
+        <div class="lg-stat"><b>Rp4,28 M</b><span>Kerugian dicegah YTD</span></div>
+        <div class="lg-stat"><b>99,98%</b><span>Uptime 12 bulan</span></div>
+        <div class="lg-stat"><b>&lt; 900 ms</b><span>Scoring per klaim</span></div>
+        <div class="lg-stat"><b>3 pihak</b><span>Ledger validators</span></div>
+      </div>
+    </div>
+    <form class="login-card" id="loginForm">
+      <h2>Akses Sistem</h2>
+      <p>Akses terbatas bagi pihak berwenang. Seluruh sesi diautentikasi MFA dan tercatat pada audit trail.</p>
+      <div class="field"><label>NAMA PENGGUNA</label><input type="text" id="inUser" autocomplete="off" placeholder="Masukkan nama pengguna"></div>
+      <div class="field"><label>KATA SANDI</label><input type="password" id="inPass" placeholder="Masukkan kata sandi"></div>
+      <button type="submit" class="btn-primary" id="btnLogin">Masuk</button>
+      <div class="demo-sep">AKUN DEMONSTRASI</div>
+      <div class="demo-grid">
+        <button type="button" class="demo-btn" data-role="insurer"><b>PERUSAHAAN ASURANSI</b><span>PT Asuransi Jaya</span></button>
+        <button type="button" class="demo-btn" data-role="adjuster"><b>PENILAI KLAIM</b><span>Budi Santoso, AAIK</span></button>
+        <button type="button" class="demo-btn" data-role="regulator"><b>PENGAWAS</b><span>Otoritas Jasa Keuangan</span></button>
+        <button type="button" class="demo-btn" data-role="nasabah"><b>PEMEGANG POLIS</b><span>Nuri Agus Ramdhani</span></button>
+        <button type="button" class="demo-btn" data-role="aaui" style="grid-column:1/-1"><b>ASOSIASI INDUSTRI</b><span>AAUI — Asosiasi Asuransi Umum Indonesia</span></button>
+      </div>
+    </form>
+  </div>
+  <div class="lg-foot">© 2026 IDRN — Insurance Digital Risk Network · Seluruh data bersifat fiktif untuk keperluan demonstrasi</div>
+</div>
+
+<!-- ================== APP ================== -->
+<div id="app">
+  <div class="topbar">
+    <div class="mark" id="topMark"><svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg"><path d="M6 5 L47 49 L47 105 L6 105 Z" fill="currentColor"/><path d="M53 5 H94 V105 L53 53 Z" fill="currentColor"/></svg></div>
+    <div><h1>IDRN</h1><small id="appSubtitle">PORTAL</small></div>
+    <div class="searchbox" onclick="openCmd()"><span>⌕</span> Cari klaim, kasus, atau halaman… <kbd>Ctrl K</kbd></div>
+    <div class="health"><i></i>Operasional 99,98%</div>
+    <div class="who"><b id="whoName">—</b><span id="whoOrg">—</span></div>
+    <span class="role-pill" id="whoRole">—</span>
+    <button class="btn-logout" onclick="logout()">Keluar</button>
+  </div>
+  <div class="sidebar" id="sidebar"></div>
+  <div class="content">
+
+    <!-- ===== RINGKASAN EKSEKUTIF ===== -->
+    <section class="page" id="pg-exec">
+      <div class="crumb">Beranda / Executive Summary</div>
+      <div class="page-title"><div><h2>Executive Summary</h2><p>PT Asuransi Jaya — periode berjalan Juli 2026</p></div>
+        <button class="btn btn-gold" onclick="printExec()">⎙ &nbsp;Cetak Laporan Direksi</button></div>
+
+      <div class="value-hero">
+        <div class="vh-main">
+          <div class="eyebrow">NILAI KERUGIAN FRAUD YANG DICEGAH — YEAR TO DATE</div>
+          <div class="vh-num" id="vhMoney">Rp0</div>
+          <p>Dihitung dari klaim terindikasi yang tertahan atau ditolak dengan bukti terverifikasi, dikurangi biaya investigasi. Metodologi diaudit pihak ketiga.</p>
+        </div>
+        <div class="vh-side">
+          <div class="vh-cell"><label>ROI PLATFORM</label><b>11,4×</b><span>vs biaya langganan YTD</span></div>
+          <div class="vh-cell"><label>LOSS RATIO</label><b>62,1%</b><span>turun 6,8 pp sejak onboarding</span></div>
+          <div class="vh-cell"><label>DETEKSI DINI</label><b>94%</b><span>vs rata-rata industri 61%</span></div>
+          <div class="vh-cell"><label>WAKTU PROSES KLAIM</label><b>2,4 hari</b><span>dari 11 hari (–78%)</span></div>
+        </div>
+      </div>
+
+      <div class="grid kpis">
+        <div class="kpi"><label>TOTAL KLAIM</label><div class="num" data-count="9">0</div>
+          <div class="sub"><span class="delta-up">▲ 12%</span> vs bulan lalu</div><span class="spark" id="sp1"></span></div>
+        <div class="kpi k-red"><label>BAND TINGGI / KRITIS</label><div class="num" data-count="3">0</div>
+          <div class="sub"><span class="delta-down">▲ 1</span> perlu investigasi</div><span class="spark" id="sp2"></span></div>
+        <div class="kpi k-amber"><label>MENUNGGU TINJAUAN</label><div class="num" id="kpiPending">6</div>
+          <div class="sub">SLA tinjauan: 48 jam</div><span class="spark" id="sp3"></span></div>
+        <div class="kpi k-gold"><label>RATA-RATA SKOR</label><div class="num"><span data-count="48">0</span><small> / 100</small></div>
+          <div class="sub"><span class="delta-up">▼ 4 poin</span> membaik</div><span class="spark" id="sp4"></span></div>
+      </div>
+
+      <div class="grid charts">
+        <div class="panel" style="margin:0">
+          <div class="panel-head"><div><h3>Premi vs Klaim Dibayar & Loss Ratio</h3><p>Semester I 2026 — kombinasi volume dan rasio</p></div></div>
+          <div class="panel-body"><div class="chart-box"><canvas id="lossChart"></canvas></div></div>
+        </div>
+        <div class="panel briefing" style="margin:0">
+          <div class="panel-head"><div><h3>Briefing Analis — Otomatis</h3><p>Disusun mesin analitik IDRN · diperbarui <span id="briefTime"></span></p></div></div>
+          <div class="panel-body">
+            <div class="brief-item"><div class="brief-n">1</div><div><b>Konsentrasi risiko pada bengkel SAPPHIRE.</b> 4 dari 6 klaim berisiko tinggi menunjuk bengkel yang sama (faktor F4 naik 22% MoM). Rekomendasi: audit lapangan bersama unit SIU.</div></div>
+            <div class="brief-item"><div class="brief-n">2</div><div><b>Tiga grup klaim ganda lintas penyelenggara aktif.</b> Estimasi eksposur Rp18,3 juta. Seluruhnya telah dinotifikasi via jaringan pengawas.</div></div>
+            <div class="brief-item"><div class="brief-n">3</div><div><b>Jalur cepat menghemat 312 jam kerja.</b> 67% klaim band RENDAH diproses otomatis tanpa sentuhan manual bulan ini, dengan 0 temuan salah bayar.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><div><h3>Entitas Dalam Pemantauan (Watchlist)</h3><p>Entitas dengan tren risiko menaik — dipantau otomatis lintas penyelenggara</p></div></div>
+        <div style="overflow-x:auto"><table>
+          <thead><tr><th>ENTITAS</th><th>JENIS</th><th>TREN 90 HARI</th><th>SKOR ENTITAS</th><th>PEMICU</th><th>STATUS</th></tr></thead>
+          <tbody>
+            <tr><td><b>SAPPHIRE</b></td><td>Bengkel rekanan</td><td><span id="spw1"></span></td><td><div class="score-line"><b style="color:var(--red)">71</b><span>/ 100</span></div></td><td style="font-size:12px;color:var(--muted)">Frekuensi klaim tinggi + deviasi estimasi</td><td><span class="status s-rejected">AUDIT DIJADWALKAN</span></td></tr>
+            <tr><td><b>ALDY HERMAWAN</b></td><td>Pemegang polis</td><td><span id="spw2"></span></td><td><div class="score-line"><b style="color:var(--red)">68</b><span>/ 100</span></div></td><td style="font-size:12px;color:var(--muted)">Duplikasi lintas penyelenggara</td><td><span class="status s-invest">KASUS SIU AKTIF</span></td></tr>
+            <tr><td><b>NURI AGUS RAMDHANI</b></td><td>Pemegang polis</td><td><span id="spw3"></span></td><td><div class="score-line"><b style="color:var(--red)">72</b><span>/ 100</span></div></td><td style="font-size:12px;color:var(--muted)">Anomali waktu + duplikasi</td><td><span class="status s-invest">KASUS SIU AKTIF</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- ===== DAFTAR KLAIM ===== -->
+    <section class="page" id="pg-claims">
+      <div class="crumb">Beranda / Daftar Klaim</div>
+      <div class="page-title"><div><h2>Daftar Klaim</h2><p>Seluruh pengajuan beserta skor model IDRN-RS v2.1</p></div></div>
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>Klaim Aktif</h3><p id="claimCount"></p></div>
+          <div class="chips" id="statusChips">
+            <button class="chip on" data-f="all">Semua</button>
+            <button class="chip" data-f="Menunggu">Menunggu</button>
+            <button class="chip" data-f="Disetujui">Disetujui</button>
+            <button class="chip" data-f="Ditolak">Ditolak</button>
+            <button class="chip" data-f="Investigasi">Investigasi</button>
+          </div>
+        </div>
+        <div style="overflow-x:auto">
+          <table><thead><tr><th>PEMEGANG POLIS</th><th>NOMOR KLAIM</th><th>NILAI PENGAJUAN</th><th>TGL. KERUGIAN</th><th>RISK SCORE</th><th>BAND</th><th>STATUS</th></tr></thead>
+          <tbody id="claimRows"></tbody></table>
+        </div>
+        <div class="note">Pilih baris untuk membuka Berkas Klaim — dekomposisi skor, rekomendasi, verifikasi integritas, audit trail.</div>
+      </div>
+    </section>
+
+    <!-- ===== INTELIJEN KASUS (SIU) ===== -->
+    <section class="page" id="pg-cases">
+      <div class="crumb">Beranda / Case Intelligence</div>
+      <div class="page-title"><div><h2>Case Intelligence — Unit Investigasi Khusus</h2><p>Manajemen kasus fraud end-to-end dengan SLA dan eskalasi otomatis</p></div></div>
+      <div class="grid kpis">
+        <div class="kpi k-red"><label>KASUS AKTIF</label><div class="num" id="caseActive">4</div><div class="sub">2 prioritas P1/P2</div></div>
+        <div class="kpi k-amber"><label>RATA-RATA UMUR KASUS</label><div class="num">6,2<small> hari</small></div><div class="sub">Target &lt; 14 hari</div></div>
+        <div class="kpi k-green"><label>TINGKAT PEMBUKTIAN</label><div class="num">83<small>%</small></div><div class="sub">Kasus ditutup dengan bukti</div></div>
+        <div class="kpi k-cyan"><label>NILAI DALAM SENGKETA</label><div class="num" style="font-size:20px">Rp23,8 jt</div><div class="sub">4 kasus berjalan</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><h3>Daftar Kasus</h3><p>Diurutkan prioritas & sisa SLA</p></div></div>
+        <div style="overflow-x:auto"><table>
+          <thead><tr><th>KASUS</th><th>SUBJEK</th><th>PRIORITAS</th><th>INVESTIGATOR</th><th>SISA SLA</th><th>NILAI</th><th>STATUS</th><th></th></tr></thead>
+          <tbody id="caseRows"></tbody>
+        </table></div>
+        <div class="note">Penutupan kasus mewajibkan ringkasan temuan — tercatat permanen dan di-anchor ke ledger.</div>
+      </div>
+    </section>
+
+    <!-- ===== ANTREAN ===== -->
+    <section class="page" id="pg-queue">
+      <div class="crumb">Beranda / Antrean Penilaian</div>
+      <div class="page-title"><div><h2>Antrean Penilaian Klaim</h2><p>Diurutkan skor risiko — Budi Santoso, AAIK</p></div></div>
+      <div class="progress-wrap"><small id="qStat"></small><div class="progress"><i id="qProg" style="width:0%"></i></div></div>
+      <div id="queue"></div>
+      <div class="empty-state" id="qEmpty" style="display:none"><h3>Seluruh klaim telah ditinjau</h3><p>Seluruh keputusan tercatat pada audit trail.</p></div>
+    </section>
+
+    <!-- ===== PENGAWASAN ===== -->
+    <section class="page" id="pg-regulator">
+      <div class="crumb">Beranda / Pengawasan</div>
+      <div class="page-title"><div><h2>Pengawasan Lintas Penyelenggara</h2><p>Otoritas Jasa Keuangan — pemantauan agregat nasional</p></div>
+        <svg width="188" height="52" viewBox="0 0 380 104" xmlns="http://www.w3.org/2000/svg" aria-label="Otoritas Jasa Keuangan">
+          <defs><linearGradient id="ojkR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0242f"/><stop offset="1" stop-color="#9c151d"/></linearGradient></defs>
+          <path d="M14 36 C58 6 122 0 172 16 C138 19 98 30 74 46 C52 36 30 34 14 36 Z" fill="url(#ojkR)"/>
+          <path d="M40 27 C92 7 152 7 194 24 C162 22 122 29 96 40 C76 31 56 27 40 27 Z" fill="#d8dadd"/>
+          <text x="8" y="92" font-family="Arial,Helvetica,sans-serif" font-size="66" font-weight="900" font-style="italic" fill="#c41722">OJK</text>
+          <rect x="178" y="36" width="5" height="58" fill="#c41722"/>
+          <text x="196" y="54" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="700" fill="#6b7280">OTORITAS</text>
+          <text x="196" y="76" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="700" fill="#6b7280">JASA</text>
+          <text x="196" y="98" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="700" fill="#6b7280">KEUANGAN</text>
+        </svg></div>
+      <div class="grid kpis">
+        <div class="kpi"><label>KLAIM TERPANTAU</label><div class="num" data-count="16">0</div><div class="sub">2 penyelenggara</div></div>
+        <div class="kpi k-red"><label>GRUP KLAIM GANDA</label><div class="num" data-count="3">0</div><div class="sub">8 klaim terlibat</div></div>
+        <div class="kpi k-gold"><label>RATA-RATA SKOR</label><div class="num"><span data-count="54">0</span><small> / 100</small></div><div class="sub">Agregat</div></div>
+        <div class="kpi k-cyan"><label>LEDGER ANCHORS</label><div class="num" data-count="1842">0</div><div class="sub">Batch terkonfirmasi</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><h3>Risk Network Map</h3><p>Pilih simpul untuk menyorot koneksi</p></div></div>
+        <div style="position:relative"><svg id="net" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet"></svg><div class="net-tip" id="netTip"></div></div>
+        <div class="legend">
+          <span><i style="background:var(--red)"></i>Terindikasi klaim ganda</span>
+          <span><i style="background:var(--blue)"></i>Penyelenggara</span>
+          <span><i style="background:var(--gold)"></i>Bengkel rekanan</span>
+          <span><i style="background:#7d8aa3"></i>Pemegang polis normal</span>
+        </div>
+      </div>
+      <div class="grid charts">
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Indikasi Klaim Ganda</h3></div></div>
+          <div class="panel-body" id="dblGroups"></div></div>
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Klaim per Penyelenggara</h3></div></div>
+          <div class="panel-body"><div class="chart-box"><canvas id="provChart"></canvas></div></div></div>
+      </div>
+    </section>
+
+    <!-- ===== AUDIT ===== -->
+    <section class="page" id="pg-audit">
+      <div class="crumb">Beranda / Audit Trail</div>
+      <div class="page-title"><div><h2>System Audit Trail</h2><p>Append-only, di-anchor ke ledger setiap 10 menit</p></div>
+        <span class="status s-invest" id="auditCount"></span></div>
+      <div class="panel"><div style="overflow-x:auto">
+        <table><thead><tr><th>WAKTU</th><th>AKTOR</th><th>PERAN</th><th>AKTIVITAS</th><th>OBJEK</th><th>KETERANGAN</th></tr></thead>
+        <tbody id="auditRows"></tbody></table>
+      </div></div>
+    </section>
+
+    <!-- ===== FEEDS ===== -->
+    <section class="page" id="pg-feeds">
+      <div class="crumb">Beranda / Data Integration</div>
+      <div class="page-title"><div><h2>Data Integration &amp; Verified Sources</h2><p>Seluruh feed ditandatangani kriptografis per pembaruan</p></div></div>
+      <div class="grid kpis">
+        <div class="kpi k-green"><label>SUMBER AKTIF</label><div class="num" data-count="7">0</div><div class="sub">dari 8 terdaftar</div></div>
+        <div class="kpi"><label>PANGGILAN API (24 JAM)</label><div class="num" data-count="14208">0</div><div class="sub">Rata-rata 165 ms</div></div>
+        <div class="kpi k-cyan"><label>VERIFIKASI TANDA TANGAN</label><div class="num">100<small>%</small></div><div class="sub">Data masuk tervalidasi</div></div>
+      </div>
+      <div class="panel"><div class="panel-head"><div><h3>Sumber Data Terhubung</h3></div></div>
+        <div class="panel-body" id="feedList"></div></div>
+    </section>
+
+    <!-- ===== MONITOR ===== -->
+    <section class="page" id="pg-monitor">
+      <div class="crumb">Beranda / Monitoring Sistem</div>
+      <div class="page-title"><div><h2>Monitoring Sistem Real-Time</h2><p>Kesehatan layanan, latensi, event stream</p></div></div>
+      <div class="statusbar"><span class="dot d-ok"></span>Seluruh sistem operasional — uptime 99,98% (30 hari) · 0 insiden aktif</div>
+      <div class="grid kpis">
+        <div class="kpi"><label>LATENSI API (P95)</label><div class="num">182<small> ms</small></div><div class="sub">Target &lt; 300 ms</div></div>
+        <div class="kpi k-green"><label>THROUGHPUT SCORING</label><div class="num" data-count="412">0</div><div class="sub">Klaim/menit (kapasitas)</div></div>
+        <div class="kpi k-cyan"><label>ANTREAN PESAN</label><div class="num" data-count="3">0</div><div class="sub">Backlog normal</div></div>
+        <div class="kpi k-gold"><label>NODE LEDGER</label><div class="num">4/4</div><div class="sub">Konsensus sehat</div></div>
+      </div>
+      <div class="grid charts">
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Latensi API — 60 menit terakhir</h3></div></div>
+          <div class="panel-body"><div class="chart-box"><canvas id="latChart"></canvas></div></div></div>
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Event Stream</h3><p>Streaming langsung</p></div></div>
+          <div class="panel-body"><div class="livefeed" id="livefeed"></div></div></div>
+      </div>
+    </section>
+
+    <!-- ===== LEDGER ===== -->
+    <section class="page" id="pg-ledger">
+      <div class="crumb">Beranda / Ledger &amp; Security</div>
+      <div class="page-title"><div><h2>Distributed Ledger &amp; Security Center</h2><p>Integrity anchor divalidasi multi-pihak · pengamanan kunci HSM</p></div></div>
+      <div class="grid kpis sec-grid" style="margin-bottom:16px">
+        <div class="kpi k-green"><label>STATUS HSM</label><div class="num" style="font-size:16px">Aktif — FIPS 140-2 L3</div><div class="sub">Rotasi kunci: 12 Juli 2026</div></div>
+        <div class="kpi"><label>NETWORK VALIDATORS</label><div class="num">3<small> node</small></div><div class="sub">IDRN · OJK · AAUI</div></div>
+        <div class="kpi k-cyan"><label>SESI AKTIF</label><div class="num" data-count="12">0</div><div class="sub">Seluruhnya ber-MFA</div></div>
+        <div class="kpi k-gold"><label>AKSES BERBASIS PERAN</label><div class="num">4<small> peran</small></div><div class="sub">Hak akses minimum</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><h3>Recent Batch Anchors</h3><p>Merkle Root kumpulan digital fingerprint dokumen klaim</p></div></div>
+        <div style="overflow-x:auto"><table>
+          <thead><tr><th>BATCH</th><th>MERKLE ROOT</th><th>DOKUMEN</th><th>VALIDATORS</th><th>WAKTU</th><th>STATUS</th></tr></thead>
+          <tbody id="ledgerRows"></tbody></table></div>
+        <div class="note">Perubahan sekecil apa pun pada dokumen yang telah di-anchor akan terdeteksi saat verifikasi.</div>
+      </div>
+    </section>
+
+    <!-- ===== LAPORAN & SLA ===== -->
+    <section class="page" id="pg-sla">
+      <div class="crumb">Beranda / Reports &amp; SLA</div>
+      <div class="page-title"><div><h2>Value Report &amp; Service Level</h2><p>Akuntabilitas platform terhadap kontrak enterprise Anda</p></div>
+        <button class="btn btn-gold" onclick="printExec()">⎙ &nbsp;Cetak Laporan Direksi</button></div>
+      <div class="grid kpis">
+        <div class="kpi k-gold"><label>NILAI DICEGAH BULAN INI</label><div class="num" style="font-size:21px">Rp1,42 M</div><div class="sub"><span class="delta-up">▲ 18%</span> MoM</div></div>
+        <div class="kpi k-green"><label>UPTIME BULAN INI</label><div class="num">99,99<small>%</small></div><div class="sub">SLA kontrak: 99,95%</div></div>
+        <div class="kpi"><label>KLAIM DIPROSES</label><div class="num" data-count="1287">0</div><div class="sub">Bulan berjalan (jaringan)</div></div>
+        <div class="kpi k-cyan"><label>KREDIT LAYANAN</label><div class="num">Rp0</div><div class="sub">Tidak ada pelanggaran SLA</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><h3>Uptime 12 Bulan Terakhir</h3><p>Arahkan kursor ke batang untuk rincian per bulan</p></div></div>
+        <div class="panel-body"><div class="uptime" id="uptimeStrip"></div>
+          <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim);margin-top:6px"><span>Agu 2025</span><span>Jul 2026</span></div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><h3>Komitmen Kontrak Enterprise</h3><p>Sesuai perjanjian tingkat layanan induk</p></div></div>
+        <div style="overflow-x:auto"><table>
+          <thead><tr><th>KOMITMEN</th><th>TARGET KONTRAK</th><th>REALISASI BULAN INI</th><th>STATUS</th></tr></thead>
+          <tbody>
+            <tr><td>Ketersediaan platform</td><td>≥ 99,95%</td><td>99,99%</td><td><span class="status s-approved">TERPENUHI</span></td></tr>
+            <tr><td>Latensi scoring P95</td><td>&lt; 900 ms</td><td>412 ms</td><td><span class="status s-approved">TERPENUHI</span></td></tr>
+            <tr><td>Respons insiden kritis (24/7)</td><td>&lt; 15 menit</td><td>6 menit (1 insiden minor)</td><td><span class="status s-approved">TERPENUHI</span></td></tr>
+            <tr><td>Pemulihan bencana (RTO/RPO)</td><td>1 jam / 15 menit</td><td>Diuji 14 Juni — lulus</td><td><span class="status s-approved">TERPENUHI</span></td></tr>
+            <tr><td>Audit keamanan independen</td><td>2× per tahun</td><td>Terakhir: Mei 2026 — tanpa temuan kritis</td><td><span class="status s-approved">TERPENUHI</span></td></tr>
+          </tbody>
+        </table></div>
+        <div class="note">Dukungan enterprise 24/7 dengan manajer akun khusus · eskalasi langsung ke tim teknik · tinjauan kuartalan bersama direksi.</div>
+      </div>
+    </section>
+
+    <!-- ===== PUSAT KOMANDO ===== -->
+    <section class="page" id="pg-ops">
+      <div class="crumb">Beranda / Command Center</div>
+      <div class="page-title"><div><h2>National Command Center</h2><p>Aliran klaim jaringan IDRN secara real-time — seluruh wilayah operasi</p></div></div>
+      <div class="ops-hero">
+        <div class="ops-head"><div><h3>National Operations Map</h3><p>Setiap denyut = peristiwa klaim yang diproses jaringan</p></div>
+          <span class="ops-live"><i></i>LIVE</span></div>
+        <svg id="opsMap" viewBox="0 0 900 360" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="ops-stats">
+          <div class="ops-stat"><label>KLAIM DIPROSES HARI INI</label><b id="opsToday">1.287</b><span>seluruh jaringan</span></div>
+          <div class="ops-stat"><label>DUPLIKASI DICEGAH</label><b id="opsDup">41</b><span>lintas penyelenggara</span></div>
+          <div class="ops-stat"><label>NILAI DICEGAH HARI INI</label><b id="opsVal">Rp42,2 jt</b><span>estimasi real-time</span></div>
+          <div class="ops-stat"><label>LATENSI SCORING</label><b>412 ms</b><span>P95 · target &lt; 900 ms</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><h3>National Claim Stream</h3><p>Peristiwa terbaru dari seluruh penyelenggara</p></div></div>
+        <div class="panel-body"><div class="livefeed ticker" id="opsTicker"></div></div>
+      </div>
+    </section>
+
+    <!-- ===== SIMULATOR ===== -->
+    <section class="page" id="pg-sim">
+      <div class="crumb">Beranda / Threshold Simulator</div>
+      <div class="page-title"><div><h2>Decision Threshold Simulator</h2><p>Uji dampak kebijakan ambang fast-track terhadap biaya, beban kerja, dan risiko — sebelum diberlakukan</p></div></div>
+      <div class="sim-grid">
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Fast-Track Threshold</h3><p>Klaim dengan skor di bawah ambang diproses otomatis</p></div></div>
+          <div class="panel-body">
+            <div class="sim-th" id="simTh">60<small> / 100</small></div>
+            <input type="range" class="sim-slider" id="simSlider" min="40" max="80" value="60" step="1">
+            <div class="sim-marks"><span>40 — konservatif</span><span>60 — rekomendasi</span><span>80 — agresif</span></div>
+            <div style="font-size:12px;color:var(--muted);margin-top:16px;line-height:1.7">Simulasi menggunakan distribusi skor aktual 90 hari terakhir (1.287 klaim/bulan, seluruh jaringan). Perubahan ambang produksi memerlukan persetujuan dua pejabat dan tercatat pada audit trail.</div>
+          </div></div>
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Proyeksi Dampak Bulanan</h3><p>Diperbarui seketika saat ambang digeser</p></div></div>
+          <div class="panel-body">
+            <div class="sim-out">
+              <div class="sim-cell"><label>OTOMATISASI</label><b id="simAuto">67%</b><span id="simAutoN">862 klaim/bln fast-track</span></div>
+              <div class="sim-cell"><label>KE PENILAI MANUAL</label><b id="simMan">425</b><span>klaim/bln</span></div>
+              <div class="sim-cell"><label>PENGHEMATAN OPERASIONAL</label><b id="simSave">Rp33 jt</b><span>per bulan · biaya proses manual</span></div>
+              <div class="sim-cell"><label>ESTIMASI SALAH BAYAR</label><b id="simRisk">0,8%</b><span>toleransi kontrak: 2,0%</span></div>
+            </div>
+            <div class="reco r-low" id="simReco" style="margin-top:14px"><b>Optimal</b>Keseimbangan otomatisasi dan risiko berada pada rentang yang direkomendasikan model (55–65).</div>
+          </div></div>
+      </div>
+    </section>
+
+    <!-- ===== AAUI: INDUSTRY OVERVIEW ===== -->
+    <section class="page" id="pg-aaui">
+      <div class="crumb">Beranda / Industry Overview</div>
+      <div class="page-title"><div><h2>Industry Overview</h2><p>Asosiasi Asuransi Umum Indonesia — koordinasi anti-fraud lintas anggota</p></div></div>
+      <div class="grid kpis">
+        <div class="kpi"><label>ANGGOTA TERHUBUNG</label><div class="num" data-count="2"><small> / 72</small></div><div class="sub">Fase pilot — onboarding bertahap</div></div>
+        <div class="kpi k-cyan"><label>KLAIM TERDAFTAR (REGISTRY)</label><div class="num" data-count="16">0</div><div class="sub">Seluruh anggota terhubung</div></div>
+        <div class="kpi k-red"><label>DUPLIKASI LINTAS ANGGOTA</label><div class="num" data-count="3">0</div><div class="sub">Advisori aktif</div></div>
+        <div class="kpi k-gold"><label>ENTITAS WATCHLIST</label><div class="num" data-count="4">0</div><div class="sub">Dibagikan ke seluruh anggota</div></div>
+      </div>
+      <div class="grid charts">
+        <div class="panel" style="margin:0">
+          <div class="panel-head"><div><h3>Member Benchmarking</h3><p>Kinerja anggota terhubung IDRN vs rata-rata industri non-IDRN</p></div></div>
+          <div class="panel-body"><div class="chart-box"><canvas id="aauiChart"></canvas></div></div>
+        </div>
+        <div class="panel" style="margin:0">
+          <div class="panel-head"><div><h3>Industry Watchlist</h3><p>Entitas berisiko — sebarkan advisori ke 72 anggota</p></div></div>
+          <div class="panel-body" id="aauiWatch"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><h3>Fungsi Asosiasi dalam Jaringan IDRN</h3></div></div>
+        <div class="panel-body" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+          <div class="sim-cell"><label>LEDGER VALIDATOR NODE</label><b style="font-size:14px">Aktif</b><span>AAUI menandatangani setiap batch anchor bersama IDRN & OJK</span></div>
+          <div class="sim-cell"><label>REGISTRY KLAIM INDUSTRI</label><b style="font-size:14px">16 klaim</b><span>Basis deteksi duplikasi lintas anggota (faktor F3)</span></div>
+          <div class="sim-cell"><label>STANDARDISASI DATA</label><b style="font-size:14px">SEP v1.2</b><span>Skema pertukaran klaim standar antar anggota</span></div>
+          <div class="sim-cell"><label>ADVISORI & EDUKASI</label><b style="font-size:14px">12 advisori</b><span>Diterbitkan YTD ke seluruh anggota asosiasi</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== AAUI: REGISTRY ===== -->
+    <section class="page" id="pg-registry">
+      <div class="crumb">Beranda / Industry Claim Registry</div>
+      <div class="page-title"><div><h2>Industry Claim Registry</h2><p>Registry klaim lintas anggota — data anonim sesuai perjanjian pertukaran data asosiasi</p></div></div>
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>Seluruh Klaim Terdaftar</h3><p id="regCount"></p></div>
+          <input id="regSearch" placeholder="Cari nama, nomor klaim, atau penyelenggara…" autocomplete="off"
+            style="width:100%;max-width:360px;border:1px solid var(--line);border-radius:7px;padding:9px 13px;font-size:13px;font-family:inherit;background:#fbfcfe">
+        </div>
+        <div style="overflow-x:auto">
+          <table><thead><tr><th>NOMOR KLAIM</th><th>PEMEGANG POLIS</th><th>PENYELENGGARA</th><th>NILAI</th><th>TGL. KERUGIAN</th><th>RISK SCORE</th><th>BAND</th><th>DUPLIKASI</th></tr></thead>
+          <tbody id="regRows"></tbody></table>
+        </div>
+        <div class="note">Duplikasi ditandai otomatis ketika pemegang polis yang sama mengajukan klaim serupa pada lebih dari satu anggota.</div>
+      </div>
+    </section>
+
+    <!-- ===== NASABAH ===== -->
+    <section class="page" id="pg-mine">
+      <div class="crumb">Beranda / Polis &amp; Klaim Saya</div>
+      <div class="page-title"><div><h2>Polis &amp; Klaim Saya</h2><p>Nuri Agus Ramdhani — pemegang polis perorangan</p></div></div>
+      <div class="grid kpis" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
+        <div class="kpi"><label>TOTAL POLIS</label><div class="num" data-count="2">0</div><div class="sub">Kendaraan bermotor</div></div>
+        <div class="kpi k-green"><label>POLIS AKTIF</label><div class="num" data-count="2">0</div><div class="sub">In-force</div></div>
+        <div class="kpi k-amber"><label>KLAIM BERJALAN</label><div class="num" data-count="2">0</div><div class="sub">Dari 3 pengajuan</div></div>
+      </div>
+      <div class="panel"><div class="panel-head"><div><h3>Polis Aktif Saya</h3><p>Klik polis untuk melihat coverage dan detail pertanggungan</p></div></div>
+        <div class="panel-body" id="myPolicies"></div></div>
+      <div class="panel"><div class="panel-head"><div><h3>Perkembangan Pengajuan Klaim</h3><p>Klik setiap tahapan pada progress bar untuk melihat detail, waktu, dan penanggung jawabnya</p></div></div>
+        <div class="panel-body" id="myClaims"></div></div>
+    </section>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="overlay" id="ovDoc"><div class="modal" id="docModal"></div></div>
+<div class="overlay" id="ovDec"><div class="modal" style="width:min(520px,100%)">
+  <div class="modal-head"><h3 id="decTitle">Konfirmasi Keputusan</h3><button class="modal-close" onclick="closeDec()">✕</button></div>
+  <div class="modal-body">
+    <div class="dec-sum" id="decSum"></div>
+    <div class="field" style="margin:0"><label>DASAR PERTIMBANGAN / ALASAN <span style="color:var(--red)">*</span></label>
+      <textarea id="decReason" placeholder="Uraikan dasar pertimbangan (wajib, minimal 10 karakter). Tercatat permanen pada audit trail."></textarea>
+      <div class="err-msg" id="decErr">Alasan wajib diisi, minimal 10 karakter.</div></div>
+  </div>
+  <div class="modal-foot"><button class="btn" onclick="closeDec()">Batal</button>
+    <button class="btn btn-navy" id="decConfirm">Konfirmasi &amp; Catat</button></div>
+</div></div>
+<div class="overlay" id="ovCmd"><div class="modal">
+  <input id="cmdInput" placeholder="Ketik nama pemegang polis, nomor klaim, atau halaman…" autocomplete="off">
+  <div class="cmd-list" id="cmdList"></div>
+</div></div>
+<button class="cop-fab" id="copFab" onclick="toggleCop(true)"><span class="gold">✦</span> Tanya IDRN</button>
+<div class="cop-panel" id="copPanel">
+  <div class="cop-head"><span style="font-size:16px">✦</span><div><b>IDRN Copilot</b><small>Analis risiko AI · setiap jawaban dapat diaudit</small></div>
+    <button onclick="toggleCop(false)">✕</button></div>
+  <div class="cop-msgs" id="copMsgs">
+    <div class="cop-m bot">Selamat datang. Saya analis risiko IDRN — tanyakan apa pun tentang portofolio klaim, entitas berisiko, atau nilai platform Anda.</div>
+  </div>
+  <div class="cop-sug">
+    <button onclick="copAsk('Klaim risiko tertinggi?')">Klaim risiko tertinggi</button>
+    <button onclick="copAsk('Status bengkel SAPPHIRE')">Bengkel SAPPHIRE</button>
+    <button onclick="copAsk('Berapa nilai yang dicegah / ROI?')">ROI platform</button>
+    <button onclick="copAsk('Bagaimana skor dihitung?')">Cara skor dihitung</button>
+  </div>
+  <div class="cop-input"><input id="copIn" placeholder="Ketik pertanyaan…" autocomplete="off"><button onclick="copSend()">Kirim</button></div>
+</div>
+<div id="toasts"></div>
+<div id="printReport"></div>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
