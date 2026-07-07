@@ -71,7 +71,7 @@ button{font-family:inherit}
 .lg-foot{text-align:center;color:rgba(255,255,255,.55);font-size:11.5px;padding:18px}
 /* ================= SHELL ================= */
 #app{display:none;min-height:100vh}
-.topbar{position:fixed;top:0;left:0;right:0;height:58px;background:#fff;border-bottom:1px solid var(--line);z-index:60;display:flex;align-items:center;gap:14px;padding:0 22px}
+.topbar{position:fixed;top:0;left:0;right:0;height:58px;background:#fff;border-bottom:1px solid var(--line);z-index:90;box-shadow:0 1px 0 rgba(11,31,61,.04);display:flex;align-items:center;gap:14px;padding:0 22px}
 .topbar .mark{width:32px;height:32px;font-size:10px;background:var(--navy);color:#fff}
 .topbar h1{font-size:14.5px;font-weight:700;color:var(--navy);white-space:nowrap}
 .topbar small{display:block;font-size:9px;color:var(--dim);letter-spacing:1.6px}
@@ -321,7 +321,7 @@ textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba
 .ops-head-r{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .ops-legend{display:flex;gap:13px;font-size:10px;color:rgba(255,255,255,.62);font-weight:600}
 .ops-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:-1px}
-.ops-mapwrap{position:relative;overflow:hidden}
+.ops-mapwrap{position:relative;overflow:hidden;z-index:0;isolation:isolate}
 .ops-zoom{position:absolute;top:14px;right:14px;display:flex;flex-direction:column;gap:6px;z-index:3}
 .ops-zoom button{width:33px;height:33px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(11,31,61,.55);backdrop-filter:blur(5px);color:#fff;font-size:17px;font-weight:700;cursor:pointer;transition:.15s;display:grid;place-items:center;line-height:1}
 .ops-zoom button:hover{background:rgba(29,75,133,.9);border-color:rgba(255,255,255,.45)}
@@ -426,7 +426,7 @@ textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba
 /* map + white stream row */
 .ncc-map-row{display:grid;grid-template-columns:1fr 330px;gap:1px;background:rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)}
 @media(max-width:980px){.ncc-map-row{grid-template-columns:1fr}}
-.ncc-map-row .ncc-mapwrap{position:relative;height:500px;overflow:hidden;background:#08131f}
+.ncc-map-row .ncc-mapwrap{position:relative;height:500px;overflow:hidden;background:#08131f;z-index:0;isolation:isolate}
 .ncc-map-row #opsMap{position:absolute;inset:0;width:100%;height:500px;background:#08131f;cursor:grab;touch-action:auto}
 .ncc-tabs{position:absolute;top:14px;left:14px;display:flex;gap:6px;flex-wrap:wrap;max-width:66%;z-index:600}
 .ncc-tabs button{border:1px solid rgba(255,255,255,.16);background:rgba(9,20,40,.78);backdrop-filter:blur(5px);color:rgba(255,255,255,.8);font-size:11.5px;font-weight:600;padding:7px 13px;border-radius:7px;cursor:pointer;transition:.15s}
@@ -514,7 +514,7 @@ textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba
 .ojk-pin{transition:none}
 
 /* LITE (denyut) memakai peta satelit Leaflet */
-.ops-mapwrap{position:relative;overflow:hidden}
+.ops-mapwrap{position:relative;overflow:hidden;z-index:0;isolation:isolate}
 .ops-mapwrap #opsMap{height:452px;touch-action:auto;background:#08131f;cursor:grab}
 .ops-mapwrap .ops-panel{z-index:800}
 .ops-mapwrap .ops-hint{z-index:700}
