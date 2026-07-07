@@ -1,460 +1,831 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IDRN — Infrastruktur Risiko Asuransi Nasional</title>
+<title>IDRN · The Trust Layer of Indonesian Insurance</title>
+<meta name="description" content="IDRN (Insurance Digital Risk Network) is the shared trust infrastructure for Indonesian insurance. Like BI-Fast for banks, it is the neutral rail every insurer, adjuster, supervisor and association plugs into: explainable AI risk scoring and a permissioned blockchain ledger that make every claim verifiable, without any party surrendering raw customer data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0b1f3d; --navy-2:#132c52; --navy-3:#1a3a68; --navy-4:#1d4b85;
+  --ink:#141d2b; --muted:#5b6a80; --dim:#8a97ab;
+  --paper:#f7f8fb; --surface:#ffffff; --line:#e4e9f1; --line-soft:#eef1f6;
+  --gold:#c9a94e; --gold-deep:#a5842e; --gold-soft:#f4ecd8;
+  --green:#177a43; --green-soft:#e9f5ee;
+  --amber:#96690a; --red:#a53049; --crit:#771c31; --cyan:#0d6b7c;
+  --display:'Spectral',Georgia,serif;
+  --sans:'Inter',-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --shadow:0 1px 2px rgba(11,31,61,.05),0 8px 24px rgba(11,31,61,.07);
+  --shadow-lg:0 4px 12px rgba(11,31,61,.08),0 28px 60px rgba(11,31,61,.14);
+  --r:14px; --max:1180px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--gold);color:var(--navy)}
+::-webkit-scrollbar{width:11px}::-webkit-scrollbar-thumb{background:#c6cfdc;border-radius:6px}::-webkit-scrollbar-track{background:#eef1f6}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+.eyebrow{font-size:11.5px;letter-spacing:2.8px;font-weight:700;text-transform:uppercase;color:var(--gold-deep)}
+.eyebrow.on-dark{color:var(--gold)}
+h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.5px;line-height:1.1}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;transition:background .4s,box-shadow .4s,border-color .4s,height .4s;border-bottom:1px solid transparent}
+nav.scrolled{background:rgba(255,255,255,.88);backdrop-filter:blur(16px);border-color:var(--line);height:64px}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:0 28px;width:100%;display:flex;align-items:center;gap:24px;flex-wrap:nowrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .mk{width:34px;height:34px;border-radius:50%;background:var(--navy);display:grid;place-items:center;flex-shrink:0;transition:transform .4s}
+.brand:hover .mk{transform:rotate(-6deg) scale(1.06)}
+.brand .mk svg{width:52%;height:52%;color:#fff}
+.brand b{font-size:19px;font-weight:800;letter-spacing:.5px;color:var(--navy);font-family:var(--display)}
+nav:not(.scrolled) .brand b{color:#fff}
+nav:not(.scrolled) .brand .mk{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25)}
+.brand small{display:block;font-size:8.5px;letter-spacing:2.4px;color:var(--dim);font-weight:700;font-family:var(--sans);margin-top:1px}
+nav:not(.scrolled) .brand small{color:rgba(255,255,255,.6)}
+.nav-links{display:flex;gap:22px;margin-left:4px;flex-wrap:nowrap}
+.nav-links a{font-size:13.5px;font-weight:500;color:var(--muted);transition:color .2s;white-space:nowrap}
+@media(max-width:1120px){.nav-links{gap:16px}.nav-links a{font-size:13px}}
+nav:not(.scrolled) .nav-links a{color:rgba(255,255,255,.72)}
+.nav-links a:hover{color:var(--navy)}
+nav:not(.scrolled) .nav-links a:hover{color:#fff}
+.nav-cta{margin-left:auto;display:flex;align-items:center;gap:14px}
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:600;font-size:14px;padding:11px 22px;border-radius:9px;cursor:pointer;border:1px solid transparent;transition:.22s;white-space:nowrap}
+.btn-primary{background:var(--gold);color:var(--navy)}
+.btn-primary:hover{background:#d8ba63;transform:translateY(-1px);box-shadow:0 10px 26px rgba(201,169,78,.36)}
+.btn-ghost{background:transparent;border-color:var(--line);color:var(--navy)}
+nav:not(.scrolled) .btn-ghost{border-color:rgba(255,255,255,.32);color:#fff}
+.btn-ghost:hover{border-color:var(--navy);background:var(--navy);color:#fff}
+nav:not(.scrolled) .btn-ghost:hover{background:#fff;color:var(--navy);border-color:#fff}
+.menu-btn{display:none;margin-left:auto;background:none;border:0;cursor:pointer;padding:8px}
+.menu-btn span{display:block;width:22px;height:2px;background:#fff;margin:4px 0}
+nav.scrolled .menu-btn span{background:var(--navy)}
+
+/* HERO with road canvas */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;background:radial-gradient(120% 90% at 60% 20%,#12294c,#081123 78%);color:#fff;overflow:hidden;padding:120px 0 70px}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 50%;z-index:0;filter:brightness(.7) saturate(1.06) contrast(1.03)}
+.nophoto .hero-photo{display:none}
+#road{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.hero-veil{position:absolute;inset:0;z-index:1;background:
+  linear-gradient(180deg,rgba(6,13,28,.42) 0%,rgba(6,13,28,.05) 32%,rgba(6,13,28,.32) 66%,rgba(6,13,28,.92) 100%),
+  linear-gradient(90deg,rgba(6,13,28,.84) 0%,rgba(6,13,28,.22) 54%,rgba(6,13,28,.04) 100%)}
+.hero-inner{position:relative;z-index:3;max-width:var(--max);margin:0 auto;padding:0 28px;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.4px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);padding:8px 16px;border-radius:40px;color:rgba(255,255,255,.9);margin-bottom:28px}
+.hero-badge i{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2.6s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(201,169,78,.55)}50%{box-shadow:0 0 0 7px rgba(201,169,78,0)}}
+.hero h1{font-size:clamp(38px,6.1vw,76px);font-weight:600;line-height:1.03;letter-spacing:-1.5px;max-width:16ch;text-shadow:0 2px 40px rgba(0,0,0,.4)}
+.hero h1 .accent{color:var(--gold);font-style:italic;font-weight:500}
+.hero-sub{font-size:clamp(16px,1.5vw,19px);line-height:1.7;color:rgba(255,255,255,.82);max-width:58ch;margin:28px 0 8px}
+.hero-sub b{color:#fff;font-weight:600}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+.hero .btn-primary{padding:15px 30px;font-size:15px}
+.hero .btn-line{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.24);color:#fff;padding:15px 26px;font-size:15px}
+.hero .btn-line:hover{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.4)}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:60px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;max-width:900px;backdrop-filter:blur(3px)}
+.hstat{padding:20px 22px;background:rgba(8,17,35,.42)}
+.hstat b{display:block;font-family:var(--display);font-size:clamp(24px,3vw,32px);font-weight:600;color:#fff;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.hstat b .u{font-size:14px;color:var(--gold);font-family:var(--sans);font-weight:600;margin-left:2px}
+.hstat span{font-size:11.5px;color:rgba(255,255,255,.62);display:block;margin-top:5px}
+.hstat em{font-style:normal;font-size:9.5px;letter-spacing:1px;color:var(--gold);text-transform:uppercase;font-weight:700}
+.scroll-cue{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:3;color:rgba(255,255,255,.5);font-size:10px;letter-spacing:2px;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px}
+.scroll-cue .ln{width:1px;height:32px;background:linear-gradient(rgba(255,255,255,.5),transparent);animation:cue 2s infinite}
+@keyframes cue{0%{transform:scaleY(.3);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(.3);transform-origin:bottom}}
+
+/* TRUST STRIP */
+.trust-strip{background:var(--navy);color:#fff;padding:26px 0;border-top:1px solid rgba(255,255,255,.08)}
+.trust-strip .wrap{display:flex;align-items:center;gap:34px;flex-wrap:wrap;justify-content:center}
+.trust-strip p{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);font-weight:700}
+.trust-logos{display:flex;gap:34px;flex-wrap:wrap;align-items:center}
+.trust-logos span{font-family:var(--display);font-size:18px;font-weight:600;color:rgba(255,255,255,.82);display:flex;align-items:center;gap:8px}
+.trust-logos span i{font-style:normal;font-size:9.5px;color:var(--gold);letter-spacing:1px;font-family:var(--sans);font-weight:700}
+
+/* SECTION SHELL */
+.sec{padding:110px 0}
+.sec-head{max-width:760px;margin-bottom:54px}
+.sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.sec-head h2{font-size:clamp(30px,4vw,46px);color:var(--navy);margin:16px 0 18px}
+.sec-head p{font-size:17px;color:var(--muted);line-height:1.7}
+.sec-head .eyebrow{display:inline-flex;align-items:center;gap:10px}
+.sec-head .eyebrow::before{content:'';width:26px;height:1px;background:var(--gold-deep)}
+.sec-head.center .eyebrow::before{display:none}
+
+/* BI-FAST ANALOGY */
+.bifast{background:var(--surface);border-top:1px solid var(--line)}
+.bf-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:56px;align-items:center}
+.bf-copy .eyebrow{display:inline-flex;align-items:center;gap:10px}
+.bf-copy .eyebrow::before{content:'';width:26px;height:1px;background:var(--gold-deep)}
+.bf-copy h2{font-size:clamp(30px,4vw,46px);color:var(--navy);margin:16px 0 20px}
+.bf-copy p{font-size:16px;color:var(--muted);line-height:1.75;margin-bottom:16px}
+.bf-copy p b{color:var(--navy);font-weight:600}
+.bf-pull{margin:24px 0 6px;padding:20px 24px;border-left:3px solid var(--gold);background:var(--gold-soft);border-radius:0 12px 12px 0}
+.bf-pull b{font-family:var(--display);font-size:19px;color:var(--navy);font-weight:600;font-style:italic}
+.bf-visual{background:linear-gradient(160deg,#0b1f3d,#132c52);border-radius:20px;padding:34px 30px;box-shadow:var(--shadow-lg)}
+.bf-compare{display:grid;grid-template-columns:1fr;gap:22px}
+.bf-panel .cap{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.bf-panel .cap b{font-size:13px;color:#fff;font-weight:600;letter-spacing:.3px}
+.bf-panel .cap span{font-size:10px;letter-spacing:1px;text-transform:uppercase;font-weight:700;padding:4px 10px;border-radius:20px}
+.bf-panel.before .cap span{color:#f2a9b8;background:rgba(165,48,73,.22);border:1px solid rgba(165,48,73,.4)}
+.bf-panel.after .cap span{color:#e8d59a;background:rgba(201,169,78,.16);border:1px solid rgba(201,169,78,.4)}
+.bf-panel svg{width:100%;height:auto;display:block;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:12px}
+.bf-foot{margin-top:20px;font-size:11.5px;color:rgba(255,255,255,.55);line-height:1.6;font-family:var(--mono)}
+
+/* PROBLEM */
+.problem{background:linear-gradient(180deg,#f7f8fb,#eef2f8)}
+.prob-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.prob{background:var(--surface);padding:34px 30px;transition:.3s;position:relative}
+.prob:hover{background:#fbfcfe}
+.prob .n{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--gold-deep);letter-spacing:1px}
+.prob h3{font-size:20px;color:var(--navy);margin:14px 0 10px}
+.prob p{font-size:14.5px;color:var(--muted);line-height:1.65}
+.prob .bar{position:absolute;left:0;top:0;height:3px;width:0;background:var(--red);transition:width .5s}
+.prob:hover .bar{width:100%}
+
+/* SOLUTION */
+.solution{background:var(--surface)}
+.pillars{display:grid;grid-template-columns:1fr 1fr;gap:26px;position:relative}
+.pillar{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:40px 36px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:.35s}
+.pillar:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.pillar::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--navy-4)}
+.pillar.ledger::before{background:var(--gold)}
+.pillar .tag{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-4);background:#eef4fc;padding:7px 14px;border-radius:30px}
+.pillar.ledger .tag{color:var(--gold-deep);background:var(--gold-soft)}
+.pillar h3{font-size:27px;color:var(--navy);margin:22px 0 6px}
+.pillar .q{font-size:15px;font-style:italic;color:var(--gold-deep);font-family:var(--display);margin-bottom:18px}
+.pillar>p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:22px}
+.pillar>p b{color:var(--navy);font-weight:600}
+.pfeat{display:flex;gap:13px;padding:13px 0;border-top:1px solid var(--line-soft)}
+.pfeat .ck{flex-shrink:0;width:22px;height:22px;border-radius:6px;background:var(--green-soft);color:var(--green);display:grid;place-items:center;font-size:12px;font-weight:700;margin-top:1px}
+.pillar.ledger .ck{background:var(--gold-soft);color:var(--gold-deep)}
+.pfeat b{font-size:14.5px;color:var(--navy);font-weight:600;display:block}
+.pfeat span{font-size:13.5px;color:var(--muted)}
+.vs{display:grid;place-items:center;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--display);font-size:15px;z-index:5;box-shadow:0 8px 24px rgba(11,31,61,.3)}
+@media(max-width:820px){.vs{display:none}}
+
+/* PULL BAND */
+.pullband{background:linear-gradient(120deg,#0b1f3d,#16345f 60%,#1c3f74);color:#fff;padding:88px 0;position:relative;overflow:hidden}
+.pullband::before{content:'';position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:80px 100%;mask-image:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent)}
+.pullband .wrap{position:relative;z-index:2;max-width:960px;text-align:center}
+.pullband .mk-q{font-family:var(--display);font-size:64px;color:var(--gold);line-height:0;opacity:.5}
+.pullband blockquote{font-family:var(--display);font-weight:500;font-size:clamp(24px,3.3vw,38px);line-height:1.3;letter-spacing:-.4px;margin:8px auto 22px;max-width:22ch}
+.pullband blockquote .ai{color:#8ea6c9}.pullband blockquote .bc{color:var(--gold)}
+.pullband .kicker{font-size:15px;color:rgba(255,255,255,.7);max-width:52ch;margin:0 auto 4px;line-height:1.7}
+.pullband .attr{font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:700;margin-top:16px}
+
+/* SCORE ENGINE */
+.engine{background:var(--navy);color:#fff;overflow:hidden}
+.engine .sec-head h2{color:#fff}.engine .sec-head p{color:rgba(255,255,255,.72)}
+.engine-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:50px;align-items:center}
+.score-card{background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:34px}
+.score-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
+.score-top .lbl{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:700}
+.score-top .cid{font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.7)}
+.gauge{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.gauge b{font-family:var(--display);font-size:82px;font-weight:600;line-height:.9;color:#fff;font-variant-numeric:tabular-nums}
+.gauge .of{font-size:20px;color:rgba(255,255,255,.5)}
+.band-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:7px 15px;border-radius:8px;background:rgba(165,48,73,.24);color:#f2a9b8;border:1px solid rgba(165,48,73,.45)}
+.factors{margin-top:28px;display:flex;flex-direction:column;gap:15px}
+.factor .fr{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+.factor .fr b{color:#fff;font-weight:500}.factor .fr b em{font-style:normal;color:rgba(255,255,255,.5);font-family:var(--mono);font-size:11px;margin-right:8px}
+.factor .fr span{font-family:var(--mono);color:var(--gold);font-weight:600}
+.track{height:8px;border-radius:6px;background:rgba(255,255,255,.1);overflow:hidden}
+.track i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--gold-deep),var(--gold));width:0;transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
+.score-note{margin-top:24px;font-size:12.5px;color:rgba(255,255,255,.6);border-top:1px solid rgba(255,255,255,.12);padding-top:16px;line-height:1.6}
+.bands{margin-top:8px;display:grid;gap:12px}
+.band{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:16px 18px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);transition:.25s}
+.band:hover{background:rgba(255,255,255,.08);transform:translateX(4px)}
+.band .rng{font-family:var(--mono);font-size:12px;color:rgba(255,255,255,.6);width:56px}
+.band .bd b{font-size:14px;font-weight:600;letter-spacing:.5px}.band .bd span{font-size:12.5px;color:rgba(255,255,255,.62)}
+.band .dot{width:11px;height:11px;border-radius:50%}
+.band.low b{color:#7ee2a8}.band.low .dot{background:#2f9e64}
+.band.med b{color:#f0c874}.band.med .dot{background:var(--gold)}
+.band.high b{color:#e8a06a}.band.high .dot{background:#c76b3c}
+.band.crit b{color:#f2a9b8}.band.crit .dot{background:var(--red)}
+
+/* FLOW */
+.flow{background:var(--surface)}
+.flow-track{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.flow-track::before{content:'';position:absolute;top:26px;left:5%;right:5%;height:2px;background:linear-gradient(90deg,var(--line),var(--gold),var(--line));z-index:0}
+.step{position:relative;z-index:1;text-align:center}
+.step .num{width:52px;height:52px;border-radius:50%;background:var(--surface);border:2px solid var(--gold);color:var(--navy);font-family:var(--display);font-size:20px;font-weight:600;display:grid;place-items:center;margin:0 auto 18px;box-shadow:0 4px 14px rgba(11,31,61,.08)}
+.step h4{font-size:15px;color:var(--navy);margin-bottom:8px;font-family:var(--sans);font-weight:700}
+.step p{font-size:13.5px;color:var(--muted);line-height:1.55}
+.flow-track.row2{margin-top:44px;grid-template-columns:repeat(3,1fr);max-width:75%;margin-left:auto;margin-right:auto}
+.flow-track.row2::before{background:linear-gradient(90deg,var(--line),var(--navy-4),var(--line))}
+.flow-track.row2 .step .num{border-color:var(--navy-4)}
+@media(max-width:820px){.flow-track,.flow-track.row2{grid-template-columns:1fr 1fr;max-width:100%}.flow-track::before{display:none}}
+
+/* ROLES */
+.roles{background:linear-gradient(180deg,#eef2f8,#f7f8fb)}
+.roles-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}
+.role{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:28px 24px;box-shadow:var(--shadow);transition:.3s}
+.role:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--gold)}
+.role .ri{width:46px;height:46px;border-radius:12px;background:var(--navy);color:var(--gold);display:grid;place-items:center;margin-bottom:18px;font-size:20px}
+.role h4{font-size:17px;color:var(--navy);margin-bottom:4px;font-family:var(--display);font-weight:600}
+.role .who{font-size:11.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--gold-deep);font-weight:700;margin-bottom:12px}
+.role p{font-size:13.5px;color:var(--muted);line-height:1.6}
+
+/* HIGHLIGHT */
+.highlight{background:var(--navy);color:#fff;overflow:hidden;position:relative}
+.highlight .hl-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,78,.16),transparent 65%);top:-140px;right:-80px;filter:blur(30px)}
+.hl-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;position:relative;z-index:2}
+.hl-grid h2{font-size:clamp(28px,3.6vw,42px);color:#fff;margin:18px 0 20px}
+.hl-grid p{font-size:16px;color:rgba(255,255,255,.78);line-height:1.75;margin-bottom:16px}
+.hl-grid p b{color:var(--gold);font-weight:600}
+.diagram{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.13);border-radius:20px;padding:34px}
+.dg-row{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.dg-node{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:16px}
+.dg-node .t{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.55);font-weight:700}
+.dg-node .h{font-family:var(--mono);font-size:12px;color:var(--gold);margin-top:6px;word-break:break-all}
+.dg-arrow{color:rgba(255,255,255,.4);font-size:20px}
+.dg-match{background:rgba(165,48,73,.16);border:1px solid rgba(165,48,73,.4);border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:14px;margin-top:6px}
+.dg-match .badge{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#f2a9b8;background:rgba(165,48,73,.3);padding:5px 12px;border-radius:6px;white-space:nowrap}
+.dg-match p{margin:0;font-size:13.5px;color:rgba(255,255,255,.85)}
+
+/* COMPLIANCE */
+.compliance{background:var(--surface)}
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.comp{border:1px solid var(--line);border-radius:var(--r);padding:30px 28px;transition:.3s;background:var(--surface)}
+.comp:hover{border-color:var(--navy);box-shadow:var(--shadow)}
+.comp .ci{font-size:22px;color:var(--navy-4);margin-bottom:16px}
+.comp h4{font-size:17px;color:var(--navy);margin-bottom:10px;font-family:var(--display);font-weight:600}
+.comp p{font-size:14px;color:var(--muted);line-height:1.65}
+.comp .ref{margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--gold-deep)}
+
+/* WHY BLOCKCHAIN */
+.why{background:var(--navy);color:#fff;overflow:hidden;position:relative}
+.why .sec-head h2{color:#fff}.why .sec-head p{color:rgba(255,255,255,.72)}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.why-lead{font-family:var(--display);font-size:clamp(22px,2.6vw,30px);line-height:1.35;color:#fff;font-weight:500;letter-spacing:-.3px}
+.why-lead em{color:var(--gold);font-style:italic}
+.why-body{margin-top:18px;color:rgba(255,255,255,.72);font-size:15.5px;line-height:1.75}
+.why-points{display:flex;flex-direction:column;gap:14px}
+.why-pt{display:flex;gap:16px;padding:20px 22px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.13);border-radius:14px;transition:.25s}
+.why-pt:hover{background:rgba(255,255,255,.08);border-color:rgba(201,169,78,.4);transform:translateX(4px)}
+.why-pt .no{font-family:var(--display);font-size:22px;color:var(--gold);line-height:1;flex-shrink:0}
+.why-pt b{display:block;font-size:15px;color:#fff;font-weight:600;margin-bottom:4px}
+.why-pt span{font-size:13.5px;color:rgba(255,255,255,.66);line-height:1.6}
+@media(max-width:820px){.why-grid{grid-template-columns:1fr;gap:32px}}
+/* VISION */
+.vision{background:linear-gradient(180deg,#eef2f8,#f7f8fb)}
+.vision-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+.vcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:28px 26px;box-shadow:var(--shadow);transition:.3s;position:relative;overflow:hidden}
+.vcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.vcard:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--gold)}
+.vcard:hover::before{transform:scaleX(1)}
+.vcard .ph{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-deep);font-weight:600}
+.vcard h4{font-size:18px;color:var(--navy);margin:12px 0 8px;font-family:var(--display);font-weight:600}
+.vcard p{font-size:13.5px;color:var(--muted);line-height:1.62}
+/* METRICS */
+.metrics{background:linear-gradient(160deg,#0b1f3d,#132c52);color:#fff;overflow:hidden;position:relative}
+.metrics .sec-head h2{color:#fff}.metrics .sec-head p{color:rgba(255,255,255,.72)}
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:40px}
+.metric{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.13);border-radius:18px;padding:34px 30px;transition:.3s}
+.metric:hover{background:rgba(255,255,255,.09);border-color:rgba(201,169,78,.4)}
+.metric b{font-family:var(--display);font-size:clamp(38px,4.6vw,54px);font-weight:600;color:var(--gold);line-height:1;letter-spacing:-1px;display:block}
+.metric .lbl{font-size:15px;color:#fff;font-weight:600;margin:14px 0 6px}
+.metric span{font-size:13px;color:rgba(255,255,255,.62);line-height:1.55}
+.net-effect{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.13);border-radius:18px;padding:34px 38px}
+.net-effect .big{font-family:var(--display);font-size:20px;color:#fff;line-height:1.5}
+.net-effect .big em{color:var(--gold);font-style:italic}
+.disclaimer{margin-top:26px;font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;max-width:840px}
+
+/* CTA */
+.cta{background:var(--surface);padding:120px 0}
+.cta-box{background:radial-gradient(120% 120% at 80% 0%,#1c3f74,#0b1f3d);border-radius:28px;padding:70px 60px;text-align:center;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.cta-box .cg{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,78,.2),transparent 65%);filter:blur(30px)}
+.cta-box .cg1{top:-160px;left:-100px}.cta-box .cg2{bottom:-200px;right:-100px}
+.cta-box .in{position:relative;z-index:2}
+.cta-box h2{font-size:clamp(30px,4vw,48px);color:#fff;margin:18px auto 18px;max-width:18ch}
+.cta-box p{font-size:17px;color:rgba(255,255,255,.8);max-width:58ch;margin:0 auto 34px;line-height:1.7}
+.cta-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cta .btn-primary{padding:16px 34px;font-size:15px}
+.cta .btn-out{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.28);color:#fff;padding:16px 30px;font-size:15px}
+.cta .btn-out:hover{background:rgba(255,255,255,.14)}
+.cta-tags{margin-top:34px;display:flex;gap:24px;justify-content:center;flex-wrap:wrap;font-size:12.5px;color:rgba(255,255,255,.6)}
+.cta-tags span{display:flex;align-items:center;gap:8px}
+.cta-tags span::before{content:'✓';color:var(--gold);font-weight:700}
+
+/* FOOTER */
+footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;border-top:1px solid rgba(255,255,255,.08)}
+.foot-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.1)}
+.foot-brand p{font-size:13.5px;line-height:1.7;margin-top:18px;max-width:34ch;color:rgba(255,255,255,.6)}
+.foot-col h5{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px}
+.foot-col a{display:block;font-size:14px;color:rgba(255,255,255,.66);margin-bottom:11px;transition:.2s}
+.foot-col a:hover{color:#fff;padding-left:3px}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;padding-top:26px;font-size:12.5px;flex-wrap:wrap;gap:14px}
+.foot-bot .badge{font-size:10.5px;letter-spacing:1px;border:1px solid rgba(255,255,255,.2);padding:5px 12px;border-radius:5px;color:rgba(255,255,255,.7)}
+
+@media(max-width:920px){
+  .nav-links{display:none}.nav-cta .btn-ghost{display:none}.menu-btn{display:block}
+  .engine-grid,.hl-grid,.bf-grid,.pillars{grid-template-columns:1fr;gap:34px}
+  .mgrid{grid-template-columns:1fr}.foot-top{grid-template-columns:1fr 1fr}.hero-stats{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .wrap,.nav-inner,.hero-inner{padding-left:20px;padding-right:20px}
+  .sec{padding:76px 0}.cta{padding:80px 0}.cta-box{padding:48px 26px}.foot-top{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
 
-<!-- ================== LOGIN ================== -->
-<div id="page-login">
-  <div class="lg-top">
-    <div class="mark"><svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg"><path d="M6 5 L47 49 L47 105 L6 105 Z" fill="currentColor"/><path d="M53 5 H94 V105 L53 53 Z" fill="currentColor"/></svg></div>
-    <div><h1>Insurance Digital Risk Network</h1><small>THE TRUST LAYER OF INDONESIAN INSURANCE</small></div>
-    <span class="env-badge">LINGKUNGAN DEMONSTRASI</span>
+<nav id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top">
+      <span class="mk"><svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg"><path d="M6 5 L47 49 L47 105 L6 105 Z" fill="currentColor"/><path d="M53 5 H94 V105 L53 53 Z" fill="currentColor"/></svg></span>
+      <span><b>IDRN</b><small>TRUST LAYER</small></span>
+    </a>
+    <div class="nav-links">
+      <a href="#bifast">Analogy</a>
+      <a href="#problem">Problem</a>
+      <a href="#solution">How It Works</a>
+      <a href="#engine">Risk Engine</a>
+      <a href="#network">Network</a>
+      <a href="#compliance">Compliance</a>
+      <a href="#vision">Vision</a>
+    </div>
+    <div class="nav-cta">
+      <a href="#cta" class="btn btn-ghost">Request Access</a>
+      <a href="portal.html" class="btn btn-primary">Explore Portal</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
-  <div class="lg-watermark"><svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg"><g fill="#ffffff"><path d="M20 25 L85 96 L85 192 L20 192 Z"/><path d="M112 25 H177 V192 L112 102 Z"/><text x="212" y="152" font-family="Georgia,'Times New Roman',serif" font-size="128" font-weight="700" letter-spacing="8">IDRN</text><text x="216" y="192" font-family="Georgia,'Times New Roman',serif" font-size="20" letter-spacing="1.5">The Trust Layer Of Indonesian Insurance</text></g></svg></div>
-  <div class="lg-body">
-    <div class="lg-hero">
-      <div class="lg-lockup"><svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
-        <path d="M14 18 L72 82 L72 168 L14 168 Z"/>
-        <path d="M96 18 H154 V168 L96 92 Z"/>
-        <text x="188" y="134" font-family="Georgia,'Times New Roman',serif" font-size="118" font-weight="700" letter-spacing="6">IDRN</text>
-        <text x="192" y="172" font-family="Georgia,'Times New Roman',serif" font-size="20" letter-spacing="1.6">The Trust Layer Of Indonesian Insurance</text>
-      </svg></div>
-      <div class="eyebrow">DIPERCAYA PENYELENGGARA & PENGAWAS</div>
-      <h2>Satu jaringan.<br>Seluruh risiko klaim nasional, terpantau.</h2>
-      <p>IDRN menghubungkan penyelenggara asuransi, penilai klaim, dan pengawas dalam satu infrastruktur scoring risiko, deteksi klaim ganda lintas perusahaan, dan integrity anchor dokumen yang divalidasi multi-pihak.</p>
-      <div class="lg-stats">
-        <div class="lg-stat"><b>Rp4,28 M</b><span>Kerugian dicegah YTD</span></div>
-        <div class="lg-stat"><b>99,98%</b><span>Uptime 12 bulan</span></div>
-        <div class="lg-stat"><b>&lt; 900 ms</b><span>Scoring per klaim</span></div>
-        <div class="lg-stat"><b>3 pihak</b><span>Ledger validators</span></div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <img class="hero-photo" src="https://images.unsplash.com/photo-1702752261116-e2a8e38aac1d?q=80&amp;w=2400&amp;auto=format&amp;fit=crop" alt="City skyline at night with freeway light trails" referrerpolicy="no-referrer" onerror="document.documentElement.classList.add('nophoto')">
+  <div class="hero-veil"></div>
+  <canvas id="road"></canvas>
+  <div class="hero-inner">
+    <div class="hero-badge reveal in"><i></i> Insurance Digital Risk Network · Shared infrastructure for Indonesia</div>
+    <h1 class="reveal in d1">The rails every<br>insurer runs on.<br><span class="accent">Trust, made verifiable.</span></h1>
+    <p class="hero-sub reveal in d2">Today every insurer fights fraud in its own silo, so the same fake claim can slip undetected from one company to the next, honest claims crawl, and public trust in insurance stays low. Indonesia needs one shared, neutral layer for its insurance industry, the way banking has BI-Fast. IDRN is that infrastructure: explainable AI helps summarise every claim and map fraud patterns, and a permissioned blockchain keeps every document honest, so <b>claims move faster, trust rises, and protection reaches more Indonesians</b> without any party handing over raw customer data.</p>
+    <div class="hero-actions reveal in d3">
+      <a href="portal.html" class="btn btn-primary">Explore the Portal →</a>
+      <a href="#bifast" class="btn btn-line">Why it matters</a>
+    </div>
+    <div class="hero-stats reveal in d4">
+      <div class="hstat"><b>&lt;1<span class="u">s</span></b><span>Risk score per claim</span><em>Design target</em></div>
+      <div class="hstat"><b>3</b><span>Independent ledger validators</span><em>IDRN · OJK · AAUI</em></div>
+      <div class="hstat"><b>0-100</b><span>Explainable risk score</span><em>5 weighted factors</em></div>
+      <div class="hstat"><b>SHA-256</b><span>Document integrity anchor</span><em>On-chain, Merkle-batched</em></div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><span class="ln"></span></div>
+</header>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="wrap">
+    <p>Designed for the institutions that govern insurance trust</p>
+    <div class="trust-logos">
+      <span>OJK <i>SUPERVISOR</i></span>
+      <span>AAUI <i>ASSOCIATION</i></span>
+      <span>Insurers <i>OPERATORS</i></span>
+      <span>Adjusters <i>ASSESSORS</i></span>
+      <span>Policyholders <i>CUSTOMERS</i></span>
+    </div>
+  </div>
+</div>
+
+<!-- BI-FAST ANALOGY -->
+<section class="sec bifast" id="bifast">
+  <div class="wrap">
+    <div class="bf-grid">
+      <div class="bf-copy reveal">
+        <span class="eyebrow">The Analogy</span>
+        <h2>The BI-Fast of insurance.</h2>
+        <p>Not long ago, moving money between banks in Indonesia was slow, bound to office hours, and stitched together through fragmented bilateral links. In December 2021, Bank Indonesia launched <b>BI-Fast</b>: one shared national rail for real-time, round-the-clock interbank transfers. Today more than 120 banks plug into that same infrastructure, and a transfer that once took a day now clears in seconds.</p>
+        <p>Insurance today looks like banking did before BI-Fast. Every insurer sits in its own silo, the same verification is repeated by each party, and fraud that crosses company lines stays invisible. There is no shared rail.</p>
+        <div class="bf-pull reveal d1">
+          <b>IDRN is that shared rail for insurance. Not a bank, not an insurer: the neutral infrastructure the whole industry plugs into.</b>
+        </div>
+        <p>Bank Indonesia did not replace the banks; it gave them a common rail so trust could move between them. IDRN does the same for claims, without ever pooling raw customer data in one place.</p>
+      </div>
+      <div class="bf-visual reveal d2">
+        <div class="bf-compare">
+          <div class="bf-panel before">
+            <div class="cap"><b>Insurance today</b><span>Fragmented</span></div>
+            <svg viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg">
+              <g stroke="#a53049" stroke-width="1.4" opacity="0.5">
+                <line x1="70" y1="40" x2="200" y2="110"/><line x1="70" y1="40" x2="330" y2="45"/>
+                <line x1="200" y1="35" x2="330" y2="115"/><line x1="200" y1="35" x2="70" y2="110"/>
+                <line x1="330" y1="45" x2="200" y2="110"/><line x1="70" y1="110" x2="330" y2="115"/>
+                <line x1="200" y1="110" x2="330" y2="45"/><line x1="70" y1="40" x2="330" y2="115"/>
+              </g>
+              <g fill="#0b1f3d" stroke="#f2a9b8" stroke-width="1.5">
+                <circle cx="70" cy="40" r="13"/><circle cx="200" cy="35" r="13"/><circle cx="330" cy="45" r="13"/>
+                <circle cx="70" cy="110" r="13"/><circle cx="200" cy="110" r="13"/><circle cx="330" cy="115" r="13"/>
+              </g>
+            </svg>
+          </div>
+          <div class="bf-panel after">
+            <div class="cap"><b>With IDRN</b><span>One shared rail</span></div>
+            <svg viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg">
+              <rect x="40" y="70" width="320" height="10" rx="5" fill="#c9a94e" opacity="0.9"/>
+              <g stroke="#c9a94e" stroke-width="1.6" opacity="0.75">
+                <line x1="80" y1="40" x2="80" y2="70"/><line x1="160" y1="40" x2="160" y2="70"/>
+                <line x1="240" y1="40" x2="240" y2="70"/><line x1="320" y1="40" x2="320" y2="70"/>
+                <line x1="120" y1="110" x2="120" y2="80"/><line x1="280" y1="110" x2="280" y2="80"/>
+              </g>
+              <g fill="#0b1f3d" stroke="#e8d59a" stroke-width="1.5">
+                <circle cx="80" cy="40" r="12"/><circle cx="160" cy="40" r="12"/><circle cx="240" cy="40" r="12"/><circle cx="320" cy="40" r="12"/>
+                <circle cx="120" cy="118" r="12"/><circle cx="280" cy="118" r="12"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <p class="bf-foot">// BI-Fast, Bank Indonesia's national fast-payment rail, launched Dec 2021; 120+ participating banks. IDRN applies the same shared-infrastructure model to insurance claims and trust.</p>
       </div>
     </div>
-    <form class="login-card" id="loginForm">
-      <h2>Akses Sistem</h2>
-      <p>Akses terbatas bagi pihak berwenang. Seluruh sesi diautentikasi MFA dan tercatat pada audit trail.</p>
-      <div class="field"><label>NAMA PENGGUNA</label><input type="text" id="inUser" autocomplete="off" placeholder="Masukkan nama pengguna"></div>
-      <div class="field"><label>KATA SANDI</label><input type="password" id="inPass" placeholder="Masukkan kata sandi"></div>
-      <button type="submit" class="btn-primary" id="btnLogin">Masuk</button>
-      <div class="demo-sep">AKUN DEMONSTRASI</div>
-      <div class="demo-grid">
-        <button type="button" class="demo-btn" data-role="insurer"><b>PERUSAHAAN ASURANSI</b><span>PT Asuransi Jaya</span></button>
-        <button type="button" class="demo-btn" data-role="adjuster"><b>PENILAI KLAIM</b><span>Budi Santoso, AAIK</span></button>
-        <button type="button" class="demo-btn" data-role="regulator"><b>PENGAWAS</b><span>Otoritas Jasa Keuangan</span></button>
-        <button type="button" class="demo-btn" data-role="nasabah"><b>PEMEGANG POLIS</b><span>Nuri Agus Ramdhani</span></button>
-        <button type="button" class="demo-btn" data-role="aaui" style="grid-column:1/-1"><b>ASOSIASI INDUSTRI</b><span>AAUI — Asosiasi Asuransi Umum Indonesia</span></button>
-      </div>
-    </form>
   </div>
-  <div class="lg-foot">© 2026 IDRN — Insurance Digital Risk Network · Seluruh data bersifat fiktif untuk keperluan demonstrasi</div>
-</div>
+</section>
 
-<!-- ================== APP ================== -->
-<div id="app">
-  <div class="topbar">
-    <div class="mark" id="topMark"><svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg"><path d="M6 5 L47 49 L47 105 L6 105 Z" fill="currentColor"/><path d="M53 5 H94 V105 L53 53 Z" fill="currentColor"/></svg></div>
-    <div><h1>IDRN</h1><small id="appSubtitle">PORTAL</small></div>
-    <div class="searchbox" onclick="openCmd()"><span>⌕</span> Cari klaim, kasus, atau halaman… <kbd>Ctrl K</kbd></div>
-    <div class="health"><i></i>Operasional 99,98%</div>
-    <div class="who"><b id="whoName">—</b><span id="whoOrg">—</span></div>
-    <span class="role-pill" id="whoRole">—</span>
-    <button class="btn-logout" onclick="logout()">Keluar</button>
+<!-- PROBLEM -->
+<section class="sec problem" id="problem">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The Problem</span>
+      <h2>Trust, trapped in silos.</h2>
+      <p>Every insurer assesses claims inside its own data silo. The same policyholder can file the same loss with two insurers and go undetected, documents can be altered without a trace, and supervisors see the industry only through delayed periodic reports. Five structural failures compound one another.</p>
+    </div>
+    <div class="prob-grid">
+      <div class="prob reveal"><span class="bar"></span><div class="n">F ·01</div><h3>Data silos between insurers</h3><p>A policyholder's claim history at one insurer is invisible to every other. Double claims on a single loss, filed across two insurers, are practically undetectable.</p></div>
+      <div class="prob reveal d1"><span class="bar"></span><div class="n">F ·02</div><h3>Document integrity is unprovable</h3><p>Damage photos, workshop estimates and policy files live on each party's own systems, and can be changed without leaving any auditable trace.</p></div>
+      <div class="prob reveal d2"><span class="bar"></span><div class="n">F ·03</div><h3>Fraud detection is manual</h3><p>Suspicion rests on an adjuster's intuition. There is no explainable risk standard that can be compared across cases and defended to supervisors or customers.</p></div>
+      <div class="prob reveal d3"><span class="bar"></span><div class="n">F ·04</div><h3>Oversight is report-based</h3><p>Regulators receive a delayed snapshot. Cross-company fraud patterns only surface after the losses have already occurred and accumulated.</p></div>
+      <div class="prob reveal d4"><span class="bar"></span><div class="n">F ·05</div><h3>Honest customers pay for it</h3><p>Because the system cannot quickly separate honest claims from suspicious ones, all claims are processed slowly, and premiums carry the cost of untraceable fraud.</p></div>
+      <div class="prob reveal d4"><span class="bar" style="background:var(--gold)"></span><div class="n" style="color:var(--navy-4)">↳ Why point fixes fail</div><h3>AI and integrity must be one system</h3><p>The best fraud engine is useless if its data can be manipulated. The most secure ledger is useless if nothing flags which claim to inspect. The problem demands both, together.</p></div>
+    </div>
   </div>
-  <div class="sidebar" id="sidebar"></div>
-  <div class="content">
+</section>
 
-    <!-- ===== RINGKASAN EKSEKUTIF ===== -->
-    <section class="page" id="pg-exec">
-      <div class="crumb">Beranda / Executive Summary</div>
-      <div class="page-title"><div><h2>Executive Summary</h2><p>PT Asuransi Jaya — periode berjalan Juli 2026</p></div>
-        <button class="btn btn-gold" onclick="printExec()">⎙ &nbsp;Cetak Laporan Direksi</button></div>
-
-      <div class="value-hero">
-        <div class="vh-main">
-          <div class="eyebrow">NILAI KERUGIAN FRAUD YANG DICEGAH — YEAR TO DATE</div>
-          <div class="vh-num" id="vhMoney">Rp0</div>
-          <p>Dihitung dari klaim terindikasi yang tertahan atau ditolak dengan bukti terverifikasi, dikurangi biaya investigasi. Metodologi diaudit pihak ketiga.</p>
-        </div>
-        <div class="vh-side">
-          <div class="vh-cell"><label>ROI PLATFORM</label><b>11,4×</b><span>vs biaya langganan YTD</span></div>
-          <div class="vh-cell"><label>LOSS RATIO</label><b>62,1%</b><span>turun 6,8 pp sejak onboarding</span></div>
-          <div class="vh-cell"><label>DETEKSI DINI</label><b>94%</b><span>vs rata-rata industri 61%</span></div>
-          <div class="vh-cell"><label>WAKTU PROSES KLAIM</label><b>2,4 hari</b><span>dari 11 hari (–78%)</span></div>
-        </div>
+<!-- SOLUTION -->
+<section class="sec solution" id="solution">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">The IDRN Architecture</span>
+      <h2>Two engines. One trust layer.</h2>
+      <p>IDRN is not an insurer and does not take over claim decisions. It provides three things: an explainable risk score for every claim, integrity proof for every document, and an audit trail for every decision, all powered by two complementary engines.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar ai reveal">
+        <span class="tag">◆ Artificial Intelligence</span>
+        <h3>IDRN-RS Risk Engine</h3>
+        <div class="q">“Which claim is suspicious, and why?”</div>
+        <p>IDRN-RS is a tool, not a judge. It reads and summarises every incoming claim in under a second, maps the patterns that signal fraud, and returns a 0-100 score that is the sum of weighted, human-readable factors. Never a black box: every point traces back to the factor that produced it, and the call stays with the adjuster.</p>
+        <div class="pfeat"><span class="ck">✓</span><div><b>Explainable factor decomposition</b><span>Each score breaks into F1–F5 with a confidence level.</span></div></div>
+        <div class="pfeat"><span class="ck">✓</span><div><b>Entity network analysis</b><span>Maps relations between policyholders, insurers and workshops to surface fraud rings.</span></div></div>
+        <div class="pfeat"><span class="ck">✓</span><div><b>Threshold simulator</b><span>Projects the cost of every fast-track policy before it goes live.</span></div></div>
       </div>
-
-      <div class="grid kpis">
-        <div class="kpi"><label>TOTAL KLAIM</label><div class="num" data-count="9">0</div>
-          <div class="sub"><span class="delta-up">▲ 12%</span> vs bulan lalu</div><span class="spark" id="sp1"></span></div>
-        <div class="kpi k-red"><label>BAND TINGGI / KRITIS</label><div class="num" data-count="3">0</div>
-          <div class="sub"><span class="delta-down">▲ 1</span> perlu investigasi</div><span class="spark" id="sp2"></span></div>
-        <div class="kpi k-amber"><label>MENUNGGU TINJAUAN</label><div class="num" id="kpiPending">6</div>
-          <div class="sub">SLA tinjauan: 48 jam</div><span class="spark" id="sp3"></span></div>
-        <div class="kpi k-gold"><label>RATA-RATA SKOR</label><div class="num"><span data-count="48">0</span><small> / 100</small></div>
-          <div class="sub"><span class="delta-up">▼ 4 poin</span> membaik</div><span class="spark" id="sp4"></span></div>
+      <div class="pillar ledger reveal d2">
+        <span class="tag">◈ Blockchain · Permissioned Ledger</span>
+        <h3>The Integrity Engine</h3>
+        <div class="q">“Can this data and decision be trusted, unaltered?”</div>
+        <p>A permissioned blockchain, not a currency or token, but an integrity machine. Every document is fingerprinted with SHA-256, Merkle-batched, and <b>immutably anchored on-chain</b> to an append-only distributed ledger, secured by cryptographic consensus across three independent validator nodes.</p>
+        <div class="pfeat"><span class="ck">✓</span><div><b>SHA-256 cryptographic fingerprints</b><span>Originals stay at the source; only the one-way hash is written to the chain.</span></div></div>
+        <div class="pfeat"><span class="ck">✓</span><div><b>Merkle on-chain anchoring</b><span>Fingerprints anchored every 10 minutes. One flipped bit breaks the block and fails verification.</span></div></div>
+        <div class="pfeat"><span class="ck">✓</span><div><b>Immutable, append-only audit trail</b><span>Who accessed what, decided what, and why: tamper-evident on the ledger, and unrewritable.</span></div></div>
       </div>
-
-      <div class="grid charts">
-        <div class="panel" style="margin:0">
-          <div class="panel-head"><div><h3>Premi vs Klaim Dibayar & Loss Ratio</h3><p>Semester I 2026 — kombinasi volume dan rasio</p></div></div>
-          <div class="panel-body"><div class="chart-box"><canvas id="lossChart"></canvas></div></div>
-        </div>
-        <div class="panel briefing" style="margin:0">
-          <div class="panel-head"><div><h3>Briefing Analis — Otomatis</h3><p>Disusun mesin analitik IDRN · diperbarui <span id="briefTime"></span></p></div></div>
-          <div class="panel-body">
-            <div class="brief-item"><div class="brief-n">1</div><div><b>Konsentrasi risiko pada bengkel SAPPHIRE.</b> 4 dari 6 klaim berisiko tinggi menunjuk bengkel yang sama (faktor F4 naik 22% MoM). Rekomendasi: audit lapangan bersama unit SIU.</div></div>
-            <div class="brief-item"><div class="brief-n">2</div><div><b>Tiga grup klaim ganda lintas penyelenggara aktif.</b> Estimasi eksposur Rp18,3 juta. Seluruhnya telah dinotifikasi via jaringan pengawas.</div></div>
-            <div class="brief-item"><div class="brief-n">3</div><div><b>Jalur cepat menghemat 312 jam kerja.</b> 67% klaim band RENDAH diproses otomatis tanpa sentuhan manual bulan ini, dengan 0 temuan salah bayar.</div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-head"><div><h3>Entitas Dalam Pemantauan (Watchlist)</h3><p>Entitas dengan tren risiko menaik — dipantau otomatis lintas penyelenggara</p></div></div>
-        <div style="overflow-x:auto"><table>
-          <thead><tr><th>ENTITAS</th><th>JENIS</th><th>TREN 90 HARI</th><th>SKOR ENTITAS</th><th>PEMICU</th><th>STATUS</th></tr></thead>
-          <tbody>
-            <tr><td><b>SAPPHIRE</b></td><td>Bengkel rekanan</td><td><span id="spw1"></span></td><td><div class="score-line"><b style="color:var(--red)">71</b><span>/ 100</span></div></td><td style="font-size:12px;color:var(--muted)">Frekuensi klaim tinggi + deviasi estimasi</td><td><span class="status s-rejected">AUDIT DIJADWALKAN</span></td></tr>
-            <tr><td><b>ALDY HERMAWAN</b></td><td>Pemegang polis</td><td><span id="spw2"></span></td><td><div class="score-line"><b style="color:var(--red)">68</b><span>/ 100</span></div></td><td style="font-size:12px;color:var(--muted)">Duplikasi lintas penyelenggara</td><td><span class="status s-invest">KASUS SIU AKTIF</span></td></tr>
-            <tr><td><b>NURI AGUS RAMDHANI</b></td><td>Pemegang polis</td><td><span id="spw3"></span></td><td><div class="score-line"><b style="color:var(--red)">72</b><span>/ 100</span></div></td><td style="font-size:12px;color:var(--muted)">Anomali waktu + duplikasi</td><td><span class="status s-invest">KASUS SIU AKTIF</span></td></tr>
-          </tbody>
-        </table></div>
-      </div>
-    </section>
-
-    <!-- ===== DAFTAR KLAIM ===== -->
-    <section class="page" id="pg-claims">
-      <div class="crumb">Beranda / Daftar Klaim</div>
-      <div class="page-title"><div><h2>Daftar Klaim</h2><p>Seluruh pengajuan beserta skor model IDRN-RS v2.1</p></div></div>
-      <div class="panel">
-        <div class="panel-head">
-          <div><h3>Klaim Aktif</h3><p id="claimCount"></p></div>
-          <div class="chips" id="statusChips">
-            <button class="chip on" data-f="all">Semua</button>
-            <button class="chip" data-f="Menunggu">Menunggu</button>
-            <button class="chip" data-f="Disetujui">Disetujui</button>
-            <button class="chip" data-f="Ditolak">Ditolak</button>
-            <button class="chip" data-f="Investigasi">Investigasi</button>
-          </div>
-        </div>
-        <div style="overflow-x:auto">
-          <table><thead><tr><th>PEMEGANG POLIS</th><th>NOMOR KLAIM</th><th>NILAI PENGAJUAN</th><th>TGL. KERUGIAN</th><th>RISK SCORE</th><th>BAND</th><th>STATUS</th></tr></thead>
-          <tbody id="claimRows"></tbody></table>
-        </div>
-        <div class="note">Pilih baris untuk membuka Berkas Klaim — dekomposisi skor, rekomendasi, verifikasi integritas, audit trail.</div>
-      </div>
-    </section>
-
-    <!-- ===== INTELIJEN KASUS (SIU) ===== -->
-    <section class="page" id="pg-cases">
-      <div class="crumb">Beranda / Case Intelligence</div>
-      <div class="page-title"><div><h2>Case Intelligence — Unit Investigasi Khusus</h2><p>Manajemen kasus fraud end-to-end dengan SLA dan eskalasi otomatis</p></div></div>
-      <div class="grid kpis">
-        <div class="kpi k-red"><label>KASUS AKTIF</label><div class="num" id="caseActive">4</div><div class="sub">2 prioritas P1/P2</div></div>
-        <div class="kpi k-amber"><label>RATA-RATA UMUR KASUS</label><div class="num">6,2<small> hari</small></div><div class="sub">Target &lt; 14 hari</div></div>
-        <div class="kpi k-green"><label>TINGKAT PEMBUKTIAN</label><div class="num">83<small>%</small></div><div class="sub">Kasus ditutup dengan bukti</div></div>
-        <div class="kpi k-cyan"><label>NILAI DALAM SENGKETA</label><div class="num" style="font-size:20px">Rp23,8 jt</div><div class="sub">4 kasus berjalan</div></div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><div><h3>Daftar Kasus</h3><p>Diurutkan prioritas & sisa SLA</p></div></div>
-        <div style="overflow-x:auto"><table>
-          <thead><tr><th>KASUS</th><th>SUBJEK</th><th>PRIORITAS</th><th>INVESTIGATOR</th><th>SISA SLA</th><th>NILAI</th><th>STATUS</th><th></th></tr></thead>
-          <tbody id="caseRows"></tbody>
-        </table></div>
-        <div class="note">Penutupan kasus mewajibkan ringkasan temuan — tercatat permanen dan di-anchor ke ledger.</div>
-      </div>
-    </section>
-
-    <!-- ===== ANTREAN ===== -->
-    <section class="page" id="pg-queue">
-      <div class="crumb">Beranda / Antrean Penilaian</div>
-      <div class="page-title"><div><h2>Antrean Penilaian Klaim</h2><p>Diurutkan skor risiko — Budi Santoso, AAIK</p></div></div>
-      <div class="progress-wrap"><small id="qStat"></small><div class="progress"><i id="qProg" style="width:0%"></i></div></div>
-      <div id="queue"></div>
-      <div class="empty-state" id="qEmpty" style="display:none"><h3>Seluruh klaim telah ditinjau</h3><p>Seluruh keputusan tercatat pada audit trail.</p></div>
-    </section>
-
-    <!-- ===== PENGAWASAN ===== -->
-    <section class="page" id="pg-regulator">
-      <div class="crumb">Beranda / Pengawasan</div>
-      <div class="page-title"><div><h2>Pengawasan Lintas Penyelenggara</h2><p>Otoritas Jasa Keuangan — pemantauan agregat nasional</p></div>
-        <svg width="188" height="52" viewBox="0 0 380 104" xmlns="http://www.w3.org/2000/svg" aria-label="Otoritas Jasa Keuangan">
-          <defs><linearGradient id="ojkR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0242f"/><stop offset="1" stop-color="#9c151d"/></linearGradient></defs>
-          <path d="M14 36 C58 6 122 0 172 16 C138 19 98 30 74 46 C52 36 30 34 14 36 Z" fill="url(#ojkR)"/>
-          <path d="M40 27 C92 7 152 7 194 24 C162 22 122 29 96 40 C76 31 56 27 40 27 Z" fill="#d8dadd"/>
-          <text x="8" y="92" font-family="Arial,Helvetica,sans-serif" font-size="66" font-weight="900" font-style="italic" fill="#c41722">OJK</text>
-          <rect x="178" y="36" width="5" height="58" fill="#c41722"/>
-          <text x="196" y="54" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="700" fill="#6b7280">OTORITAS</text>
-          <text x="196" y="76" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="700" fill="#6b7280">JASA</text>
-          <text x="196" y="98" font-family="Arial,Helvetica,sans-serif" font-size="23" font-weight="700" fill="#6b7280">KEUANGAN</text>
-        </svg></div>
-      <div class="grid kpis">
-        <div class="kpi"><label>KLAIM TERPANTAU</label><div class="num" data-count="16">0</div><div class="sub">2 penyelenggara</div></div>
-        <div class="kpi k-red"><label>GRUP KLAIM GANDA</label><div class="num" data-count="3">0</div><div class="sub">8 klaim terlibat</div></div>
-        <div class="kpi k-gold"><label>RATA-RATA SKOR</label><div class="num"><span data-count="54">0</span><small> / 100</small></div><div class="sub">Agregat</div></div>
-        <div class="kpi k-cyan"><label>LEDGER ANCHORS</label><div class="num" data-count="1842">0</div><div class="sub">Batch terkonfirmasi</div></div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><div><h3>Risk Network Map</h3><p>Pilih simpul untuk menyorot koneksi</p></div></div>
-        <div style="position:relative"><svg id="net" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet"></svg><div class="net-tip" id="netTip"></div></div>
-        <div class="legend">
-          <span><i style="background:var(--red)"></i>Terindikasi klaim ganda</span>
-          <span><i style="background:var(--blue)"></i>Penyelenggara</span>
-          <span><i style="background:var(--gold)"></i>Bengkel rekanan</span>
-          <span><i style="background:#7d8aa3"></i>Pemegang polis normal</span>
-        </div>
-      </div>
-      <div class="grid charts">
-        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Indikasi Klaim Ganda</h3></div></div>
-          <div class="panel-body" id="dblGroups"></div></div>
-        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Klaim per Penyelenggara</h3></div></div>
-          <div class="panel-body"><div class="chart-box"><canvas id="provChart"></canvas></div></div></div>
-      </div>
-    </section>
-
-    <!-- ===== AUDIT ===== -->
-    <section class="page" id="pg-audit">
-      <div class="crumb">Beranda / Audit Trail</div>
-      <div class="page-title"><div><h2>System Audit Trail</h2><p>Append-only, di-anchor ke ledger setiap 10 menit</p></div>
-        <span class="status s-invest" id="auditCount"></span></div>
-      <div class="panel"><div style="overflow-x:auto">
-        <table><thead><tr><th>WAKTU</th><th>AKTOR</th><th>PERAN</th><th>AKTIVITAS</th><th>OBJEK</th><th>KETERANGAN</th></tr></thead>
-        <tbody id="auditRows"></tbody></table>
-      </div></div>
-    </section>
-
-    <!-- ===== FEEDS ===== -->
-    <section class="page" id="pg-feeds">
-      <div class="crumb">Beranda / Data Integration</div>
-      <div class="page-title"><div><h2>Data Integration &amp; Verified Sources</h2><p>Seluruh feed ditandatangani kriptografis per pembaruan</p></div></div>
-      <div class="grid kpis">
-        <div class="kpi k-green"><label>SUMBER AKTIF</label><div class="num" data-count="7">0</div><div class="sub">dari 8 terdaftar</div></div>
-        <div class="kpi"><label>PANGGILAN API (24 JAM)</label><div class="num" data-count="14208">0</div><div class="sub">Rata-rata 165 ms</div></div>
-        <div class="kpi k-cyan"><label>VERIFIKASI TANDA TANGAN</label><div class="num">100<small>%</small></div><div class="sub">Data masuk tervalidasi</div></div>
-      </div>
-      <div class="panel"><div class="panel-head"><div><h3>Sumber Data Terhubung</h3></div></div>
-        <div class="panel-body" id="feedList"></div></div>
-    </section>
-
-    <!-- ===== MONITOR ===== -->
-    <section class="page" id="pg-monitor">
-      <div class="crumb">Beranda / Monitoring Sistem</div>
-      <div class="page-title"><div><h2>Monitoring Sistem Real-Time</h2><p>Kesehatan layanan, latensi, event stream</p></div></div>
-      <div class="statusbar"><span class="dot d-ok"></span>Seluruh sistem operasional — uptime 99,98% (30 hari) · 0 insiden aktif</div>
-      <div class="grid kpis">
-        <div class="kpi"><label>LATENSI API (P95)</label><div class="num">182<small> ms</small></div><div class="sub">Target &lt; 300 ms</div></div>
-        <div class="kpi k-green"><label>THROUGHPUT SCORING</label><div class="num" data-count="412">0</div><div class="sub">Klaim/menit (kapasitas)</div></div>
-        <div class="kpi k-cyan"><label>ANTREAN PESAN</label><div class="num" data-count="3">0</div><div class="sub">Backlog normal</div></div>
-        <div class="kpi k-gold"><label>NODE LEDGER</label><div class="num">4/4</div><div class="sub">Konsensus sehat</div></div>
-      </div>
-      <div class="grid charts">
-        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Latensi API — 60 menit terakhir</h3></div></div>
-          <div class="panel-body"><div class="chart-box"><canvas id="latChart"></canvas></div></div></div>
-        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Event Stream</h3><p>Streaming langsung</p></div></div>
-          <div class="panel-body"><div class="livefeed" id="livefeed"></div></div></div>
-      </div>
-    </section>
-
-    <!-- ===== LEDGER ===== -->
-    <section class="page" id="pg-ledger">
-      <div class="crumb">Beranda / Ledger &amp; Security</div>
-      <div class="page-title"><div><h2>Distributed Ledger &amp; Security Center</h2><p>Integrity anchor divalidasi multi-pihak · pengamanan kunci HSM</p></div></div>
-      <div class="grid kpis sec-grid" style="margin-bottom:16px">
-        <div class="kpi k-green"><label>STATUS HSM</label><div class="num" style="font-size:16px">Aktif — FIPS 140-2 L3</div><div class="sub">Rotasi kunci: 12 Juli 2026</div></div>
-        <div class="kpi"><label>NETWORK VALIDATORS</label><div class="num">3<small> node</small></div><div class="sub">IDRN · OJK · AAUI</div></div>
-        <div class="kpi k-cyan"><label>SESI AKTIF</label><div class="num" data-count="12">0</div><div class="sub">Seluruhnya ber-MFA</div></div>
-        <div class="kpi k-gold"><label>AKSES BERBASIS PERAN</label><div class="num">4<small> peran</small></div><div class="sub">Hak akses minimum</div></div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><div><h3>Recent Batch Anchors</h3><p>Merkle Root kumpulan digital fingerprint dokumen klaim</p></div></div>
-        <div style="overflow-x:auto"><table>
-          <thead><tr><th>BATCH</th><th>MERKLE ROOT</th><th>DOKUMEN</th><th>VALIDATORS</th><th>WAKTU</th><th>STATUS</th></tr></thead>
-          <tbody id="ledgerRows"></tbody></table></div>
-        <div class="note">Perubahan sekecil apa pun pada dokumen yang telah di-anchor akan terdeteksi saat verifikasi.</div>
-      </div>
-    </section>
-
-    <!-- ===== LAPORAN & SLA ===== -->
-    <section class="page" id="pg-sla">
-      <div class="crumb">Beranda / Reports &amp; SLA</div>
-      <div class="page-title"><div><h2>Value Report &amp; Service Level</h2><p>Akuntabilitas platform terhadap kontrak enterprise Anda</p></div>
-        <button class="btn btn-gold" onclick="printExec()">⎙ &nbsp;Cetak Laporan Direksi</button></div>
-      <div class="grid kpis">
-        <div class="kpi k-gold"><label>NILAI DICEGAH BULAN INI</label><div class="num" style="font-size:21px">Rp1,42 M</div><div class="sub"><span class="delta-up">▲ 18%</span> MoM</div></div>
-        <div class="kpi k-green"><label>UPTIME BULAN INI</label><div class="num">99,99<small>%</small></div><div class="sub">SLA kontrak: 99,95%</div></div>
-        <div class="kpi"><label>KLAIM DIPROSES</label><div class="num" data-count="1287">0</div><div class="sub">Bulan berjalan (jaringan)</div></div>
-        <div class="kpi k-cyan"><label>KREDIT LAYANAN</label><div class="num">Rp0</div><div class="sub">Tidak ada pelanggaran SLA</div></div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><div><h3>Uptime 12 Bulan Terakhir</h3><p>Arahkan kursor ke batang untuk rincian per bulan</p></div></div>
-        <div class="panel-body"><div class="uptime" id="uptimeStrip"></div>
-          <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim);margin-top:6px"><span>Agu 2025</span><span>Jul 2026</span></div></div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><div><h3>Komitmen Kontrak Enterprise</h3><p>Sesuai perjanjian tingkat layanan induk</p></div></div>
-        <div style="overflow-x:auto"><table>
-          <thead><tr><th>KOMITMEN</th><th>TARGET KONTRAK</th><th>REALISASI BULAN INI</th><th>STATUS</th></tr></thead>
-          <tbody>
-            <tr><td>Ketersediaan platform</td><td>≥ 99,95%</td><td>99,99%</td><td><span class="status s-approved">TERPENUHI</span></td></tr>
-            <tr><td>Latensi scoring P95</td><td>&lt; 900 ms</td><td>412 ms</td><td><span class="status s-approved">TERPENUHI</span></td></tr>
-            <tr><td>Respons insiden kritis (24/7)</td><td>&lt; 15 menit</td><td>6 menit (1 insiden minor)</td><td><span class="status s-approved">TERPENUHI</span></td></tr>
-            <tr><td>Pemulihan bencana (RTO/RPO)</td><td>1 jam / 15 menit</td><td>Diuji 14 Juni — lulus</td><td><span class="status s-approved">TERPENUHI</span></td></tr>
-            <tr><td>Audit keamanan independen</td><td>2× per tahun</td><td>Terakhir: Mei 2026 — tanpa temuan kritis</td><td><span class="status s-approved">TERPENUHI</span></td></tr>
-          </tbody>
-        </table></div>
-        <div class="note">Dukungan enterprise 24/7 dengan manajer akun khusus · eskalasi langsung ke tim teknik · tinjauan kuartalan bersama direksi.</div>
-      </div>
-    </section>
-
-    <!-- ===== PUSAT KOMANDO ===== -->
-    <section class="page" id="pg-ops">
-      <div class="crumb">Beranda / Command Center</div>
-      <div class="page-title"><div><h2>National Command Center</h2><p>Aliran klaim jaringan IDRN secara real-time — seluruh wilayah operasi</p></div></div>
-      <div class="ops-hero">
-        <div class="ops-head"><div><h3>National Operations Map</h3><p>Setiap denyut = peristiwa klaim yang diproses jaringan</p></div>
-          <span class="ops-live"><i></i>LIVE</span></div>
-        <svg id="opsMap" viewBox="0 0 900 360" preserveAspectRatio="xMidYMid meet"></svg>
-        <div class="ops-stats">
-          <div class="ops-stat"><label>KLAIM DIPROSES HARI INI</label><b id="opsToday">1.287</b><span>seluruh jaringan</span></div>
-          <div class="ops-stat"><label>DUPLIKASI DICEGAH</label><b id="opsDup">41</b><span>lintas penyelenggara</span></div>
-          <div class="ops-stat"><label>NILAI DICEGAH HARI INI</label><b id="opsVal">Rp42,2 jt</b><span>estimasi real-time</span></div>
-          <div class="ops-stat"><label>LATENSI SCORING</label><b>412 ms</b><span>P95 · target &lt; 900 ms</span></div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><div><h3>National Claim Stream</h3><p>Peristiwa terbaru dari seluruh penyelenggara</p></div></div>
-        <div class="panel-body"><div class="livefeed ticker" id="opsTicker"></div></div>
-      </div>
-    </section>
-
-    <!-- ===== SIMULATOR ===== -->
-    <section class="page" id="pg-sim">
-      <div class="crumb">Beranda / Threshold Simulator</div>
-      <div class="page-title"><div><h2>Decision Threshold Simulator</h2><p>Uji dampak kebijakan ambang fast-track terhadap biaya, beban kerja, dan risiko — sebelum diberlakukan</p></div></div>
-      <div class="sim-grid">
-        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Fast-Track Threshold</h3><p>Klaim dengan skor di bawah ambang diproses otomatis</p></div></div>
-          <div class="panel-body">
-            <div class="sim-th" id="simTh">60<small> / 100</small></div>
-            <input type="range" class="sim-slider" id="simSlider" min="40" max="80" value="60" step="1">
-            <div class="sim-marks"><span>40 — konservatif</span><span>60 — rekomendasi</span><span>80 — agresif</span></div>
-            <div style="font-size:12px;color:var(--muted);margin-top:16px;line-height:1.7">Simulasi menggunakan distribusi skor aktual 90 hari terakhir (1.287 klaim/bulan, seluruh jaringan). Perubahan ambang produksi memerlukan persetujuan dua pejabat dan tercatat pada audit trail.</div>
-          </div></div>
-        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Proyeksi Dampak Bulanan</h3><p>Diperbarui seketika saat ambang digeser</p></div></div>
-          <div class="panel-body">
-            <div class="sim-out">
-              <div class="sim-cell"><label>OTOMATISASI</label><b id="simAuto">67%</b><span id="simAutoN">862 klaim/bln fast-track</span></div>
-              <div class="sim-cell"><label>KE PENILAI MANUAL</label><b id="simMan">425</b><span>klaim/bln</span></div>
-              <div class="sim-cell"><label>PENGHEMATAN OPERASIONAL</label><b id="simSave">Rp33 jt</b><span>per bulan · biaya proses manual</span></div>
-              <div class="sim-cell"><label>ESTIMASI SALAH BAYAR</label><b id="simRisk">0,8%</b><span>toleransi kontrak: 2,0%</span></div>
-            </div>
-            <div class="reco r-low" id="simReco" style="margin-top:14px"><b>Optimal</b>Keseimbangan otomatisasi dan risiko berada pada rentang yang direkomendasikan model (55–65).</div>
-          </div></div>
-      </div>
-    </section>
-
-    <!-- ===== AAUI: INDUSTRY OVERVIEW ===== -->
-    <section class="page" id="pg-aaui">
-      <div class="crumb">Beranda / Industry Overview</div>
-      <div class="page-title"><div><h2>Industry Overview</h2><p>Asosiasi Asuransi Umum Indonesia — koordinasi anti-fraud lintas anggota</p></div></div>
-      <div class="grid kpis">
-        <div class="kpi"><label>ANGGOTA TERHUBUNG</label><div class="num" data-count="2"><small> / 72</small></div><div class="sub">Fase pilot — onboarding bertahap</div></div>
-        <div class="kpi k-cyan"><label>KLAIM TERDAFTAR (REGISTRY)</label><div class="num" data-count="16">0</div><div class="sub">Seluruh anggota terhubung</div></div>
-        <div class="kpi k-red"><label>DUPLIKASI LINTAS ANGGOTA</label><div class="num" data-count="3">0</div><div class="sub">Advisori aktif</div></div>
-        <div class="kpi k-gold"><label>ENTITAS WATCHLIST</label><div class="num" data-count="4">0</div><div class="sub">Dibagikan ke seluruh anggota</div></div>
-      </div>
-      <div class="grid charts">
-        <div class="panel" style="margin:0">
-          <div class="panel-head"><div><h3>Member Benchmarking</h3><p>Kinerja anggota terhubung IDRN vs rata-rata industri non-IDRN</p></div></div>
-          <div class="panel-body"><div class="chart-box"><canvas id="aauiChart"></canvas></div></div>
-        </div>
-        <div class="panel" style="margin:0">
-          <div class="panel-head"><div><h3>Industry Watchlist</h3><p>Entitas berisiko — sebarkan advisori ke 72 anggota</p></div></div>
-          <div class="panel-body" id="aauiWatch"></div>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="panel-head"><div><h3>Fungsi Asosiasi dalam Jaringan IDRN</h3></div></div>
-        <div class="panel-body" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
-          <div class="sim-cell"><label>LEDGER VALIDATOR NODE</label><b style="font-size:14px">Aktif</b><span>AAUI menandatangani setiap batch anchor bersama IDRN & OJK</span></div>
-          <div class="sim-cell"><label>REGISTRY KLAIM INDUSTRI</label><b style="font-size:14px">16 klaim</b><span>Basis deteksi duplikasi lintas anggota (faktor F3)</span></div>
-          <div class="sim-cell"><label>STANDARDISASI DATA</label><b style="font-size:14px">SEP v1.2</b><span>Skema pertukaran klaim standar antar anggota</span></div>
-          <div class="sim-cell"><label>ADVISORI & EDUKASI</label><b style="font-size:14px">12 advisori</b><span>Diterbitkan YTD ke seluruh anggota asosiasi</span></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ===== AAUI: REGISTRY ===== -->
-    <section class="page" id="pg-registry">
-      <div class="crumb">Beranda / Industry Claim Registry</div>
-      <div class="page-title"><div><h2>Industry Claim Registry</h2><p>Registry klaim lintas anggota — data anonim sesuai perjanjian pertukaran data asosiasi</p></div></div>
-      <div class="panel">
-        <div class="panel-head">
-          <div><h3>Seluruh Klaim Terdaftar</h3><p id="regCount"></p></div>
-          <input id="regSearch" placeholder="Cari nama, nomor klaim, atau penyelenggara…" autocomplete="off"
-            style="width:100%;max-width:360px;border:1px solid var(--line);border-radius:7px;padding:9px 13px;font-size:13px;font-family:inherit;background:#fbfcfe">
-        </div>
-        <div style="overflow-x:auto">
-          <table><thead><tr><th>NOMOR KLAIM</th><th>PEMEGANG POLIS</th><th>PENYELENGGARA</th><th>NILAI</th><th>TGL. KERUGIAN</th><th>RISK SCORE</th><th>BAND</th><th>DUPLIKASI</th></tr></thead>
-          <tbody id="regRows"></tbody></table>
-        </div>
-        <div class="note">Duplikasi ditandai otomatis ketika pemegang polis yang sama mengajukan klaim serupa pada lebih dari satu anggota.</div>
-      </div>
-    </section>
-
-    <!-- ===== NASABAH ===== -->
-    <section class="page" id="pg-mine">
-      <div class="crumb">Beranda / Polis &amp; Klaim Saya</div>
-      <div class="page-title"><div><h2>Polis &amp; Klaim Saya</h2><p>Nuri Agus Ramdhani — pemegang polis perorangan</p></div></div>
-      <div class="grid kpis" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr))">
-        <div class="kpi"><label>TOTAL POLIS</label><div class="num" data-count="2">0</div><div class="sub">Kendaraan bermotor</div></div>
-        <div class="kpi k-green"><label>POLIS AKTIF</label><div class="num" data-count="2">0</div><div class="sub">In-force</div></div>
-        <div class="kpi k-amber"><label>KLAIM BERJALAN</label><div class="num" data-count="2">0</div><div class="sub">Dari 3 pengajuan</div></div>
-      </div>
-      <div class="panel"><div class="panel-head"><div><h3>Polis Aktif Saya</h3><p>Klik polis untuk melihat coverage dan detail pertanggungan</p></div></div>
-        <div class="panel-body" id="myPolicies"></div></div>
-      <div class="panel"><div class="panel-head"><div><h3>Perkembangan Pengajuan Klaim</h3><p>Klik setiap tahapan pada progress bar untuk melihat detail, waktu, dan penanggung jawabnya</p></div></div>
-        <div class="panel-body" id="myClaims"></div></div>
-    </section>
+      <div class="vs">+</div>
+    </div>
   </div>
-</div>
+</section>
 
-<!-- MODALS -->
-<div class="overlay" id="ovDoc"><div class="modal" id="docModal"></div></div>
-<div class="overlay" id="ovDec"><div class="modal" style="width:min(520px,100%)">
-  <div class="modal-head"><h3 id="decTitle">Konfirmasi Keputusan</h3><button class="modal-close" onclick="closeDec()">✕</button></div>
-  <div class="modal-body">
-    <div class="dec-sum" id="decSum"></div>
-    <div class="field" style="margin:0"><label>DASAR PERTIMBANGAN / ALASAN <span style="color:var(--red)">*</span></label>
-      <textarea id="decReason" placeholder="Uraikan dasar pertimbangan (wajib, minimal 10 karakter). Tercatat permanen pada audit trail."></textarea>
-      <div class="err-msg" id="decErr">Alasan wajib diisi, minimal 10 karakter.</div></div>
+<!-- PULL QUOTE -->
+<section class="pullband">
+  <div class="wrap reveal">
+    <div class="mk-q">“</div>
+    <blockquote>The <span class="ai">AI</span> is a tool that reads every claim, summarises it, and maps the patterns of fraud. The <span class="bc">blockchain</span> is the backbone that keeps what it finds impossible to forge. The decision always stays with the insurer.</blockquote>
+    <p class="kicker">IDRN never decides a claim. It speeds the workflow so claim decisions are faster and more transparent, trust rises, and insurance protection reaches more Indonesians. This is shared national infrastructure, built together by many parties for the good of the public, owned by no single one.</p>
+    <div class="attr">IDRN Whitepaper · The Trust Layer</div>
   </div>
-  <div class="modal-foot"><button class="btn" onclick="closeDec()">Batal</button>
-    <button class="btn btn-navy" id="decConfirm">Konfirmasi &amp; Catat</button></div>
-</div></div>
-<div class="overlay" id="ovCmd"><div class="modal">
-  <input id="cmdInput" placeholder="Ketik nama pemegang polis, nomor klaim, atau halaman…" autocomplete="off">
-  <div class="cmd-list" id="cmdList"></div>
-</div></div>
-<button class="cop-fab" id="copFab" onclick="toggleCop(true)"><span class="gold">✦</span> Tanya IDRN</button>
-<div class="cop-panel" id="copPanel">
-  <div class="cop-head"><span style="font-size:16px">✦</span><div><b>IDRN Copilot</b><small>Analis risiko AI · setiap jawaban dapat diaudit</small></div>
-    <button onclick="toggleCop(false)">✕</button></div>
-  <div class="cop-msgs" id="copMsgs">
-    <div class="cop-m bot">Selamat datang. Saya analis risiko IDRN — tanyakan apa pun tentang portofolio klaim, entitas berisiko, atau nilai platform Anda.</div>
+</section>
+
+<!-- SCORE ENGINE -->
+<section class="sec engine" id="engine">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow on-dark">IDRN-RS · The Risk Score</span>
+      <h2>A score you can defend, factor by factor.</h2>
+      <p>A claim scoring 72/100 isn't a verdict. It's an argument. Adjusters, supervisors, and even the customer can see exactly where every point came from, then act within a defined risk band.</p>
+    </div>
+    <div class="engine-grid">
+      <div class="score-card reveal">
+        <div class="score-top">
+          <span class="lbl">Claim Risk Score</span>
+          <span class="cid">CLM-2026-0742 · MOTOR</span>
+        </div>
+        <div class="gauge"><b id="scoreNum">0</b><span class="of">/ 100</span></div>
+        <span class="band-tag">● HIGH · Investigation required</span>
+        <div class="factors" id="factors">
+          <div class="factor"><div class="fr"><b><em>F3</em>Cross-insurer duplication</b><span>+25</span></div><div class="track"><i data-w="100"></i></div></div>
+          <div class="factor"><div class="fr"><b><em>F1</em>Reporting-time anomaly</b><span>+18</span></div><div class="track"><i data-w="90"></i></div></div>
+          <div class="factor"><div class="fr"><b><em>F5</em>Policyholder claim history</b><span>+17</span></div><div class="track"><i data-w="72"></i></div></div>
+          <div class="factor"><div class="fr"><b><em>F4</em>Partner workshop risk profile</b><span>+12</span></div><div class="track"><i data-w="80"></i></div></div>
+          <div class="factor"><div class="fr"><b><em>F2</em>Estimate deviation vs. workshop</b><span>+0</span></div><div class="track"><i data-w="0"></i></div></div>
+        </div>
+        <p class="score-note">Total 72/100. Each score carries a model confidence reflecting how complete the supporting data is. Illustrative decomposition per the IDRN whitepaper.</p>
+      </div>
+      <div>
+        <div class="bands">
+          <div class="band low reveal"><span class="rng">0–39</span><div class="bd"><b>LOW</b><span>Fast-track: automatic processing once standard documents are complete.</span></div><span class="dot"></span></div>
+          <div class="band med reveal d1"><span class="rng">40–59</span><div class="bd"><b>MEDIUM</b><span>Manual adjuster review, prioritising the largest contributing factors.</span></div><span class="dot"></span></div>
+          <div class="band high reveal d2"><span class="rng">60–79</span><div class="bd"><b>HIGH</b><span>Mandatory investigation before decision; cross-confirm with the workshop.</span></div><span class="dot"></span></div>
+          <div class="band crit reveal d3"><span class="rng">80–100</span><div class="bd"><b>CRITICAL</b><span>Hold payment; escalate to the special investigation unit within 24 hours.</span></div><span class="dot"></span></div>
+        </div>
+        <p class="score-note" style="border:none;padding-top:22px">The fast-track threshold is a business policy with measurable consequences. A higher bar raises automation and cuts cost, but it also raises mis-payment risk. IDRN simulates every threshold against the real score distribution before it ships. Production changes require two-officer approval, logged to the audit trail.</p>
+      </div>
+    </div>
   </div>
-  <div class="cop-sug">
-    <button onclick="copAsk('Klaim risiko tertinggi?')">Klaim risiko tertinggi</button>
-    <button onclick="copAsk('Status bengkel SAPPHIRE')">Bengkel SAPPHIRE</button>
-    <button onclick="copAsk('Berapa nilai yang dicegah / ROI?')">ROI platform</button>
-    <button onclick="copAsk('Bagaimana skor dihitung?')">Cara skor dihitung</button>
+</section>
+
+<!-- FLOW -->
+<section class="sec flow">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">End-to-End</span>
+      <h2>The journey of a single claim.</h2>
+      <p>From submission to resolution, every step is scored, anchored, and logged.</p>
+    </div>
+    <div class="flow-track">
+      <div class="step reveal"><div class="num">1</div><h4>Submit &amp; fingerprint</h4><p>The policyholder files through a insurer; documents are uploaded and hashed instantly.</p></div>
+      <div class="step reveal d1"><div class="num">2</div><h4>Score in &lt;1s</h4><p>IDRN-RS computes the risk score with factor decomposition and checks the industry registry for duplicates.</p></div>
+      <div class="step reveal d2"><div class="num">3</div><h4>Anchor to ledger</h4><p>Fingerprints enter the anchoring queue, validated by IDRN, OJK and AAUI in the next batch.</p></div>
+      <div class="step reveal d3"><div class="num">4</div><h4>Route by band</h4><p>LOW claims go fast-track; MEDIUM and above enter the adjuster queue, sorted by score.</p></div>
+    </div>
+    <div class="flow-track row2">
+      <div class="step reveal"><div class="num">5</div><h4>Decide, with reasons</h4><p>The adjuster reviews the decomposition and approves, rejects or escalates, always with a mandatory written reason that is logged permanently.</p></div>
+      <div class="step reveal d1"><div class="num">6</div><h4>Notify on duplication</h4><p>If a cross-insurer duplicate is detected, supervisor and association are auto-notified; an advisory can go out to all members.</p></div>
+      <div class="step reveal d2"><div class="num">7</div><h4>Track &amp; appeal</h4><p>The policyholder follows every stage in real time and, if rejected, receives a readable basis and a 30-day right to appeal.</p></div>
+    </div>
   </div>
-  <div class="cop-input"><input id="copIn" placeholder="Ketik pertanyaan…" autocomplete="off"><button onclick="copSend()">Kirim</button></div>
-</div>
-<div id="toasts"></div>
-<div id="printReport"></div>
-<script type="module" src="/src/main.js"></script>
+</section>
+
+<!-- ROLES -->
+<section class="sec roles" id="network">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">The Network</span>
+      <h2>Five roles, least-privilege by design.</h2>
+      <p>IDRN connects the whole ecosystem in one shared trust layer, giving each role exactly the access it needs, with every session recorded on the audit trail.</p>
+    </div>
+    <div class="roles-grid">
+      <div class="role reveal"><div class="ri">◆</div><h4>Insurers</h4><div class="who">Operators</div><p>Register claims, receive risk scores, process payment, and monitor portfolio and high-risk entities.</p></div>
+      <div class="role reveal d1"><div class="ri">◈</div><h4>Adjusters</h4><div class="who">Assessors</div><p>Review claims via score decomposition and decide with a mandatory, audited written reason.</p></div>
+      <div class="role reveal d2"><div class="ri">◉</div><h4>OJK</h4><div class="who">Supervisor</div><p>Aggregate cross-insurer monitoring, double-claim alerts, full audit-trail access, and ledger validator.</p></div>
+      <div class="role reveal d3"><div class="ri">◇</div><h4>AAUI</h4><div class="who">Association</div><p>Industry claim registry, watchlist and advisory distribution, data-schema standards, and ledger validator.</p></div>
+      <div class="role reveal d4"><div class="ri">●</div><h4>Policyholders</h4><div class="who">Customers</div><p>Policy transparency, real-time claim tracking like a parcel, and the right to appeal any rejection.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HIGHLIGHT -->
+<section class="sec highlight">
+  <div class="hl-glow"></div>
+  <div class="wrap">
+    <div class="hl-grid">
+      <div class="reveal">
+        <span class="eyebrow on-dark">The Signature Capability</span>
+        <h2>Catch double claims without sharing data.</h2>
+        <p>Each insurer registers a <b>claim signature</b> (a combined hash of the policyholder's identity, the insured object, and the loss-date range) into a registry co-governed with the association.</p>
+        <p>When two signatures from different insurers collide, the network flags the double-claim group and raises factor F3 on both claims, <b>without either party ever seeing the other's file.</b> Detailed confirmation happens only after a signal, through official recorded channels, with the supervisor as witness.</p>
+        <p style="color:rgba(255,255,255,.6);font-size:14.5px">This is why the problem cannot be solved by one company alone, and why the solution must never be a merged customer database.</p>
+      </div>
+      <div class="diagram reveal d2">
+        <div class="dg-row">
+          <div class="dg-node"><div class="t">Insurer A</div><div class="h">8f3a…c21e</div></div>
+          <span class="dg-arrow">→</span>
+          <div class="dg-node"><div class="t">Insurer B</div><div class="h">8f3a…c21e</div></div>
+        </div>
+        <div class="dg-match">
+          <span class="badge">● F3 +25</span>
+          <p>Signature collision detected. Double-claim group flagged on both claims. Raw files never exchanged.</p>
+        </div>
+        <p style="margin-top:22px;font-size:12.5px;color:rgba(255,255,255,.55);line-height:1.6;font-family:var(--mono)">// SHA-256 is one-way; identity cannot be reconstructed from the hash. Compliant with UU No. 27/2022 (PDP) by architecture, not just procedure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPLIANCE -->
+<section class="sec compliance" id="compliance">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Compliance &amp; Governance</span>
+      <h2>Built to live inside the regulation, not beside it.</h2>
+      <p>Claim decisions remain entirely with licensed insurers under OJK rules. IDRN is a technology infrastructure provider, and privacy is enforced architecturally.</p>
+    </div>
+    <div class="comp-grid">
+      <div class="comp reveal"><div class="ci">⚖</div><h4>Data minimisation by design</h4><p>Personal data and raw documents never leave the insurer's systems. Only one-way fingerprints, risk signals and dedup metadata cross the network.</p><div class="ref">UU No. 27/2022 · PDP</div></div>
+      <div class="comp reveal d1"><div class="ci">◈</div><h4>Multi-party validation</h4><p>No single party, not even the IDRN operator, can alter the network's records. Every batch anchor is signed by three independent validators.</p><div class="ref">IDRN · OJK · AAUI</div></div>
+      <div class="comp reveal d2"><div class="ci">⊞</div><h4>Human decides, system records</h4><p>AI recommends; it never decides. Every approval, rejection or escalation is made by a human with a mandatory written reason, recorded permanently.</p><div class="ref">Append-only audit trail</div></div>
+      <div class="comp reveal d3"><div class="ci">⛨</div><h4>HSM-protected keys</h4><p>Validator signing keys are protected by hardware security modules with periodic rotation, so integrity proofs arrive in real time, not by report.</p><div class="ref">Hardware Security Module</div></div>
+      <div class="comp reveal d4"><div class="ci">◎</div><h4>Regulatory-sandbox path</h4><p>The natural adoption route: an OJK regulatory sandbox that begins with general insurance and the AAUI, shared data-schema standardisation, then gradual expansion to every insurance line.</p><div class="ref">OJK Regulatory Sandbox</div></div>
+      <div class="comp reveal d4"><div class="ci">⟲</div><h4>Governed change control</h4><p>Adding validators, changing factor weights, or setting thresholds all follow a multi-party approval mechanism, fully recorded on the audit trail.</p><div class="ref">Multi-party approval</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY BLOCKCHAIN -->
+<section class="sec why" id="why">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow on-dark">Why Blockchain</span>
+      <h2>An honest technology, by construction.</h2>
+      <p>The AI answers which claim to look at. The blockchain answers a different question: can this data and this decision be trusted, unaltered. That second question is why IDRN needs a ledger, not just a database.</p>
+    </div>
+    <div class="why-grid">
+      <div class="reveal">
+        <div class="why-lead">A central database can be quietly changed by whoever owns it. In a dispute between a customer and an insurer, or an insurer and its supervisor, records held by one side can never be <em>neutral evidence.</em></div>
+        <p class="why-body">This is the real reason for the ledger, not hype and not a token. A permissioned blockchain is honest because of how it is built: records can only be added and never rewritten, they are replicated to independent parties, and they are valid only when those parties validate them together. No single party, not even IDRN, can change the past on its own.</p>
+      </div>
+      <div class="why-points reveal d1">
+        <div class="why-pt"><span class="no">01</span><div><b>Append-only, never rewritten</b><span>Every document fingerprint and every human decision is added to the chain and can never be edited or deleted after the fact.</span></div></div>
+        <div class="why-pt"><span class="no">02</span><div><b>Validated by many, owned by none</b><span>Each batch is signed by three independent nodes: IDRN, OJK and AAUI. Honesty comes from shared consensus, not from trusting one operator.</span></div></div>
+        <div class="why-pt"><span class="no">03</span><div><b>Verifiable, not assumed</b><span>Trust stops being something taken on faith. A one-way SHA-256 fingerprint either matches or it does not, so oversight moves from report-based to evidence-based.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section class="sec metrics">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow on-dark">The Network Effect</span>
+      <h2>Value that compounds with every member.</h2>
+      <p>The first insurer to join gets a scoring engine. The tenth gets a scoring engine that sees ten times the signals.</p>
+    </div>
+    <div class="mgrid">
+      <div class="metric reveal"><b>&gt;90<span style="font-size:.5em">%</span></b><div class="lbl">Early detection of high-risk claims</div><span>Target versus an industry baseline that relies on manual review.</span></div>
+      <div class="metric reveal d1"><b>Weeks→Days</b><div class="lbl">Claim processing time</div><span>Fast-track automation for LOW-band claims collapses the timeline.</span></div>
+      <div class="metric reveal d2"><b>&gt;10×</b><div class="lbl">Value-prevented to platform cost</div><span>Ratio of fraud losses prevented against platform cost.</span></div>
+    </div>
+    <div class="net-effect reveal">
+      <div class="big">Factors <em>F3</em> (cross-insurer duplication) and <em>F4</em> (workshop profile) sharpen with every new member: the more parties that join, the more signals everyone sees. Because it is shared infrastructure, its value grows for the <em>whole industry</em> as participation grows, protecting honest policyholders right across the market.</div>
+    </div>
+    <p class="disclaimer">All figures shown are design targets for a demonstration environment, drawn from the IDRN whitepaper, not audited production results. Actual outcomes depend on each insurer's portfolio and must be verified by a third party. IDRN describes a functional prototype architecture; a full machine-learning scoring model requires cross-insurer production data available only once the network is running.</p>
+  </div>
+</section>
+
+<!-- VISION -->
+<section class="sec vision" id="vision">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">The Road Ahead</span>
+      <h2>Where the AI goes from here.</h2>
+      <p>Today IDRN-RS is an explainable, weighted-factor tool. The far vision is an assistive risk intelligence for the whole industry: something that reads, summarises and maps the patterns of fraud, and always leaves the decision to people. A shared analyst for insurance, never its judge.</p>
+    </div>
+    <div class="vision-grid">
+      <div class="vcard reveal"><div class="ph">Now</div><h4>Explainable scoring</h4><p>Weighted factors F1–F5 with a confidence level, so every claim can be summarised and defended, factor by factor.</p></div>
+      <div class="vcard reveal d1"><div class="ph">Next</div><h4>A learning risk brain</h4><p>Machine-learning models trained on cross-insurer production data, with sharper value-anomaly detection and fuzzy matching that resists signature evasion.</p></div>
+      <div class="vcard reveal d2"><div class="ph">Then</div><h4>An analytics copilot</h4><p>Ask the portfolio in plain language: which claims are riskiest and why, how much loss was prevented this month. Every question and answer logged to the audit trail.</p></div>
+      <div class="vcard reveal d3"><div class="ph">Horizon</div><h4>One backbone, every line</h4><p>Verified external data under institutional agreements, and expansion from motor to health, property and marine, all on the same integrity backbone.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="cta">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <div class="cg cg1"></div><div class="cg cg2"></div>
+      <div class="in">
+        <span class="eyebrow on-dark">Ground floor · A category in the making</span>
+        <h2>Back the shared rail before the category has a name.</h2>
+        <p>Every nation eventually builds the rails its industries run on. Banking got BI-Fast. Insurance has not built its trust layer yet. IDRN isn't competing in a market. It's creating one: shared trust infrastructure for Indonesian insurance, with regulation and network effects on its side. A window like this, first mover in a brand-new category, doesn't open twice.</p>
+        <div class="cta-actions">
+          <a href="portal.html" class="btn btn-primary">Explore the Portal →</a>
+          <a href="mailto:invest@idrn.id?subject=IDRN%20Investment%20Enquiry" class="btn btn-out">Contact to Invest</a>
+          <a href="mailto:partnerships@idrn.id?subject=IDRN%20Partnership" class="btn btn-out">Partnership Enquiry</a>
+        </div>
+        <div class="cta-tags">
+          <span>First mover in a new category</span>
+          <span>Network effects that compound</span>
+          <span>Built inside the regulation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a class="brand" href="#top">
+          <span class="mk" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2)"><svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg" style="width:52%;height:52%"><path d="M6 5 L47 49 L47 105 L6 105 Z" fill="#fff"/><path d="M53 5 H94 V105 L53 53 Z" fill="#fff"/></svg></span>
+          <span><b style="color:#fff">IDRN</b><small style="color:rgba(255,255,255,.55)">TRUST LAYER</small></span>
+        </a>
+        <p>Insurance Digital Risk Network: the shared trust infrastructure for Indonesian insurance. The BI-Fast of insurance, where explainable AI risk scoring meets a permissioned integrity ledger.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Platform</h5>
+        <a href="#bifast">The Analogy</a>
+        <a href="#solution">Architecture</a>
+        <a href="#engine">Risk Engine</a>
+        <a href="#why">Why Blockchain</a>
+        <a href="#vision">Vision</a>
+        <a href="#compliance">Compliance</a>
+      </div>
+      <div class="foot-col">
+        <h5>Network</h5>
+        <a href="#network">Roles</a>
+        <a href="portal.html">Explore Portal</a>
+        <a href="#cta">Request Access</a>
+        <a href="mailto:partnerships@idrn.id">Partnerships</a>
+      </div>
+      <div class="foot-col">
+        <h5>Governance</h5>
+        <a href="#compliance">UU PDP 27/2022</a>
+        <a href="#compliance">OJK Sandbox</a>
+        <a href="#compliance">Multi-party Validation</a>
+        <a href="mailto:invest@idrn.id">Investor Relations</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>© 2026 Insurance Digital Risk Network · The Trust Layer of Indonesian Insurance</span>
+      <span class="badge">PROTOTYPE ARCHITECTURE · FOR DEMONSTRATION</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40),{passive:true});
+
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.14,rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.reveal:not(.in)').forEach(el=>io.observe(el));
+
+const eng=document.getElementById('engine');let scored=false;
+const engIO=new IntersectionObserver((es)=>{es.forEach(e=>{
+  if(e.isIntersecting&&!scored){scored=true;
+    document.querySelectorAll('#factors .track i').forEach(i=>{setTimeout(()=>{i.style.width=i.dataset.w+'%'},120)});
+    const el=document.getElementById('scoreNum');let n=0;const t=72;
+    const step=()=>{n+=Math.max(1,Math.round((t-n)/6));if(n>=t){n=t}el.textContent=n;if(n<t)requestAnimationFrame(step)};
+    setTimeout(()=>requestAnimationFrame(step),200);
+  }})},{threshold:.4});
+engIO.observe(eng);
+
+// NIGHT HIGHWAY OVERLAY: real photo skyline behind; fast car light-trails animate on the road
+(function(){
+  const c=document.getElementById('road'),x=c.getContext('2d');
+  const DPR=Math.min(devicePixelRatio||1,2);
+  let w,h,vpx,vpy,maxD,lanes=[],parts=[],raf,mx=0,my=0,tx=0,ty=0;
+  const R=(a,b)=>a+Math.random()*(b-a);
+  function posAt(th,p){const d=(Math.exp(p*2.9)-1)/(Math.exp(2.9)-1)*maxD;return [vpx+Math.cos(th)*d,vpy+Math.sin(th)*d];}
+  function spawn(){
+    const ang=lanes[(Math.random()*lanes.length)|0];
+    const tail=Math.random()<.4;
+    return {th:(ang+R(-2,2))*Math.PI/180,p:tail?1:Math.random(),sp:R(.008,.018),tail,len:R(.06,.12),cool:ang<90};
+  }
+  function build(){
+    w=c.clientWidth;h=c.clientHeight;c.width=w*DPR;c.height=h*DPR;x.setTransform(DPR,0,0,DPR,0,0);
+    vpx=w*.5;vpy=h*.46;maxD=Math.hypot(w,h)*1.15;
+    lanes=[];const N=13;for(let i=0;i<N;i++)lanes.push(90-28+(56/(N-1))*i);
+    parts=Array.from({length:Math.min(120,Math.max(50,Math.floor(w/11)))},spawn);
+  }
+  function frame(){
+    tx+=(mx-tx)*.05;ty+=(my-ty)*.05;const ox=tx*16,oy=ty*7;
+    x.globalCompositeOperation='destination-out';x.fillStyle='rgba(0,0,0,.13)';x.fillRect(0,0,w,h);
+    x.globalCompositeOperation='lighter';x.lineCap='round';
+    for(const pt of parts){
+      const adv=pt.sp*(.3+pt.p*2.4);
+      if(!pt.tail){pt.p+=adv;if(pt.p>1)Object.assign(pt,spawn(),{p:0,tail:false});}
+      else{pt.p-=adv;if(pt.p<0)Object.assign(pt,spawn(),{p:1,tail:true});}
+      const a=posAt(pt.th,Math.max(0,pt.p-pt.len)),b=posAt(pt.th,pt.p);
+      if(b[1]<vpy-4)continue;
+      const wd=.4+pt.p*pt.p*4.6,al=Math.min(1,pt.p*1.4)*.82;
+      const g=x.createLinearGradient(a[0]+ox,a[1]+oy,b[0]+ox,b[1]+oy);
+      if(pt.cool){
+        if(pt.tail){g.addColorStop(0,'rgba(40,120,255,0)');g.addColorStop(1,'rgba(90,175,255,'+al+')');}
+        else{g.addColorStop(0,'rgba(90,170,255,0)');g.addColorStop(.55,'rgba(150,205,255,'+(al*.7)+')');g.addColorStop(1,'rgba(255,255,255,'+al+')');}
+      }else{
+        if(pt.tail){g.addColorStop(0,'rgba(255,60,40,0)');g.addColorStop(1,'rgba(255,95,60,'+al+')');}
+        else{g.addColorStop(0,'rgba(255,150,40,0)');g.addColorStop(.55,'rgba(255,190,90,'+(al*.75)+')');g.addColorStop(1,'rgba(255,248,214,'+al+')');}
+      }
+      x.strokeStyle=g;x.lineWidth=wd;x.beginPath();x.moveTo(a[0]+ox,a[1]+oy);x.lineTo(b[0]+ox,b[1]+oy);x.stroke();
+      if(pt.p>.66){x.fillStyle='rgba(255,255,255,'+(al*.5)+')';x.beginPath();x.arc(b[0]+ox,b[1]+oy,wd*.7,0,7);x.fill();}
+    }
+    x.globalCompositeOperation='source-over';
+    raf=requestAnimationFrame(frame);
+  }
+  function init(){cancelAnimationFrame(raf);build();frame();}
+  addEventListener('resize',()=>{clearTimeout(window._rz);window._rz=setTimeout(init,180)});
+  addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;},{passive:true});
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){init();}else{build();}
+})();
+
+document.getElementById('menuBtn').addEventListener('click',()=>{location.hash='#cta'});
+</script>
 </body>
 </html>
