@@ -7,6 +7,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <style>
 :root{
   --bg:#f4f6fa; --surface:#fff; --line:#dde3ec; --line-soft:#eaeef4;
@@ -27,51 +30,49 @@ body{font-family:'Segoe UI','Inter',-apple-system,Arial,sans-serif;background:va
 button{font-family:inherit}
 ::-webkit-scrollbar{width:9px;height:9px}::-webkit-scrollbar-thumb{background:#c6cfdc;border-radius:6px}::-webkit-scrollbar-track{background:transparent}
 /* ================= LOGIN ================= */
-#page-login{min-height:100vh;display:flex;flex-direction:column;background:
-  linear-gradient(160deg,#0b1f3d 0%,#132c52 55%,#1a3a68 100%)}
-.lg-top{display:flex;align-items:center;gap:14px;padding:22px 42px;color:#fff}
-.mark{width:42px;height:42px;border-radius:50%;background:#fff;color:var(--navy);display:grid;place-items:center;font-weight:800;font-size:12px;flex-shrink:0;letter-spacing:.5px}
-.mark svg{width:56%;height:56%}
-#page-login{position:relative;overflow:hidden}
-.lg-body,.lg-top{position:relative;z-index:1}
-.lg-watermark{position:absolute;right:-50px;bottom:0;width:min(780px,72vw);opacity:.16;pointer-events:none;z-index:0}
-.lg-top h1{font-size:16px;font-weight:700}
-.lg-top small{display:block;font-size:10px;opacity:.7;letter-spacing:2px}
+#page-login{min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;
+  background:radial-gradient(1100px 560px at 80% -12%,#1f4d8a 0%,rgba(31,77,138,0) 60%),linear-gradient(165deg,#0a1c38 0%,#102a4e 56%,#15335c 100%)}
+.lg-top{display:flex;align-items:center;gap:13px;padding:24px 44px;color:#fff;position:relative;z-index:1}
+.mark{width:40px;height:40px;border-radius:50%;background:#fff;color:var(--navy);display:grid;place-items:center;font-weight:800;font-size:12px;flex-shrink:0;letter-spacing:.5px}
+.mark svg{width:54%;height:54%}
+.lg-top h1{font-size:15px;font-weight:700;letter-spacing:.2px}
+.lg-top small{display:block;font-size:9.5px;opacity:.6;letter-spacing:2.4px;margin-top:1px}
 .env-badge{margin-left:auto;font-size:10.5px;font-weight:700;letter-spacing:1.2px;border:1px solid rgba(255,255,255,.35);padding:6px 14px;border-radius:5px;color:#fff;opacity:.9}
-.lg-body{flex:1;display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;max-width:1150px;margin:0 auto;padding:20px 42px 60px;width:100%}
-@media(max-width:920px){.lg-body{grid-template-columns:1fr}.lg-hero{display:none}}
+.lg-body{flex:1;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;max-width:1120px;margin:0 auto;padding:8px 44px 52px;width:100%;position:relative;z-index:1}
+@media(max-width:920px){.lg-body{grid-template-columns:1fr;gap:26px}.lg-hero{display:none}}
 .lg-hero{color:#fff}
-.lg-hero .eyebrow{font-size:11px;letter-spacing:3px;font-weight:700;color:#c9a94e;margin-bottom:18px}
-.lg-lockup{width:min(430px,82%);margin-bottom:28px;animation:lockIn .9s ease both}
-.lg-lockup svg{width:100%;height:auto;filter:drop-shadow(0 8px 28px rgba(0,0,0,.4));transition:transform .35s}
-.lg-lockup:hover svg{transform:scale(1.025)}
-@keyframes lockIn{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
-.lg-hero h2{font-family:var(--serif);font-size:40px;line-height:1.18;font-weight:600;letter-spacing:-.3px}
-.lg-hero p{margin-top:18px;font-size:15px;line-height:1.75;opacity:.82;max-width:480px}
-.lg-stats{display:flex;gap:36px;margin-top:36px;flex-wrap:wrap}
-.lg-stat b{display:block;font-family:var(--serif);font-size:27px;color:#e8d59a}
-.lg-stat span{font-size:11.5px;opacity:.7;letter-spacing:.4px}
-.login-card{width:min(430px,100%);background:#fff;border-radius:16px;box-shadow:var(--shadow-lg);padding:38px;justify-self:end}
+.lg-hero .eyebrow{font-size:10.5px;letter-spacing:2.6px;font-weight:700;color:#e8c96a;margin-bottom:16px}
+.lg-lockup{width:min(320px,70%);margin-bottom:22px;animation:lockIn .8s ease both}
+.lg-lockup svg{width:100%;height:auto;filter:drop-shadow(0 6px 22px rgba(0,0,0,.35))}
+@keyframes lockIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.lg-hero h2{font-family:var(--serif);font-size:37px;line-height:1.16;font-weight:600;letter-spacing:-.4px}
+.lg-hero p{margin-top:15px;font-size:14px;line-height:1.7;opacity:.7;max-width:430px}
+.lg-stats{display:flex;align-items:flex-start;margin-top:30px;border-top:1px solid rgba(255,255,255,.12);padding-top:20px}
+.lg-stat{flex:1;padding-right:12px}
+.lg-stat+.lg-stat{border-left:1px solid rgba(255,255,255,.1);padding-left:18px}
+.lg-stat b{display:block;font-family:var(--serif);font-size:20px;color:#e8d59a;font-weight:600;white-space:nowrap}
+.lg-stat span{font-size:10px;opacity:.6;letter-spacing:.3px;margin-top:3px;display:block}
+.login-card{width:min(410px,100%);background:#fff;border-radius:18px;box-shadow:0 30px 70px rgba(0,0,0,.35);padding:34px 34px 28px;justify-self:end}
 @media(max-width:920px){.login-card{justify-self:center}}
-.login-card h2{font-size:20px;color:var(--navy)}
-.login-card>p{color:var(--muted);font-size:13px;margin:6px 0 24px}
-.field{margin-bottom:15px}
-.field label{display:block;font-size:10.5px;font-weight:700;letter-spacing:1.4px;color:var(--muted);margin-bottom:6px}
-.field input{width:100%;border:1px solid var(--line);border-radius:8px;padding:12px 14px;font-size:14px;background:#fafbfd;font-family:inherit;color:var(--ink);transition:.2s}
-.field input:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba(29,75,133,.13);background:#fff}
-.btn-primary{width:100%;border:0;background:var(--navy);color:#fff;font-size:14px;font-weight:600;padding:13px;border-radius:8px;cursor:pointer;transition:.2s;margin-top:4px}
+.login-card h2{font-size:19px;color:var(--navy)}
+.login-card>p{color:var(--muted);font-size:12.5px;margin:5px 0 22px;line-height:1.55}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:10px;font-weight:700;letter-spacing:1.3px;color:var(--muted);margin-bottom:6px}
+.field input{width:100%;border:1px solid var(--line);border-radius:9px;padding:12px 14px;font-size:14px;background:#fafbfd;font-family:inherit;color:var(--ink);transition:.2s}
+.field input:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba(29,75,133,.12);background:#fff}
+.btn-primary{width:100%;border:0;background:var(--navy);color:#fff;font-size:14px;font-weight:600;padding:13px;border-radius:9px;cursor:pointer;transition:.2s;margin-top:6px}
 .btn-primary:hover{background:var(--navy-2)} .btn-primary:disabled{opacity:.65;cursor:wait}
-.demo-sep{display:flex;align-items:center;gap:12px;margin:22px 0 13px;color:var(--dim);font-size:10.5px;letter-spacing:1.6px;font-weight:700}
+.demo-sep{display:flex;align-items:center;gap:12px;margin:20px 0 12px;color:var(--dim);font-size:10px;letter-spacing:1.6px;font-weight:700}
 .demo-sep::before,.demo-sep::after{content:'';flex:1;height:1px;background:var(--line-soft)}
-.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.demo-btn{border:1px solid var(--line);background:#fafbfd;border-radius:8px;padding:11px 13px;text-align:left;cursor:pointer;transition:.2s}
-.demo-btn:hover{border-color:var(--navy-2);background:#f2f7fd;transform:translateY(-1px)}
-.demo-btn b{display:block;font-size:10.5px;letter-spacing:1px;color:var(--navy-2)}
-.demo-btn span{font-size:12px;color:var(--muted)}
-.lg-foot{text-align:center;color:rgba(255,255,255,.55);font-size:11.5px;padding:18px}
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.demo-btn{border:1px solid var(--line);background:#fbfcfe;border-radius:9px;padding:10px 12px;text-align:left;cursor:pointer;transition:.15s}
+.demo-btn:hover{border-color:var(--navy-2);background:#f2f7fd}
+.demo-btn b{display:block;font-size:10px;letter-spacing:.6px;color:var(--navy-2)}
+.demo-btn span{font-size:11.5px;color:var(--muted)}
+.lg-foot{text-align:center;color:rgba(255,255,255,.5);font-size:11px;padding:16px;position:relative;z-index:1}
 /* ================= SHELL ================= */
 #app{display:none;min-height:100vh}
-.topbar{position:fixed;top:0;left:0;right:0;height:58px;background:#fff;border-bottom:1px solid var(--line);z-index:90;box-shadow:0 1px 0 rgba(11,31,61,.04);display:flex;align-items:center;gap:14px;padding:0 22px}
+.topbar{position:fixed;top:0;left:0;right:0;height:58px;background:#fff;border-bottom:1px solid var(--line);z-index:60;display:flex;align-items:center;gap:14px;padding:0 22px}
 .topbar .mark{width:32px;height:32px;font-size:10px;background:var(--navy);color:#fff}
 .topbar h1{font-size:14.5px;font-weight:700;color:var(--navy);white-space:nowrap}
 .topbar small{display:block;font-size:9px;color:var(--dim);letter-spacing:1.6px}
@@ -321,7 +322,7 @@ textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba
 .ops-head-r{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .ops-legend{display:flex;gap:13px;font-size:10px;color:rgba(255,255,255,.62);font-weight:600}
 .ops-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:-1px}
-.ops-mapwrap{position:relative;overflow:hidden;z-index:0;isolation:isolate}
+.ops-mapwrap{position:relative;overflow:hidden;isolation:isolate}
 .ops-zoom{position:absolute;top:14px;right:14px;display:flex;flex-direction:column;gap:6px;z-index:3}
 .ops-zoom button{width:33px;height:33px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:rgba(11,31,61,.55);backdrop-filter:blur(5px);color:#fff;font-size:17px;font-weight:700;cursor:pointer;transition:.15s;display:grid;place-items:center;line-height:1}
 .ops-zoom button:hover{background:rgba(29,75,133,.9);border-color:rgba(255,255,255,.45)}
@@ -426,7 +427,7 @@ textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba
 /* map + white stream row */
 .ncc-map-row{display:grid;grid-template-columns:1fr 330px;gap:1px;background:rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)}
 @media(max-width:980px){.ncc-map-row{grid-template-columns:1fr}}
-.ncc-map-row .ncc-mapwrap{position:relative;height:500px;overflow:hidden;background:#08131f;z-index:0;isolation:isolate}
+.ncc-map-row .ncc-mapwrap{position:relative;height:500px;overflow:hidden;background:#08131f;isolation:isolate}
 .ncc-map-row #opsMap{position:absolute;inset:0;width:100%;height:500px;background:#08131f;cursor:grab;touch-action:auto}
 .ncc-tabs{position:absolute;top:14px;left:14px;display:flex;gap:6px;flex-wrap:wrap;max-width:66%;z-index:600}
 .ncc-tabs button{border:1px solid rgba(255,255,255,.16);background:rgba(9,20,40,.78);backdrop-filter:blur(5px);color:rgba(255,255,255,.8);font-size:11.5px;font-weight:600;padding:7px 13px;border-radius:7px;cursor:pointer;transition:.15s}
@@ -514,10 +515,110 @@ textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba
 .ojk-pin{transition:none}
 
 /* LITE (denyut) memakai peta satelit Leaflet */
-.ops-mapwrap{position:relative;overflow:hidden;z-index:0;isolation:isolate}
+.ops-mapwrap{position:relative;overflow:hidden;isolation:isolate}
 .ops-mapwrap #opsMap{height:452px;touch-action:auto;background:#08131f;cursor:grab}
 .ops-mapwrap .ops-panel{z-index:800}
 .ops-mapwrap .ops-hint{z-index:700}
+/* ===== Modul Registrasi Polis (Issuance-First) ===== */
+.reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.reg-grid{grid-template-columns:1fr}}
+.reg-note{font-size:12px;color:var(--muted);background:var(--green-bg);border:1px solid var(--green-line);border-radius:9px;padding:11px 14px;display:flex;gap:9px;align-items:flex-start;margin-bottom:14px}
+.reg-note b{color:var(--green)}
+.field select,.field input[type=date]{width:100%;border:1px solid var(--line);border-radius:8px;padding:11px 13px;font-size:14px;background:#fafbfd;font-family:inherit;color:var(--ink)}
+.field .hint{font-size:10.5px;color:var(--dim);margin-top:4px;font-weight:600}
+.reg-cols{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;align-items:start}
+@media(max-width:900px){.reg-cols{grid-template-columns:1fr}}
+.vblock{border:1px solid var(--line);border-radius:14px;background:#fff;padding:20px;text-align:center;box-shadow:var(--shadow)}
+.vblock .vb-top{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:12px}
+.vblock .vb-mark{width:30px;height:30px;border-radius:7px;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:800;font-size:10px}
+.vblock .vb-qr{width:180px;height:180px;margin:6px auto;display:grid;place-items:center}
+.vblock .vb-qr img,.vblock .vb-qr canvas{width:180px !important;height:180px !important}
+.vblock .vb-idrn{font-family:ui-monospace,monospace;font-weight:700;color:var(--navy);font-size:15px;letter-spacing:.5px;margin-top:6px}
+.vblock .vb-cap{font-size:11px;color:var(--muted);margin-top:4px}
+.flag{display:flex;gap:10px;align-items:flex-start;border:1px solid;border-radius:9px;padding:10px 13px;font-size:12.5px;margin-bottom:8px}
+.flag .fi{font-weight:800;font-size:11px}
+.flag.warning{background:var(--amber-bg);border-color:var(--amber-line);color:var(--amber)}
+.flag.alert{background:var(--red-bg);border-color:var(--red-line);color:var(--red)}
+.flag.ok{background:var(--green-bg);border-color:var(--green-line);color:var(--green)}
+.flag b{display:block}
+.idrn-badge{display:inline-block;font-family:ui-monospace,monospace;font-weight:700;color:var(--navy-2);background:#eef3fb;border:1px solid var(--line);border-radius:6px;padding:4px 10px;font-size:13px}
+.reg-flagbadge{font-size:9.5px;font-weight:800;letter-spacing:.5px;padding:3px 8px;border-radius:5px;white-space:nowrap;display:inline-block;margin:1px}
+.rf-dup{color:var(--amber);background:var(--amber-bg);border:1px solid var(--amber-line)}
+.rf-over{color:var(--cyan);background:var(--cyan-bg);border:1px solid var(--cyan-line)}
+.rf-watch{color:var(--red);background:var(--red-bg);border:1px solid var(--red-line)}
+.rf-clean{color:var(--green);background:var(--green-bg);border:1px solid var(--green-line)}
+.dropzone{border:2px dashed var(--line);border-radius:12px;padding:26px;text-align:center;color:var(--muted);cursor:pointer;transition:.15s;background:#fafbfd}
+.dropzone:hover{border-color:var(--navy-2);background:#f2f7fd;color:var(--navy-2)}
+.dropzone b{color:var(--navy);display:block;font-size:14px;margin-bottom:3px}
+.codebox{background:#0b1f3d;color:#cfe0f7;border-radius:11px;padding:16px 18px;font-family:ui-monospace,'SF Mono',Consolas,monospace;font-size:12px;line-height:1.65;overflow-x:auto;white-space:pre}
+.codebox .k{color:#e8d59a}.codebox .s{color:#8fd0a3}.codebox .c{color:#7d93b2}
+.verify-public{max-width:430px;margin:0 auto}
+.vp-card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden}
+.vp-hd{background:linear-gradient(150deg,var(--navy),var(--navy-mid));color:#fff;padding:20px;text-align:center}
+.vp-hd .vp-check{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.14);display:grid;place-items:center;margin:0 auto 10px;font-size:26px;border:2px solid rgba(126,226,168,.6)}
+.vp-hd.bad .vp-check{border-color:rgba(255,140,160,.6)}
+.vp-hd h3{font-size:17px}.vp-hd p{font-size:12px;opacity:.8;margin-top:3px}
+.vp-body{padding:6px 20px 18px}
+.vp-row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-soft);font-size:13px}
+.vp-row:last-child{border-bottom:0}.vp-row span{color:var(--muted)}.vp-row b{color:var(--ink);text-align:right}
+.vp-scan{font-size:10.5px;color:var(--green);font-weight:700;background:var(--green-bg);border:1px solid var(--green-line);border-radius:20px;padding:4px 12px;display:inline-flex;gap:6px;align-items:center;margin-top:10px}
+.vp-privacy{font-size:11px;color:var(--dim);text-align:center;padding:12px 20px;border-top:1px solid var(--line-soft);background:#fafbfd}
+.reg-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.rowerr{background:#faedef !important}
+.rowerr td{color:var(--red)}
+.reg-progress{height:8px;border-radius:4px;background:var(--line-soft);overflow:hidden;margin:8px 0}
+.reg-progress i{display:block;height:100%;background:linear-gradient(90deg,var(--navy-2),var(--gold));width:0;transition:width .2s}
+
+/* verifikasi publik pra-login */
+#page-verify{display:none;min-height:100vh;background:linear-gradient(160deg,#0b1f3d 0%,#132c52 55%,#1a3a68 100%);padding:20px;flex-direction:column}
+#page-verify.show{display:flex}
+.pv-top{display:flex;align-items:center;gap:11px;color:#fff;width:100%;max-width:440px;margin:6px auto 0}
+.pv-top .mark2{width:38px;height:38px;border-radius:9px;background:#fff;display:grid;place-items:center;flex-shrink:0}
+.pv-top small{display:block;font-size:9px;letter-spacing:2px;opacity:.7}
+.pv-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;width:100%;max-width:440px;margin:0 auto;padding:16px 0}
+.pv-title{color:#fff;text-align:center;margin-bottom:18px}
+.pv-title h2{font-family:var(--serif);font-size:24px;font-weight:600}
+.pv-title p{opacity:.75;font-size:13px;margin-top:6px;line-height:1.6}
+.pv-search{background:#fff;border-radius:14px;padding:18px;box-shadow:var(--shadow-lg);margin-bottom:14px}
+.pv-search .btn-primary{margin-top:4px}
+.pv-back{color:rgba(255,255,255,.7);font-size:12.5px;text-align:center;margin-top:18px;cursor:pointer}
+.pv-back:hover{color:#fff}
+.pv-open{display:block;width:100%;margin-top:14px;padding:11px;border:1px solid var(--line);background:#fafbfd;border-radius:8px;font-size:12.5px;font-weight:700;color:var(--navy-2);cursor:pointer;font-family:inherit;transition:.15s}
+.pv-open:hover{border-color:var(--navy-2);background:#f2f7fd}
+.nav-group{font-size:9.5px;letter-spacing:1.6px;color:#c9a94e;font-weight:800;padding:16px 13px 6px;text-transform:uppercase}
+.nav-sub{margin-left:8px;padding-left:15px !important;position:relative}
+.nav-sub::before{content:'';position:absolute;left:3px;top:8px;bottom:8px;width:2px;border-radius:2px;background:rgba(201,169,78,.28)}
+.nav-item.nav-sub.on::before{background:#c9a94e}
+.leaflet-container{z-index:1}
+/* ===== Regulator Passport & RBC ===== */
+.rbc-panel{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.rbc-gauge{position:relative;width:130px;height:130px;flex-shrink:0}
+.rbc-gauge svg{width:130px;height:130px;display:block}
+.rbc-num{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.rbc-num b{font-family:var(--serif);font-size:25px;display:block;line-height:1}
+.rbc-num span{font-size:9px;letter-spacing:1px;color:var(--dim);font-weight:700;margin-top:3px}
+.rbc-comp{flex:1;min-width:230px}
+.rc-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:8px 0;border-bottom:1px dashed var(--line-soft);font-size:13px}
+.rc-row:last-child{border-bottom:0}
+.rc-row span{color:var(--muted);line-height:1.35}
+.rc-row b{font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap;flex-shrink:0;text-align:right}
+.rbc-status{display:inline-block;font-size:10px;font-weight:800;letter-spacing:1px;padding:4px 12px;border-radius:5px;margin-top:8px}
+.rbc-trend{margin-top:8px}
+.rbc-trend .chart-box{height:90px}
+.issue-row{display:flex;align-items:center;gap:11px;padding:8px 0;font-size:13px}
+.issue-row .in{width:135px;flex-shrink:0;font-weight:600}
+.issue-row .ib{flex:1;height:8px;border-radius:4px;background:var(--line-soft);overflow:hidden}
+.issue-row .ib i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--navy-2),var(--gold))}
+.issue-row .iv{width:76px;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:12px}
+
+.lg-cred{margin-top:28px;border-top:1px solid rgba(255,255,255,.12);padding-top:18px}
+.cred-lbl{font-size:11.5px;letter-spacing:.3px;color:rgba(255,255,255,.62);margin-bottom:15px;line-height:1.55;max-width:440px}
+.cred-lbl b{color:#e8c96a;font-weight:700}
+.lg-logos{display:flex;align-items:center;gap:24px;flex-wrap:wrap;row-gap:16px}
+.lg-logo{display:inline-flex;align-items:center;height:30px}
+.lg-logo img{height:30px;width:auto;max-width:132px;filter:brightness(0) invert(1);opacity:.85;transition:opacity .15s}
+.lg-logo img:hover{opacity:1}
+.lg-logo .lf{font-size:12.5px;font-weight:800;letter-spacing:.4px;color:rgba(255,255,255,.78);white-space:nowrap}
 </style>
 </head>
 <body>
@@ -528,23 +629,26 @@ textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba
     <div class="mark"><svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg"><path d="M6 5 L47 49 L47 105 L6 105 Z" fill="currentColor"/><path d="M53 5 H94 V105 L53 53 Z" fill="currentColor"/></svg></div>
     <div><h1>Insurance Digital Risk Network</h1><small>THE TRUST LAYER OF INDONESIAN INSURANCE</small></div>
   </div>
-  <div class="lg-watermark"><svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg"><g fill="#ffffff"><path d="M20 25 L85 96 L85 192 L20 192 Z"/><path d="M112 25 H177 V192 L112 102 Z"/><text x="212" y="152" font-family="Georgia,'Times New Roman',serif" font-size="128" font-weight="700" letter-spacing="8">IDRN</text><text x="216" y="192" font-family="Georgia,'Times New Roman',serif" font-size="20" letter-spacing="1.5">The Trust Layer Of Indonesian Insurance</text></g></svg></div>
   <div class="lg-body">
     <div class="lg-hero">
-      <div class="lg-lockup"><svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg" fill="#ffffff">
-        <path d="M14 18 L72 82 L72 168 L14 168 Z"/>
-        <path d="M96 18 H154 V168 L96 92 Z"/>
-        <text x="188" y="134" font-family="Georgia,'Times New Roman',serif" font-size="118" font-weight="700" letter-spacing="6">IDRN</text>
-        <text x="192" y="172" font-family="Georgia,'Times New Roman',serif" font-size="20" letter-spacing="1.6">The Trust Layer Of Indonesian Insurance</text>
-      </svg></div>
-      <div class="eyebrow">DIPERCAYA DAN DIGUNAKAN OLEH PERUSAHAAN ASURANSI & REGULATOR</div>
       <h2>Satu jaringan.<br>Seluruh risiko klaim nasional, terpantau.</h2>
       <p>IDRN menghubungkan penyelenggara asuransi, penilai klaim, dan pengawas dalam satu infrastruktur scoring risiko, deteksi klaim ganda lintas perusahaan, dan integrity anchor dokumen yang divalidasi multi-pihak.</p>
       <div class="lg-stats">
-        <div class="lg-stat"><b>Rp4,28 M</b><span>Kerugian dicegah YTD</span></div>
+        <div class="lg-stat"><b>Rp 4,28 M</b><span>Kerugian fraud dicegah YTD</span></div>
         <div class="lg-stat"><b>99,98%</b><span>Uptime 12 bulan</span></div>
         <div class="lg-stat"><b>&lt; 900 ms</b><span>Scoring per klaim</span></div>
         <div class="lg-stat"><b>3 pihak</b><span>Ledger validators</span></div>
+      </div>
+      <div class="lg-cred">
+        <div class="cred-lbl">IDRN saat ini terdaftar sebagai <b>Inovator</b> di Innovation Hub · Pusat Inovasi Digital Indonesia</div>
+        <div class="lg-logos">
+          <span class="lg-logo"><img src="hub-bi.png" alt="Bank Indonesia" onerror="hubFallback(this,'Bank Indonesia')"></span>
+          <span class="lg-logo"><img src="hub-ojk.png" alt="OJK" onerror="hubFallback(this,'OJK')"></span>
+          <span class="lg-logo"><img src="hub-aspi.png" alt="ASPI" onerror="hubFallback(this,'ASPI')"></span>
+          <span class="lg-logo"><img src="hub-fintech.png" alt="Fintech Indonesia" onerror="hubFallback(this,'Fintech Indonesia')"></span>
+          <span class="lg-logo"><img src="hub-apuvindo.png" alt="APUVINDO" onerror="hubFallback(this,'APUVINDO')"></span>
+          <span class="lg-logo"><img src="hub-lppi.png" alt="LPPI" onerror="hubFallback(this,'LPPI')"></span>
+        </div>
       </div>
     </div>
     <form class="login-card" id="loginForm">
@@ -561,9 +665,26 @@ textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba
         <button type="button" class="demo-btn" data-role="nasabah"><b>PEMEGANG POLIS</b><span>Nuri Agus Ramdhani</span></button>
         <button type="button" class="demo-btn" data-role="aaui" style="grid-column:1/-1"><b>ASOSIASI INDUSTRI</b><span>AAUI — Asosiasi Asuransi Umum Indonesia</span></button>
       </div>
+      <button type="button" class="pv-open" onclick="openPublicVerify()">🔎 Verifikasi keaslian polis (tanpa login)</button>
     </form>
   </div>
   <div class="lg-foot">© 2026 IDRN — Insurance Digital Risk Network · Seluruh data bersifat fiktif untuk keperluan demonstrasi</div>
+</div>
+
+<!-- ============ VERIFIKASI PUBLIK (pra-login) ============ -->
+<div id="page-verify">
+  <div class="pv-top"><div class="mark2"><svg viewBox="0 0 100 110" style="width:22px;height:22px" fill="#0b1f3d" xmlns="http://www.w3.org/2000/svg"><path d="M6 5 L47 49 L47 105 L6 105 Z"/><path d="M53 5 H94 V105 L53 53 Z"/></svg></div><div><b style="font-size:15px">IDRN</b><small>VERIFIKASI POLIS PUBLIK</small></div></div>
+  <div class="pv-wrap">
+    <div class="pv-title"><h2>Verifikasi Keaslian Polis</h2><p>Pindai QR pada dokumen polis, atau masukkan Nomor IDRN untuk memastikan polis benar terdaftar di jaringan IDRN.</p></div>
+    <div class="pv-search">
+      <div class="field"><label>NOMOR IDRN</label><input type="text" id="pvIdrn" placeholder="IDRN-2026-XX-000000" autocomplete="off"></div>
+      <div class="field" id="pvLast4Wrap"><label>4 DIGIT TERAKHIR NOMOR POLIS</label><input type="text" id="pvLast4" maxlength="4" inputmode="numeric" placeholder="mis. 0512" autocomplete="off"><div class="hint" style="color:var(--dim)">diperlukan untuk pencarian manual (anti penyalahgunaan)</div></div>
+      <button type="button" class="btn-primary" onclick="pvManualLookup()">Verifikasi Polis</button>
+    </div>
+    <div id="pvPublicResult"></div>
+    <div class="pv-back" id="pvBack" onclick="closePublicVerify()">‹ Kembali ke halaman masuk</div>
+  </div>
+  <div class="lg-foot" style="max-width:440px;margin:0 auto">© 2026 IDRN · Verifikasi publik tidak menampilkan data pribadi (UU PDP No. 27/2022)</div>
 </div>
 
 <!-- ================== APP ================== -->
@@ -586,6 +707,7 @@ textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba
       <div class="page-title"><div><h2>Executive Summary</h2><p>PT Asuransi Jaya — periode berjalan Juli 2026</p></div>
         <button class="btn btn-gold" onclick="printExec()">⎙ &nbsp;Cetak Laporan Direksi</button></div>
 
+      <div class="panel briefing" style="margin-bottom:18px"><div class="panel-head"><div><h3>Registrasi Polis — Issuance-First</h3><p>Titik masuk jaringan IDRN saat penerbitan polis (basis bisnis: biaya polis baru)</p></div><button class="btn btn-navy" onclick="showPage('pg-reg-single')">+ Registrasi Polis</button></div><div class="panel-body"><div class="grid reg-metrics"><div class="kpi"><label>TOTAL POLIS TEREGISTRASI</label><div class="num" id="rgkTotal">0</div><div class="sub">seluruh jaringan</div></div><div class="kpi k-cyan"><label>REGISTRASI BULAN INI</label><div class="num" id="rgkMonth">0</div><div class="sub">Juli 2026</div></div><div class="kpi k-amber"><label>FLAG SENTINEL</label><div class="num" id="rgkFlags">0</div><div class="sub">saat penerbitan</div></div><div class="kpi k-green"><label>SCAN VERIFIKASI PUBLIK</label><div class="num" id="rgkScan">0</div><div class="sub">dari audit log</div></div></div></div></div>
       <div class="value-hero">
         <div class="vh-main">
           <div class="eyebrow">NILAI KERUGIAN FRAUD YANG DICEGAH — YEAR TO DATE</div>
@@ -664,8 +786,8 @@ textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba
 
     <!-- ===== INTELIJEN KASUS (SIU) ===== -->
     <section class="page" id="pg-cases">
-      <div class="crumb">Beranda / Case Intelligence</div>
-      <div class="page-title"><div><h2>Case Intelligence — Unit Investigasi Khusus</h2><p>Manajemen kasus fraud end-to-end dengan SLA dan eskalasi otomatis</p></div></div>
+      <div class="crumb">Beranda / Fraud Intelligence</div>
+      <div class="page-title"><div><h2>Fraud Intelligence — Unit Investigasi Khusus</h2><p>Manajemen kasus fraud end-to-end dengan SLA dan eskalasi otomatis</p></div></div>
       <div class="grid kpis">
         <div class="kpi k-red"><label>KASUS AKTIF</label><div class="num" id="caseActive">4</div><div class="sub">2 prioritas P1/P2</div></div>
         <div class="kpi k-amber"><label>RATA-RATA UMUR KASUS</label><div class="num">6,2<small> hari</small></div><div class="sub">Target &lt; 14 hari</div></div>
@@ -820,6 +942,155 @@ textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba
       <div id="opsHost"></div>
     </section>
 
+    <!-- ===== REGISTRASI POLIS — TUNGGAL ===== -->
+    <section class="page" id="pg-reg-single">
+      <div class="crumb">Beranda / Registrasi Polis / Registrasi Tunggal</div>
+      <div class="page-title"><div><h2>Registrasi Polis</h2><p>Titik masuk jaringan IDRN saat penerbitan polis — hasilkan Nomor IDRN, QR verifikasi & pemeriksaan Sentinel</p></div>
+        <button class="btn" onclick="regFillSample()">Isi contoh</button></div>
+      <div class="reg-note"><span>🔒</span><div><b>Kepatuhan UU PDP No. 27/2022.</b> NIK di-hash <b>SHA-256</b> di sisi klien dan <b>tidak pernah disimpan mentah</b>. Nama tertanggung tidak disimpan. Nilai pertanggungan disimpan sebagai band. Halaman verifikasi publik tidak menampilkan data pribadi apa pun.</div></div>
+      <div class="reg-cols">
+        <div class="panel" style="margin:0">
+          <div class="panel-head"><div><h3>Formulir Penerbitan</h3><p>Endpoint setara <span class="mono">POST /api/v1/policies/register</span></p></div></div>
+          <div class="panel-body">
+            <div class="reg-grid">
+              <div class="field"><label>NOMOR POLIS *</label><input type="text" id="rgNoPolis" placeholder="mis. POL-KB-2026-004821"></div>
+              <div class="field"><label>NIK (16 DIGIT) *</label><input type="text" id="rgNik" maxlength="16" inputmode="numeric" placeholder="16 digit"><div class="hint">di-hash, tidak disimpan mentah</div></div>
+              <div class="field"><label>NAMA TERTANGGUNG</label><input type="text" id="rgNama" placeholder="opsional"><div class="hint">tidak disimpan (hanya validasi awal)</div></div>
+              <div class="field"><label>LINI BISNIS *</label><select id="rgLini"><option value="kendaraan">Kendaraan</option><option value="properti">Properti</option><option value="kesehatan">Kesehatan</option><option value="kredit">Kredit</option><option value="pengangkutan">Pengangkutan</option><option value="lainnya">Lainnya</option></select></div>
+              <div class="field"><label>TANGGAL MULAI *</label><input type="date" id="rgMulai"></div>
+              <div class="field"><label>TANGGAL AKHIR *</label><input type="date" id="rgAkhir"></div>
+              <div class="field"><label>BAND NILAI PERTANGGUNGAN *</label><select id="rgBand"><option value="&lt;100jt">&lt; 100 jt</option><option value="100-500jt">100–500 jt</option><option value="500jt-1M">500 jt – 1 M</option><option value="1-5M">1 – 5 M</option><option value="&gt;5M">&gt; 5 M</option></select></div>
+              <div class="field"><label>OBJEK PERTANGGUNGAN</label><input type="text" id="rgObjek" placeholder="opsional — mis. nopol B1234XYZ"><div class="hint">di-hash untuk deteksi over-insurance</div></div>
+            </div>
+            <div class="err-msg" id="rgErr"></div>
+            <button class="btn btn-navy" style="width:100%;margin-top:6px" onclick="regSubmitSingle()">Terbitkan &amp; Registrasi ke IDRN</button>
+          </div>
+        </div>
+        <div id="rgResult"></div>
+      </div>
+    </section>
+
+    <!-- ===== REGISTRASI BATCH ===== -->
+    <section class="page" id="pg-reg-batch">
+      <div class="crumb">Beranda / Registrasi Polis / Registrasi Batch</div>
+      <div class="page-title"><div><h2>Registrasi Batch</h2><p>Untuk penyelenggara yang belum integrasi API — unggah CSV/XLSX (maks 10.000 baris)</p></div>
+        <button class="btn" onclick="regDownloadTemplate()">⬇ Unduh Template CSV</button></div>
+      <div class="panel">
+        <div class="panel-body">
+          <input type="file" id="rgFile" accept=".csv,.xlsx" style="display:none">
+          <div class="dropzone" onclick="document.getElementById('rgFile').click()"><b>Klik untuk pilih berkas CSV/XLSX</b><span>Kolom: nomor_polis, nik, lini_bisnis, tanggal_mulai, tanggal_akhir, band_nilai_pertanggungan, objek_pertanggungan</span></div>
+        </div>
+      </div>
+      <div id="rgBatchPreview"></div>
+    </section>
+
+    <!-- ===== DAFTAR POLIS TEREGISTRASI ===== -->
+    <section class="page" id="pg-reg-list">
+      <div class="crumb">Beranda / Registrasi Polis / Daftar Polis Teregistrasi</div>
+      <div class="page-title"><div><h2>Daftar Polis Teregistrasi</h2><p>Seluruh polis yang telah terdaftar di jaringan IDRN</p></div></div>
+      <div class="panel">
+        <div class="panel-head">
+          <div><h3>Registry Polis</h3><p id="rgListCount"></p></div>
+          <div class="chips" id="rgListFilter">
+            <button class="chip on" data-f="all">Semua</button>
+            <button class="chip" data-f="Aktif">Aktif</button>
+            <button class="chip" data-f="Berakhir">Berakhir</button>
+            <button class="chip" data-f="flag">Ada Flag</button>
+          </div>
+        </div>
+        <div style="padding:12px 22px 0"><div class="searchbox" style="max-width:340px;margin:0"><span>⌕</span><input id="rgListSearch" placeholder="Cari nomor IDRN / polis…" style="border:0;outline:none;background:transparent;flex:1;font-family:inherit;font-size:12.5px" oninput="renderRegList()"></div></div>
+        <div style="overflow-x:auto"><table><thead><tr><th>NOMOR IDRN</th><th>NOMOR POLIS</th><th>LINI</th><th>PERIODE</th><th>STATUS</th><th>SENTINEL</th><th>REGISTRASI</th><th></th></tr></thead><tbody id="rgListRows"></tbody></table></div>
+        <div class="note">NIK disimpan sebagai hash SHA-256 · nomor polis ditampilkan ter-masking sesuai prinsip data minimization.</div>
+      </div>
+    </section>
+
+    <!-- ===== VERIFIKASI PUBLIK ===== -->
+    <section class="page" id="pg-verify">
+      <div class="crumb">Beranda / Verifikasi Publik</div>
+      <div class="page-title"><div><h2>Verifikasi Polis Publik</h2><p>Halaman publik (tanpa login) — simulasi tampilan saat QR dipindai dari ponsel</p></div></div>
+      <div class="verify-public">
+        <div class="panel" style="margin-bottom:14px"><div class="panel-body" style="display:flex;gap:9px">
+          <input type="text" id="vpInput" placeholder="Masukkan Nomor IDRN (mis. IDRN-2026-KB-000001)" style="flex:1;border:1px solid var(--line);border-radius:8px;padding:11px 13px;font-family:inherit;font-size:13px">
+          <button class="btn btn-navy" onclick="verifyLookupManual()">Verifikasi</button>
+        </div></div>
+        <div id="vpResult"></div>
+      </div>
+    </section>
+
+    <!-- ===== INTEGRASI API ===== -->
+    <section class="page" id="pg-apidoc">
+      <div class="crumb">Beranda / Integrasi API</div>
+      <div class="page-title"><div><h2>Integrasi API — Registrasi Polis</h2><p>Jalur A: integrasi langsung core system penyelenggara ke jaringan IDRN</p></div></div>
+      <div class="grid charts">
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Endpoint</h3><p>Registrasi polis saat penerbitan · respons &lt; 1 detik</p></div></div>
+          <div class="panel-body"><div class="codebox" id="apiDocBox"></div></div>
+        </div>
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Kredensial</h3><p>API key perusahaan Anda</p></div></div>
+          <div class="panel-body">
+            <div class="kv"><div><label>KODE PERUSAHAAN</label><b id="apiCoCode">—</b></div><div><label>API KEY</label><b class="mono" id="apiKey">—</b></div></div>
+            <div class="reco r-med" style="margin-top:14px"><b>Catatan keamanan</b>API key hanya ditampilkan ter-masking. Flag Sentinel bersifat informatif — registrasi tidak pernah diblokir.</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><div><h3>Perusahaan Terdaftar (Admin)</h3><p>Registry penyelenggara — basis penagihan per polis</p></div></div>
+        <div style="overflow-x:auto"><table><thead><tr><th>KODE</th><th>PERUSAHAAN</th><th>API KEY</th><th>POLIS TEREGISTRASI</th><th>STATUS</th></tr></thead><tbody id="apiCoRows"></tbody></table></div>
+      </div>
+    </section>
+
+    <!-- ===== PRIVASI (UU PDP) ===== -->
+    <section class="page" id="pg-privacy">
+      <div class="crumb">Beranda / Privasi</div>
+      <div class="page-title"><div><h2>Kebijakan Privasi &amp; Pemrosesan Data</h2><p>Ringkasan kepatuhan UU Pelindungan Data Pribadi No. 27 Tahun 2022</p></div></div>
+      <div class="panel"><div class="panel-body" style="font-size:13.5px;line-height:1.8;color:var(--ink)">
+        <p style="margin-bottom:12px"><b>Data yang diproses.</b> Nomor polis, NIK (hanya untuk perhitungan hash), lini bisnis, periode pertanggungan, band nilai pertanggungan, dan hash objek pertanggungan (opsional).</p>
+        <p style="margin-bottom:12px"><b>Data yang disimpan.</b> Hanya <span class="idrn-badge" style="font-size:12px">nik_hash = SHA-256(pepper + NIK)</span>. NIK mentah, nama tertanggung, dan nilai pertanggungan eksak <b>tidak disimpan</b>. Berkas unggahan diproses in-memory dan tidak dipersist.</p>
+        <p style="margin-bottom:12px"><b>Dasar pemrosesan.</b> Pelaksanaan kewajiban pengendalian risiko lintas penyelenggara serta kepentingan sah pencegahan fraud, dengan prinsip minimalisasi data.</p>
+        <p style="margin-bottom:12px"><b>Retensi.</b> Rekaman registrasi disimpan selama periode pertanggungan + 5 tahun untuk kebutuhan audit, kemudian dianonimkan permanen.</p>
+        <p><b>Hak subjek data & audit.</b> Setiap registrasi, lookup verifikasi, dan unggahan batch dicatat pada audit log <b>append-only</b> (tanpa endpoint ubah/hapus). Halaman verifikasi publik tidak pernah menampilkan data pribadi.</p>
+      </div></div>
+    </section>
+
+    <!-- ===== POLICY PASSPORT (REGULATOR) ===== -->
+    <section class="page" id="pg-reg-policy">
+      <div class="crumb">Beranda / Passport & RBC / Policy Passport</div>
+      <div class="page-title"><div><h2>Policy Passport — Pengawasan Penerbitan Polis</h2><p>Pertumbuhan premi &amp; sebaran penerbitan polis · basis penilaian Risk-Based Capital secara real-time</p></div></div>
+      <div class="chips" id="rpSel" style="margin-bottom:16px"></div>
+      <div class="grid kpis" id="rpKpi"></div>
+      <div class="grid charts">
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Pertumbuhan Premi Bruto</h3><p>12 bulan berjalan · Rp miliar</p></div></div>
+          <div class="panel-body"><div class="chart-box"><canvas id="rpPremiChart"></canvas></div></div></div>
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Komposisi Premi per Lini</h3><p>Porsi premi bruto</p></div></div>
+          <div class="panel-body"><div class="chart-box"><canvas id="rpLineChart"></canvas></div></div></div>
+      </div>
+      <div class="grid charts">
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Lokasi Penerbitan Polis</h3><p>Sebaran provinsi penerbitan (top 6)</p></div></div>
+          <div class="panel-body" id="rpIssue"></div></div>
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Risk-Based Capital (RBC)</h3><p>Solvabilitas real-time · min. regulator 120%</p></div></div>
+          <div class="panel-body" id="rpRbc"></div></div>
+      </div>
+    </section>
+
+    <!-- ===== CLAIM PASSPORT (REGULATOR) ===== -->
+    <section class="page" id="pg-reg-claim">
+      <div class="crumb">Beranda / Passport & RBC / Claim Passport</div>
+      <div class="page-title"><div><h2>Claim Passport — Pengawasan Klaim Makro</h2><p>Struktur &amp; tren jenis klaim yang terjadi · sinyal tekanan terhadap Risk-Based Capital</p></div></div>
+      <div class="chips" id="rcSel" style="margin-bottom:16px"></div>
+      <div class="grid kpis" id="rcKpi"></div>
+      <div class="grid charts">
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Tren Beban Klaim</h3><p>12 bulan berjalan · Rp miliar</p></div></div>
+          <div class="panel-body"><div class="chart-box"><canvas id="rcTrendChart"></canvas></div></div></div>
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Makro Jenis Klaim</h3><p>Distribusi klaim per lini</p></div></div>
+          <div class="panel-body"><div class="chart-box"><canvas id="rcMixChart"></canvas></div></div></div>
+      </div>
+      <div class="grid charts">
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Rincian Jenis Klaim</h3><p>Volume &amp; kontribusi per lini</p></div></div>
+          <div class="panel-body" id="rcMacro"></div></div>
+        <div class="panel" style="margin:0"><div class="panel-head"><div><h3>Risk-Based Capital (RBC)</h3><p>Dampak severitas klaim terhadap solvabilitas</p></div></div>
+          <div class="panel-body" id="rcRbc"></div></div>
+      </div>
+    </section>
+
     <!-- ===== SIMULATOR ===== -->
     <section class="page" id="pg-sim">
       <div class="crumb">Beranda / Threshold Simulator</div>
@@ -903,6 +1174,7 @@ textarea:focus{outline:none;border-color:var(--navy-2);box-shadow:0 0 0 3px rgba
         <div class="kpi k-green"><label>POLIS AKTIF</label><div class="num" data-count="2">0</div><div class="sub">In-force</div></div>
         <div class="kpi k-amber"><label>KLAIM BERJALAN</label><div class="num" data-count="2">0</div><div class="sub">Dari 3 pengajuan</div></div>
       </div>
+      <div class="panel"><div class="panel-head"><div><h3>Registrasi IDRN — Polis Anda</h3><p>Bukti polis terdaftar di jaringan IDRN · dapat diverifikasi siapa pun via QR</p></div><span class="status s-approved">TERVERIFIKASI</span></div><div class="panel-body"><div id="myIdrnBlock"></div></div></div>
       <div class="panel"><div class="panel-head"><div><h3>Polis Aktif Saya</h3><p>Klik polis untuk melihat coverage dan detail pertanggungan</p></div></div>
         <div class="panel-body" id="myPolicies"></div></div>
       <div class="panel"><div class="panel-head"><div><h3>Perkembangan Pengajuan Klaim</h3><p>Klik setiap tahapan pada progress bar untuk melihat detail, waktu, dan penanggung jawabnya</p></div></div>
@@ -992,11 +1264,11 @@ const CASES=[
 
 const USERS={
   insurer:{nama:'Administrator Klaim',org:'PT Asuransi Jaya',role:'PERUSAHAAN ASURANSI',sub:'PORTAL PERUSAHAAN ASURANSI',uname:'admin.jaya',
-    nav:[['pg-exec','▦','Executive Summary'],['pg-ops','◍','Command Center'],['pg-claims','☰','Daftar Klaim'],['pg-cases','◈','Case Intelligence'],['pg-sim','∿','Threshold Simulator'],['pg-feeds','⇄','Data Integration'],['pg-monitor','◉','Monitoring'],['pg-ledger','▣','Ledger & Security'],['pg-sla','◎','Reports & SLA']],home:'pg-exec'},
+    nav:[['pg-exec','▦','Executive Summary'],['pg-ops','◍','Command Center'],['__grp1','','Policy Passport'],['pg-reg-single','⊕','Registrasi Polis','sub'],['pg-reg-batch','⇪','Registrasi Batch','sub'],['pg-reg-list','▤','Daftar Polis','sub'],['pg-verify','◑','Verifikasi Publik','sub'],['__grp2','','Claim Passport'],['pg-claims','☰','Daftar Klaim','sub'],['pg-cases','◈','Fraud Intelligence','sub'],['pg-sim','∿','Threshold Simulator'],['pg-feeds','⇄','Data Integration'],['pg-monitor','◉','Monitoring'],['pg-ledger','▣','Ledger & Security'],['pg-sla','◎','Reports & SLA'],['pg-apidoc','⧉','Integrasi API'],['pg-privacy','⚖','Privasi (PDP)']],home:'pg-exec'},
   adjuster:{nama:'Budi Santoso, AAIK',org:'Penilai Klaim Tersertifikasi',role:'PENILAI KLAIM',sub:'PORTAL PENILAI',uname:'b.santoso',
     nav:[['pg-queue','☰','Antrean Penilaian'],['pg-ops','◍','Command Center'],['pg-feeds','⇄','Data Integration'],['pg-monitor','◉','Monitoring']],home:'pg-queue'},
   regulator:{nama:'Direktorat Pengawasan IKNB',org:'Otoritas Jasa Keuangan',role:'PENGAWAS',sub:'PORTAL PENGAWASAN',uname:'ojk.iknb',
-    nav:[['pg-regulator','▦','Pengawasan'],['pg-ops','◍','Command Center'],['pg-audit','≡','Audit Trail'],['pg-ledger','▣','Ledger & Security'],['pg-monitor','◉','Monitoring'],['pg-feeds','⇄','Data Integration']],home:'pg-regulator'},
+    nav:[['pg-regulator','▦','Pengawasan'],['pg-ops','◍','Command Center'],['__grpR','','Passport & RBC'],['pg-reg-policy','⊕','Policy Passport','sub'],['pg-reg-claim','☰','Claim Passport','sub'],['pg-audit','≡','Audit Trail'],['pg-ledger','▣','Ledger & Security'],['pg-monitor','◉','Monitoring'],['pg-feeds','⇄','Data Integration']],home:'pg-regulator'},
   nasabah:{nama:'Nuri Agus Ramdhani',org:'Pemegang Polis Perorangan',role:'PEMEGANG POLIS',sub:'PORTAL PEMEGANG POLIS',uname:'nuri.agus',
     nav:[['pg-mine','▦','Polis & Klaim Saya']],home:'pg-mine'},
   aaui:{nama:'Sekretariat AAUI',org:'Asosiasi Asuransi Umum Indonesia',role:'ASOSIASI',sub:'PORTAL ASOSIASI INDUSTRI',uname:'aaui.sekretariat',
@@ -1118,10 +1390,10 @@ function logout(){
 function buildSidebar(){
   const pend=CLAIMS.filter(c=>c.status==='Menunggu').length;
   document.getElementById('sidebar').innerHTML='<div class="nav-label">NAVIGASI</div>'+
-    currentUser.nav.map(([id,ic,label])=>
-      `<button class="nav-item" data-pg="${id}" onclick="showPage('${id}')"><span class="ic">${ic}</span>${label}
-       ${id==='pg-queue'&&pend?`<span class="nav-badge">${pend}</span>`:''}
-       ${id==='pg-cases'?`<span class="nav-badge">${CASES.length}</span>`:''}</button>`).join('')
+    currentUser.nav.map(function(it){var id=it[0],ic=it[1],label=it[2],sub=it[3];
+      if(id&&id.indexOf('__grp')===0)return '<div class="nav-group">'+label+'</div>';
+      var badge=(id==='pg-queue'&&pend)?('<span class="nav-badge">'+pend+'</span>'):(id==='pg-cases'?('<span class="nav-badge">'+CASES.length+'</span>'):'');
+      return '<button class="nav-item'+(sub?' nav-sub':'')+'" data-pg="'+id+'" onclick="showPage(\''+id+'\')"><span class="ic">'+ic+'</span>'+label+badge+'</button>';}).join('')
     +`<div class="side-meta">Model scoring <b>IDRN-RS v2.1</b><br>SLA 99,95% · MFA aktif<br>Ledger anchor setiap 10 menit<br><br>
       <b>Dukungan 24/7</b><br>Manajer akun khusus<br>Respons kritis &lt; 15 menit</div>`;
 }
@@ -1147,7 +1419,15 @@ function showPage(id){
   if(id==='pg-sim'&&!inited.has(id))initSim();
   if(id==='pg-aaui'&&!inited.has(id))initAaui();
   if(id==='pg-registry'&&!inited.has(id)){renderRegistry();document.getElementById('regSearch').addEventListener('input',e=>renderRegistry(e.target.value));}
-  if(id==='pg-mine'&&!inited.has(id)){renderMyPolicies();renderMyClaims();}
+  if(id==='pg-mine'){if(!inited.has(id)){renderMyPolicies();renderMyClaims();}renderMyIdrn();}
+  if(id==='pg-reg-single'&&!inited.has(id))initRegSingle();
+  if(id==='pg-reg-batch'&&!inited.has(id))initRegBatch();
+  if(id==='pg-reg-list'){if(!inited.has(id))initRegListFilter();renderRegList();}
+  if(id==='pg-verify'&&!inited.has(id))initVerify();
+  if(id==='pg-apidoc')initApiDoc();
+  if(id==='pg-exec')refreshRegKpis();
+  if(id==='pg-reg-policy')initRegPolicy();
+  if(id==='pg-reg-claim')initRegClaim();
   inited.add(id);
 }
 
@@ -1558,7 +1838,7 @@ document.getElementById('ovCmd').addEventListener('click',e=>{if(e.target.id==='
 document.getElementById('cmdInput').addEventListener('input',e=>renderCmd(e.target.value));
 function renderCmd(q){
   q=q.toLowerCase();
-  const pages=currentUser?currentUser.nav.map(([id,ic,label])=>({t:'page',id,ic,label})):[];
+  const pages=currentUser?currentUser.nav.filter(x=>x[0].indexOf('__grp')!==0).map(([id,ic,label])=>({t:'page',id,ic,label})):[];
   const claims=CLAIMS.filter(c=>!q||c.nama.toLowerCase().includes(q)||c.no.includes(q))
     .map(c=>({t:'claim',id:c.id,ic:'▤',label:c.nama,sub:c.no+' · '+c.risk+'/100'}));
   const cases=CASES.filter(k=>!q||k.subj.toLowerCase().includes(q)||k.id.toLowerCase().includes(q))
@@ -2008,6 +2288,305 @@ function printExec(){
   audit('LAPORAN_DIREKSI_DICETAK','JUL-2026','Laporan eksekutif bulanan dicetak');
   window.print();
 }
+
+/* ============ MODUL REGISTRASI POLIS (issuance-first · simulasi front-end) ============ */
+const REG_PEPPER='idrn-demo-pepper-2026'; /* produksi: dari env, bukan hardcode */
+const LINE_CODE={kendaraan:'KB',properti:'PR',kesehatan:'KS',kredit:'KR',pengangkutan:'PG',lainnya:'LN'};
+const LINE_LABEL={kendaraan:'Kendaraan',properti:'Properti',kesehatan:'Kesehatan',kredit:'Kredit',pengangkutan:'Pengangkutan',lainnya:'Lainnya'};
+const COMPANIES=[{kode:'ASR-001',nama:'PT Asuransi Jaya',key:'idrnk_live_9f2a…c7'},{kode:'ASR-002',nama:'PT Lindung Sentosa',key:'idrnk_live_3b81…4d'},{kode:'ASR-003',nama:'PT Mitra Proteksi',key:'idrnk_live_a05e…19'}];
+let REGISTERED=[], regSeq=0, verifyScans=0, rgListF='all', regBatchRows=[];
+let REG_WATCH=new Set();
+function curCo(){return {kode:'ASR-001',nama:(currentUser&&currentUser.org)||'PT Asuransi Jaya'};}
+function rgVal(id){const el=document.getElementById(id);return el?el.value:'';}
+async function sha256Hex(s){try{if(window.crypto&&crypto.subtle){const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(h)).map(x=>x.toString(16).padStart(2,'0')).join('');}}catch(e){}
+  let x=5381;for(let i=0;i<s.length;i++)x=((x<<5)+x+s.charCodeAt(i))>>>0;return 'fnv1a'+x.toString(16).padStart(8,'0');}
+function maskPolis(no){if(!no)return '—';const s=String(no);return s.length<=4?('XXX'+s):('XXX…'+s.slice(-4));}
+function polStatus(akhir){return new Date(akhir)>=new Date(new Date().toDateString())?'Aktif':'Berakhir';}
+function ovl(a1,a2,b1,b2){return new Date(a1)<=new Date(b2)&&new Date(b1)<=new Date(a2);}
+function nextIdrn(lini){regSeq++;return 'IDRN-2026-'+(LINE_CODE[lini]||'LN')+'-'+String(regSeq).padStart(6,'0');}
+function signToken(idrn){return btoa(idrn+'|'+Date.now()).replace(/=+$/,'');}
+function verifyUrl(idrn){return 'https://verify.idrn.id/'+idrn;}
+function sentinelChecks(rec){
+  const flags=[];
+  const dup=REGISTERED.filter(r=>r.nik_hash===rec.nik_hash&&r.lini===rec.lini&&r.co!==rec.co&&ovl(r.mulai,r.akhir,rec.mulai,rec.akhir));
+  if(dup.length){const cos=new Set(dup.map(r=>r.co));flags.push({code:'DUP_ACTIVE_POLICY',severity:'warning',message:'Identitas ini memiliki '+dup.length+' polis '+LINE_LABEL[rec.lini]+' aktif di '+cos.size+' penyelenggara lain'});}
+  if(rec.objek_hash){const ov=REGISTERED.filter(r=>r.objek_hash===rec.objek_hash&&r.co!==rec.co&&ovl(r.mulai,r.akhir,rec.mulai,rec.akhir));if(ov.length)flags.push({code:'OVER_INSURANCE',severity:'warning',message:'Objek pertanggungan sama memiliki '+ov.length+' polis aktif di penyelenggara berbeda'});}
+  if(REG_WATCH.has(rec.nik_hash))flags.push({code:'WATCHLIST_HIT',severity:'alert',message:'Identitas berada pada watchlist SIU lintas penyelenggara'});
+  return flags;
+}
+async function registerPolicy(p){
+  const nik_hash=await sha256Hex(REG_PEPPER+p.nik);
+  const objek_hash=p.objek?await sha256Hex(REG_PEPPER+'|obj|'+p.objek):null;
+  const co=curCo();
+  const rec={idrn:nextIdrn(p.lini),nomor_polis:p.nomor_polis,nik_hash:nik_hash,objek_hash:objek_hash,lini:p.lini,mulai:p.mulai,akhir:p.akhir,band:p.band,co:co.kode,co_nama:co.nama,ts:now(),anchor_batch_id:null};
+  rec.flags=sentinelChecks(rec);
+  REGISTERED.push(rec);
+  try{audit('REGISTRASI_POLIS',rec.idrn,'Polis '+LINE_LABEL[p.lini]+' terdaftar · '+rec.flags.length+' flag Sentinel');}catch(e){}
+  return rec; /* NIK & nama mentah dibuang — tidak disimpan */
+}
+function validatePayload(p){const e=[];if(!p.nomor_polis)e.push('Nomor polis wajib');if(!/^\d{16}$/.test(p.nik||''))e.push('NIK harus 16 digit angka');if(!p.mulai||!p.akhir)e.push('Tanggal wajib diisi');if(p.mulai&&p.akhir&&new Date(p.akhir)<new Date(p.mulai))e.push('Tanggal akhir sebelum tanggal mulai');return e;}
+function genQR(url,size){return new Promise(function(res){if(typeof QRCode==='undefined'){res(null);return;}var d=document.createElement('div');try{new QRCode(d,{text:url,width:size,height:size,correctLevel:QRCode.CorrectLevel.M});}catch(e){res(null);return;}setTimeout(function(){var cv=d.querySelector('canvas');if(cv){try{res(cv.toDataURL('image/png'));}catch(e){res(null);}}else{var im=d.querySelector('img');res(im?im.src:null);}},50);});}
+function initRegSingle(){const t=new Date();const m=document.getElementById('rgMulai'),a=document.getElementById('rgAkhir');if(m)m.value=t.toISOString().slice(0,10);if(a)a.value=new Date(t.getTime()+365*864e5).toISOString().slice(0,10);}
+function regFillSample(){document.getElementById('rgNoPolis').value='POL-KB-2026-004821';document.getElementById('rgNik').value='3201234567890001';document.getElementById('rgNama').value='(nama tidak disimpan)';document.getElementById('rgLini').value='kendaraan';document.getElementById('rgObjek').value='B1234XYZ';}
+async function regSubmitSingle(){
+  const p={nomor_polis:rgVal('rgNoPolis').trim(),nik:rgVal('rgNik').trim(),nama:rgVal('rgNama').trim(),lini:rgVal('rgLini'),mulai:rgVal('rgMulai'),akhir:rgVal('rgAkhir'),band:rgVal('rgBand'),objek:rgVal('rgObjek').trim()};
+  const errs=validatePayload(p),ee=document.getElementById('rgErr');
+  if(errs.length){ee.style.display='block';ee.textContent=errs.join(' · ');return;}ee.style.display='none';
+  const rec=await registerPolicy(p);
+  const url=qrPayload(rec.idrn,signToken(rec.idrn));
+  rec._qr=await genQR(url,220);
+  renderSingleResult(rec);refreshRegKpis();
+  try{toast('Registrasi berhasil',rec.idrn+' — '+(rec.flags.length?rec.flags.length+' flag Sentinel':'tanpa flag'),'ok');}catch(e){}
+}
+function flagHtml(f){const cls=f.severity==='alert'?'alert':'warning';return '<div class="flag '+cls+'"><span class="fi">'+(f.severity==='alert'?'⚠':'!')+'</span><div><b>'+f.code+'</b>'+f.message+'</div></div>';}
+function renderSingleResult(rec){
+  const flags=rec.flags.length?rec.flags.map(flagHtml).join(''):'<div class="flag ok"><span class="fi">✓</span><div><b>BERSIH</b>Tidak ada indikasi Sentinel saat penerbitan.</div></div>';
+  document.getElementById('rgResult').innerHTML=
+  '<div class="panel" style="margin:0"><div class="panel-head"><div><h3>Registrasi Berhasil</h3><p>Terbit &lt; 1 detik · anchor batch: menunggu</p></div><span class="status s-approved">TERDAFTAR</span></div>'+
+  '<div class="panel-body"><div class="kv" style="margin-top:0"><div><label>NOMOR IDRN</label><b class="mono">'+rec.idrn+'</b></div><div><label>VERIFY URL</label><b class="mono" style="font-size:11px">'+verifyUrl(rec.idrn)+'</b></div></div>'+
+  '<div class="sect-label">FLAG SENTINEL (informatif — tidak memblokir)</div>'+flags+
+  '<div class="sect-label">BLOK VERIFIKASI</div>'+
+  '<div class="vblock"><div class="vb-top"><span class="vb-mark">IDRN</span><b style="font-size:12px;color:var(--navy)">Insurance Digital Risk Network</b></div><div class="vb-qr">'+(rec._qr?'<img src="'+rec._qr+'">':'<span style="color:var(--dim);font-size:11px;padding:20px">QR perlu koneksi internet</span>')+'</div><div class="vb-idrn">'+rec.idrn+'</div><div class="vb-cap">Polis terdaftar di jaringan IDRN · pindai untuk verifikasi</div></div>'+
+  '<div class="actions"><button class="btn btn-navy" onclick="downloadBlock(\''+rec.idrn+'\')">⬇ Unduh Blok (PNG)</button><button class="btn" onclick="showPage(\'pg-verify\');verifyPreview(\''+rec.idrn+'\')">Buka Verifikasi Publik</button></div>'+
+  '</div></div>';
+}
+function downloadBlock(idrn){
+  const rec=REGISTERED.find(r=>r.idrn===idrn);if(!rec)return;
+  const W=520,H=680,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+  function finish(){const a=document.createElement('a');a.download=(rec.nomor_polis||rec.idrn)+'.png';a.href=cv.toDataURL('image/png');a.click();}
+  x.fillStyle='#fff';x.fillRect(0,0,W,H);x.strokeStyle='#dde3ec';x.lineWidth=2;x.strokeRect(12,12,W-24,H-24);
+  x.textAlign='center';x.fillStyle='#0b1f3d';x.font='700 24px Georgia,serif';x.fillText('Insurance Digital Risk Network',W/2,58);
+  x.fillStyle='#5b6a80';x.font='600 14px Arial';x.fillText('Blok Verifikasi Polis',W/2,86);
+  function fin(){x.fillStyle='#0b1f3d';x.font='700 22px ui-monospace,monospace';x.fillText(rec.idrn,W/2,602);x.fillStyle='#5b6a80';x.font='400 13px Arial';x.fillText('Polis terdaftar di jaringan IDRN · pindai untuk verifikasi',W/2,634);finish();}
+  if(rec._qr){const im=new Image();im.onload=function(){x.drawImage(im,50,118,420,420);fin();};im.onerror=fin;im.src=rec._qr;}else{x.fillStyle='#8a97ab';x.font='400 13px Arial';x.fillText('(QR perlu koneksi internet)',W/2,330);fin();}
+}
+function verifyRender(rec){
+  const box=document.getElementById('vpResult');if(!box)return;
+  if(!rec){box.innerHTML='<div class="vp-card"><div class="vp-hd bad"><div class="vp-check">✕</div><h3>Tidak Ditemukan</h3><p>Nomor registrasi tidak ada di jaringan IDRN</p></div><div class="vp-body"><p style="font-size:12.5px;color:var(--muted);text-align:center;padding:12px 4px">Pastikan nomor benar, atau hubungi perusahaan asuransi penerbit polis Anda.</p></div></div>';return;}
+  verifyScans++;try{audit('VERIFIKASI_PUBLIK',rec.idrn,'Lookup verifikasi publik');}catch(e){}refreshRegKpis();
+  const st=polStatus(rec.akhir);
+  box.innerHTML='<div class="vp-card"><div class="vp-hd"><div class="vp-check">✓</div><h3>Polis Terverifikasi</h3><p>Terdaftar di Insurance Digital Risk Network</p></div><div class="vp-body">'+
+  '<div class="vp-row"><span>Nomor IDRN</span><b>'+rec.idrn+'</b></div>'+
+  '<div class="vp-row"><span>Perusahaan Asuransi</span><b>'+rec.co_nama+'</b></div>'+
+  '<div class="vp-row"><span>Lini Produk</span><b>'+LINE_LABEL[rec.lini]+'</b></div>'+
+  '<div class="vp-row"><span>Status</span><b><span class="status '+(st==='Aktif'?'s-approved':'s-rejected')+'">'+st+'</span></b></div>'+
+  '<div class="vp-row"><span>Periode</span><b>'+rec.mulai+' → '+rec.akhir+'</b></div>'+
+  '<div class="vp-row"><span>Nomor Polis</span><b>'+maskPolis(rec.nomor_polis)+'</b></div>'+
+  '<div class="vp-row"><span>Waktu Registrasi</span><b>'+rec.ts+'</b></div>'+
+  '<div style="text-align:center"><span class="vp-scan">● Scan terverifikasi</span></div>'+
+  '</div><div class="vp-privacy">Sesuai UU PDP, halaman ini tidak menampilkan nama, NIK, nilai pertanggungan, atau nomor polis lengkap.</div></div>';
+}
+function verifyPreview(idrn){const i=document.getElementById('vpInput');if(i)i.value=idrn;verifyRender(REGISTERED.find(r=>r.idrn===idrn));}
+function verifyLookupManual(){const v=(rgVal('vpInput')||'').trim().toUpperCase();verifyRender(REGISTERED.find(r=>r.idrn.toUpperCase()===v)||null);}
+function initVerify(){const b=document.getElementById('vpResult');if(b)b.innerHTML='<div class="empty-state"><h3>Masukkan Nomor IDRN</h3><p>Atau pindai QR pada blok verifikasi polis.</p></div>';}
+function flagBadges(rec){if(!rec.flags.length)return '<span class="reg-flagbadge rf-clean">BERSIH</span>';return rec.flags.map(f=>{const m={DUP_ACTIVE_POLICY:['rf-dup','DUPLIKASI'],OVER_INSURANCE:['rf-over','OVER-INS'],WATCHLIST_HIT:['rf-watch','WATCHLIST']}[f.code]||['rf-dup',f.code];return '<span class="reg-flagbadge '+m[0]+'">'+m[1]+'</span>';}).join('');}
+function initRegListFilter(){document.querySelectorAll('#rgListFilter .chip').forEach(c=>c.onclick=function(){document.querySelectorAll('#rgListFilter .chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');rgListF=c.dataset.f;renderRegList();});}
+function renderRegList(){
+  const rows=document.getElementById('rgListRows');if(!rows)return;
+  const q=(document.getElementById('rgListSearch')?document.getElementById('rgListSearch').value:'').toLowerCase();
+  let arr=REGISTERED.slice().reverse().filter(r=>{const st=polStatus(r.akhir);if(rgListF==='Aktif'&&st!=='Aktif')return false;if(rgListF==='Berakhir'&&st!=='Berakhir')return false;if(rgListF==='flag'&&!r.flags.length)return false;if(q&&!(r.idrn.toLowerCase().includes(q)||(r.nomor_polis||'').toLowerCase().includes(q)))return false;return true;});
+  const cc=document.getElementById('rgListCount');if(cc)cc.textContent=arr.length+' polis ditampilkan · '+REGISTERED.length+' total teregistrasi';
+  rows.innerHTML=arr.map(r=>{const st=polStatus(r.akhir);return '<tr class="rowlink" onclick="showPage(\'pg-verify\');verifyPreview(\''+r.idrn+'\')"><td class="mono">'+r.idrn+'</td><td>'+maskPolis(r.nomor_polis)+'</td><td>'+LINE_LABEL[r.lini]+'</td><td style="font-size:12px">'+r.mulai+' → '+r.akhir+'</td><td><span class="status '+(st==='Aktif'?'s-approved':'s-rejected')+'">'+st+'</span></td><td>'+flagBadges(r)+'</td><td style="font-size:12px;color:var(--muted)">'+r.ts+'</td><td><span style="color:var(--navy-2);font-size:11px;font-weight:700">Verifikasi ›</span></td></tr>';}).join('')||'<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px">Belum ada polis. Mulai dari menu <b>Registrasi Polis</b>.</td></tr>';
+}
+function dlBlob(content,name,type){const b=new Blob([content],{type:type});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2500);}
+function regDownloadTemplate(){dlBlob('nomor_polis,nik,lini_bisnis,tanggal_mulai,tanggal_akhir,band_nilai_pertanggungan,objek_pertanggungan\nPOL-KB-2026-0001,3201234567890001,kendaraan,2026-07-01,2027-07-01,100-500jt,B1234XYZ\n','template_registrasi_polis.csv','text/csv');}
+function initRegBatch(){const f=document.getElementById('rgFile');if(f&&!f._b){f._b=1;f.addEventListener('change',regHandleFile);}}
+function regHandleFile(e){const file=e.target.files[0];if(!file)return;if(typeof Papa==='undefined'){try{toast('Parser CSV tak tersedia','Butuh koneksi internet untuk memuat pustaka.','err');}catch(_){}return;}Papa.parse(file,{header:true,skipEmptyLines:true,complete:function(res){regBatchRows=res.data.slice(0,10000);regPreviewBatch();}});e.target.value='';}
+function validRow(r,seen){const e=[];if(!r.nomor_polis)e.push('nomor_polis kosong');else if(seen.has(r.nomor_polis))e.push('duplikat dalam file');if(!/^\d{16}$/.test((r.nik||'').trim()))e.push('NIK bukan 16 digit');if(!r.tanggal_mulai||isNaN(Date.parse(r.tanggal_mulai)))e.push('tanggal_mulai invalid');if(!r.tanggal_akhir||isNaN(Date.parse(r.tanggal_akhir)))e.push('tanggal_akhir invalid');return e;}
+function regPreviewBatch(){
+  const seen=new Set();
+  const rowsHtml=regBatchRows.map((r,i)=>{const errs=validRow(r,seen);if(r.nomor_polis)seen.add(r.nomor_polis);r._err=errs;return '<tr class="'+(errs.length?'rowerr':'')+'"><td>'+(i+1)+'</td><td>'+(r.nomor_polis||'—')+'</td><td class="mono" style="font-size:11px">'+((r.nik||'').replace(/.(?=.{4})/g,'•')||'—')+'</td><td>'+(r.lini_bisnis||'—')+'</td><td style="font-size:11px">'+(r.tanggal_mulai||'—')+' → '+(r.tanggal_akhir||'—')+'</td><td style="font-size:11px">'+(errs.length?errs.join('; '):'✓ valid')+'</td></tr>';}).join('');
+  const valid=regBatchRows.filter(r=>!r._err.length).length;
+  document.getElementById('rgBatchPreview').innerHTML='<div class="panel"><div class="panel-head"><div><h3>Pratinjau — '+regBatchRows.length+' baris</h3><p>'+valid+' valid · '+(regBatchRows.length-valid)+' error</p></div><button class="btn btn-navy" onclick="regProcessBatch()">Registrasi '+valid+' Baris Valid</button></div><div style="padding:14px 22px 0" id="rgBatchProg"></div><div style="overflow-x:auto;max-height:360px"><table><thead><tr><th>#</th><th>NOMOR POLIS</th><th>NIK</th><th>LINI</th><th>PERIODE</th><th>VALIDASI</th></tr></thead><tbody>'+rowsHtml+'</tbody></table></div></div>';
+}
+async function regProcessBatch(){
+  const valid=regBatchRows.filter(r=>!r._err.length),out=[];
+  const prog=document.getElementById('rgBatchProg');if(prog)prog.innerHTML='<div class="reg-progress"><i id="rgProgBar"></i></div><div style="font-size:11.5px;color:var(--muted)" id="rgProgTxt">Memproses…</div>';
+  for(let i=0;i<valid.length;i++){const r=valid[i];const rec=await registerPolicy({nomor_polis:r.nomor_polis,nik:(r.nik||'').trim(),lini:(r.lini_bisnis||'lainnya').toLowerCase(),mulai:r.tanggal_mulai,akhir:r.tanggal_akhir,band:r.band_nilai_pertanggungan||'100-500jt',objek:r.objek_pertanggungan||''});const url=qrPayload(rec.idrn,signToken(rec.idrn));rec._qr=await genQR(url,300);out.push(rec);const pct=Math.round((i+1)/valid.length*100);const bar=document.getElementById('rgProgBar');if(bar)bar.style.width=pct+'%';const tx=document.getElementById('rgProgTxt');if(tx)tx.textContent='Memproses… '+(i+1)+'/'+valid.length;}
+  try{audit('REGISTRASI_BATCH','#'+valid.length,valid.length+' polis teregistrasi via unggahan batch');}catch(e){}
+  window._regLastBatch=out;regBatchResult(out);refreshRegKpis();
+}
+function regBatchResult(out){
+  document.getElementById('rgBatchPreview').insertAdjacentHTML('beforeend','<div class="panel"><div class="panel-head"><div><h3>Hasil — '+out.length+' polis teregistrasi</h3><p>Nomor IDRN &amp; QR siap diunduh</p></div><div class="actions" style="margin:0"><button class="btn" onclick="regDownloadResults()">⬇ Hasil (CSV)</button><button class="btn btn-navy" onclick="regDownloadZip()">⬇ Semua QR (ZIP)</button></div></div><div style="overflow-x:auto;max-height:300px"><table><thead><tr><th>NOMOR IDRN</th><th>NOMOR POLIS</th><th>SENTINEL</th></tr></thead><tbody>'+out.map(r=>'<tr><td class="mono">'+r.idrn+'</td><td>'+maskPolis(r.nomor_polis)+'</td><td>'+flagBadges(r)+'</td></tr>').join('')+'</tbody></table></div></div>');
+}
+function regDownloadResults(){const out=window._regLastBatch||[];const csv='idrn_number,nomor_polis,lini,tanggal_mulai,tanggal_akhir,verify_url,flags\n'+out.map(r=>[r.idrn,r.nomor_polis,r.lini,r.mulai,r.akhir,verifyUrl(r.idrn),r.flags.map(f=>f.code).join('|')].join(',')).join('\n');dlBlob(csv,'hasil_registrasi_idrn.csv','text/csv');}
+async function regDownloadZip(){const out=window._regLastBatch||[];if(typeof JSZip==='undefined'){try{toast('Pustaka ZIP tak tersedia','Butuh koneksi internet.','err');}catch(_){}return;}const zip=new JSZip();out.forEach(r=>{if(r._qr&&r._qr.indexOf(',')>0)zip.file((r.nomor_polis||r.idrn)+'.png',r._qr.split(',')[1],{base64:true});});const blob=await zip.generateAsync({type:'blob'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='qr_idrn_batch.zip';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000);}
+function initApiDoc(){
+  const box=document.getElementById('apiDocBox');
+  if(box)box.innerHTML='<span class="c"># Registrasi polis saat penerbitan</span>\nPOST /api/v1/policies/register\n<span class="k">Authorization:</span> Bearer &lt;api_key&gt;\n<span class="k">Content-Type:</span> application/json\n\n{\n  <span class="k">"nomor_polis"</span>: <span class="s">"POL-KB-2026-0001"</span>,\n  <span class="k">"nik"</span>: <span class="s">"3201xxxxxxxxxxxx"</span>,  <span class="c">// di-hash server, tak disimpan</span>\n  <span class="k">"lini_bisnis"</span>: <span class="s">"kendaraan"</span>,\n  <span class="k">"tanggal_mulai"</span>: <span class="s">"2026-07-01"</span>,\n  <span class="k">"tanggal_akhir"</span>: <span class="s">"2027-07-01"</span>,\n  <span class="k">"band_nilai_pertanggungan"</span>: <span class="s">"100-500jt"</span>\n}\n\n<span class="c"># → 200 OK  (&lt; 1 detik)</span>\n{ <span class="k">"idrn_number"</span>: <span class="s">"IDRN-2026-KB-000001"</span>,\n  <span class="k">"verify_url"</span>: <span class="s">"https://verify.idrn.id/…"</span>,\n  <span class="k">"qr_png_base64"</span>: <span class="s">"…"</span>,\n  <span class="k">"sentinel_flags"</span>: [ … ] }';
+  const co=curCo();const cc=document.getElementById('apiCoCode');if(cc)cc.textContent=co.kode;const ak=document.getElementById('apiKey');if(ak)ak.textContent='idrnk_live_9f2a••••••••c7';
+  const rows=document.getElementById('apiCoRows');if(rows)rows.innerHTML=COMPANIES.map(c=>{const n=REGISTERED.filter(r=>r.co===c.kode).length;return '<tr><td class="mono">'+c.kode+'</td><td><b>'+c.nama+'</b></td><td class="mono" style="font-size:11px">idrnk_live_••••••</td><td>'+n+'</td><td><span class="status s-approved">AKTIF</span></td></tr>';}).join('');
+}
+function refreshRegKpis(){const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};set('rgkTotal',REGISTERED.length.toLocaleString('id-ID'));set('rgkMonth',REGISTERED.length.toLocaleString('id-ID'));set('rgkFlags',REGISTERED.reduce((a,r)=>a+r.flags.length,0));set('rgkScan',verifyScans);}
+async function regSeed(){
+  const demoNik='3201234567890001';const h=await sha256Hex(REG_PEPPER+demoNik);const oh=await sha256Hex(REG_PEPPER+'|obj|B1234XYZ');
+  REG_WATCH.add(h);
+  REGISTERED.push({idrn:'IDRN-2026-KB-000001',nomor_polis:'LS-KB-2025-7781',nik_hash:h,objek_hash:oh,lini:'kendaraan',mulai:'2026-01-15',akhir:'2027-01-15',band:'100-500jt',co:'ASR-002',co_nama:'PT Lindung Sentosa',ts:'15/01/2026, 09.12.03',anchor_batch_id:'B-1790',flags:[]});
+  REGISTERED.push({idrn:'IDRN-2026-KB-000002',nomor_polis:'MP-KB-2025-3320',nik_hash:h,objek_hash:oh,lini:'kendaraan',mulai:'2026-03-02',akhir:'2027-03-02',band:'100-500jt',co:'ASR-003',co_nama:'PT Mitra Proteksi',ts:'02/03/2026, 14.40.55',anchor_batch_id:'B-1802',flags:[]});
+  const nikN=await sha256Hex(REG_PEPPER+'3273010101900002');REGISTERED.push({idrn:'IDRN-2026-KB-000007',nomor_polis:'POL-KB-2026-000512',nik_hash:nikN,objek_hash:null,lini:'kendaraan',mulai:'2026-05-01',akhir:'2027-05-01',band:'100-500jt',co:'ASR-001',co_nama:'PT Asuransi Jaya',ts:'01/05/2026, 10.22.14',anchor_batch_id:'B-1955',flags:[]});regSeq=7;refreshRegKpis();
+}
+regSeed().then(handleVerifyURL);
+
+
+/* ============ VERIFIKASI PUBLIK (pra-login) + polis pemegang polis ============ */
+const MY_IDRN='IDRN-2026-KB-000007';
+let pvReturn='login';
+function qrPayload(idrn,token){try{if(location.protocol.indexOf('http')===0)return location.origin+location.pathname+'?verify='+idrn+'&t='+token;}catch(e){}return verifyUrl(idrn)+'?t='+token;}
+function openPublicVerify(idrn,scan){
+  pvReturn=currentUser?'app':'login';
+  document.getElementById('page-login').style.display='none';
+  document.getElementById('app').style.display='none';
+  const pv=document.getElementById('page-verify');pv.classList.add('show');
+  document.getElementById('pvPublicResult').innerHTML='';
+  const bk=document.getElementById('pvBack');if(bk)bk.textContent=pvReturn==='app'?'‹ Kembali ke portal':'‹ Kembali ke halaman masuk';
+  const l4=document.getElementById('pvLast4Wrap');
+  if(idrn){document.getElementById('pvIdrn').value=idrn;if(scan){if(l4)l4.style.display='none';pvShow(idrn,true);}else{if(l4)l4.style.display='';}}
+  else{if(l4)l4.style.display='';document.getElementById('pvIdrn').value='';document.getElementById('pvLast4').value='';}
+}
+function closePublicVerify(){
+  document.getElementById('page-verify').classList.remove('show');
+  if(pvReturn==='app'&&currentUser)document.getElementById('app').style.display='block';
+  else document.getElementById('page-login').style.display='flex';
+  try{if(location.search)history.replaceState(null,'',location.pathname);}catch(e){}
+}
+function pvManualLookup(){const idrn=(document.getElementById('pvIdrn').value||'').trim().toUpperCase();const last4=(document.getElementById('pvLast4').value||'').trim();if(!idrn){document.getElementById('pvPublicResult').innerHTML='<div class="reco r-med" style="margin-top:0">Masukkan Nomor IDRN terlebih dahulu.</div>';return;}pvShow(idrn,false,last4);}
+function pvShow(idrn,scan,last4){
+  const rec=REGISTERED.find(r=>r.idrn.toUpperCase()===idrn);
+  const box=document.getElementById('pvPublicResult');
+  if(!rec){box.innerHTML=pvBadCard();try{audit('VERIFIKASI_PUBLIK',idrn,'Lookup publik tidak ditemukan');}catch(e){}return;}
+  if(!scan){if(!last4||last4!==String(rec.nomor_polis).slice(-4)){box.innerHTML=pvNeedCard();return;}}
+  verifyScans++;try{audit('VERIFIKASI_PUBLIK',rec.idrn,scan?'Scan QR terverifikasi':'Lookup manual (4-digit) berhasil');}catch(e){}refreshRegKpis();
+  box.innerHTML=pvGoodCard(rec,scan);
+}
+function pvGoodCard(rec,scan){const st=polStatus(rec.akhir);return '<div class="vp-card"><div class="vp-hd"><div class="vp-check">✓</div><h3>Polis Terverifikasi</h3><p>Terdaftar di Insurance Digital Risk Network</p></div><div class="vp-body">'+
+ '<div class="vp-row"><span>Nomor IDRN</span><b>'+rec.idrn+'</b></div>'+
+ '<div class="vp-row"><span>Perusahaan Asuransi</span><b>'+rec.co_nama+'</b></div>'+
+ '<div class="vp-row"><span>Lini Produk</span><b>'+LINE_LABEL[rec.lini]+'</b></div>'+
+ '<div class="vp-row"><span>Status</span><b><span class="status '+(st==='Aktif'?'s-approved':'s-rejected')+'">'+st+'</span></b></div>'+
+ '<div class="vp-row"><span>Periode</span><b>'+rec.mulai+' → '+rec.akhir+'</b></div>'+
+ '<div class="vp-row"><span>Nomor Polis</span><b>'+maskPolis(rec.nomor_polis)+'</b></div>'+
+ '<div class="vp-row"><span>Waktu Registrasi</span><b>'+rec.ts+'</b></div>'+
+ (scan?'<div style="text-align:center"><span class="vp-scan">● Scan QR terverifikasi</span></div>':'')+
+ '</div><div class="vp-privacy">Sesuai UU PDP No. 27/2022, halaman ini tidak menampilkan nama, NIK, nilai pertanggungan, atau nomor polis lengkap.</div></div>';}
+function pvBadCard(){return '<div class="vp-card"><div class="vp-hd bad"><div class="vp-check">✕</div><h3>Tidak Ditemukan</h3><p>Nomor registrasi tidak ada di jaringan IDRN</p></div><div class="vp-body"><p style="font-size:12.5px;color:var(--muted);text-align:center;padding:12px 4px">Pastikan nomor benar, atau hubungi perusahaan asuransi penerbit polis Anda.</p></div></div>';}
+function pvNeedCard(){return '<div class="vp-card"><div class="vp-hd bad"><div class="vp-check">!</div><h3>Verifikasi Tambahan</h3><p>4 digit terakhir nomor polis tidak cocok</p></div><div class="vp-body"><p style="font-size:12.5px;color:var(--muted);text-align:center;padding:12px 4px">Untuk pencarian manual, masukkan 4 digit terakhir nomor polis yang benar — atau pindai QR pada dokumen polis untuk verifikasi otomatis.</p></div></div>';}
+function handleVerifyURL(){try{const p=new URLSearchParams(location.search);const v=p.get('verify');if(v)openPublicVerify(v.toUpperCase(),!!p.get('t'));}catch(e){}}
+async function renderMyIdrn(){
+  const rec=REGISTERED.find(r=>r.idrn===MY_IDRN),box=document.getElementById('myIdrnBlock');if(!box||!rec)return;
+  const qr=await genQR(qrPayload(rec.idrn,signToken(rec.idrn)),200);rec._qr=qr;
+  const st=polStatus(rec.akhir);
+  box.innerHTML='<div class="reg-cols"><div class="vblock" style="max-width:280px;margin:0"><div class="vb-top"><span class="vb-mark">IDRN</span><b style="font-size:12px;color:var(--navy)">Insurance Digital Risk Network</b></div><div class="vb-qr">'+(qr?'<img src="'+qr+'">':'<span style="color:var(--dim);font-size:11px;padding:20px">QR perlu koneksi internet</span>')+'</div><div class="vb-idrn">'+rec.idrn+'</div><div class="vb-cap">Pindai untuk verifikasi keaslian polis</div></div>'+
+  '<div><div class="kv" style="margin-top:0"><div><label>PENERBIT</label><b>'+rec.co_nama+'</b></div><div><label>LINI PRODUK</label><b>'+LINE_LABEL[rec.lini]+'</b></div><div><label>PERIODE</label><b style="font-size:12px">'+rec.mulai+' → '+rec.akhir+'</b></div><div><label>STATUS</label><b><span class="status '+(st==='Aktif'?'s-approved':'s-rejected')+'">'+st+'</span></b></div></div>'+
+  '<div class="reco r-low" style="margin-top:12px"><b>Polis Anda terdaftar di jaringan IDRN.</b>Tunjukkan QR ini saat mengajukan klaim atau saat diminta verifikasi. Siapa pun dapat memindainya untuk memastikan keaslian polis — tanpa menampilkan data pribadi Anda.</div>'+
+  '<div class="actions"><button class="btn btn-navy" onclick="openPublicVerify(\''+rec.idrn+'\',true)">Lihat Halaman Verifikasi Publik</button><button class="btn" onclick="downloadBlock(\''+rec.idrn+'\')">⬇ Unduh Blok (PNG)</button></div></div></div>';
+}
+
+
+/* ============ REGULATOR — POLICY & CLAIM PASSPORT + RBC ============ */
+const RMONTHS=['Jul','Agu','Sep','Okt','Nov','Des','Jan','Feb','Mar','Apr','Mei','Jun'];
+const RLINES=['Kendaraan','Kesehatan','Properti','Jiwa','Kredit','Marine'];
+const RPAL=['#1d4b85','#177a43','#a5842e','#a53049','#0d6b7c','#96690a'];
+const INS_BASE={
+ 'ASR-001':{nama:'PT Asuransi Jaya',prem:[182,190,201,208,219,228,236,245,251,262,270,281],line:[38,22,16,9,10,5],
+   issue:[['DKI Jakarta',4210],['Jawa Barat',3180],['Jawa Timur',2740],['Jawa Tengah',1980],['Banten',1560],['Sumatera Utara',1240]],
+   pol:68420,prov:34,claimTot:95104,loss:61.2,cmix:[41,22,16,9,8,4],ctrend:[120,128,134,141,150,158,166,171,180,188,196,205],
+   rbc:{avail:2840,mmbr:830},rbcTrend:[356,349,352,347,344,342]},
+ 'ASR-002':{nama:'PT Lindung Sentosa',prem:[121,119,126,131,128,134,139,142,146,151,149,158],line:[28,26,18,12,9,7],
+   issue:[['Jawa Timur',2210],['Jawa Tengah',1880],['DKI Jakarta',1640],['Bali',980],['Sulawesi Selatan',760],['Kalimantan Timur',620]],
+   pol:39180,prov:27,claimTot:52380,loss:58.4,cmix:[30,26,18,12,9,5],ctrend:[88,92,96,101,98,104,109,112,116,121,119,128],
+   rbc:{avail:1180,mmbr:596},rbcTrend:[212,208,205,201,199,198]},
+ 'ASR-003':{nama:'PT Mitra Proteksi',prem:[64,66,63,68,71,69,74,72,78,76,81,79],line:[22,31,14,16,11,6],
+   issue:[['DKI Jakarta',980],['Jawa Barat',760],['Kepulauan Riau',540],['Sumatera Selatan',430],['Papua',320],['Maluku',210]],
+   pol:14560,prov:19,claimTot:28940,loss:73.8,cmix:[20,31,14,17,12,6],ctrend:[41,46,52,58,55,61,66,71,76,81,79,86],
+   rbc:{avail:412,mmbr:352},rbcTrend:[132,128,124,121,118,117]}
+};
+const REG_INS=(function(){
+  const out=Object.assign({},INS_BASE);
+  const keys=Object.keys(INS_BASE);
+  const sumArr=(f)=>{const a=new Array(12).fill(0);keys.forEach(k=>INS_BASE[k][f].forEach((v,i)=>a[i]+=v));return a;};
+  const sumLine=(f)=>{const a=new Array(6).fill(0);keys.forEach(k=>INS_BASE[k][f].forEach((v,i)=>a[i]+=v));return a;};
+  const issAgg={};keys.forEach(k=>INS_BASE[k].issue.forEach(([p,c])=>{issAgg[p]=(issAgg[p]||0)+c;}));
+  const issTop=Object.entries(issAgg).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const avail=keys.reduce((s,k)=>s+INS_BASE[k].rbc.avail,0),mmbr=keys.reduce((s,k)=>s+INS_BASE[k].rbc.mmbr,0);
+  const rbcTrendNat=[0,1,2,3,4,5].map(i=>Math.round(keys.reduce((s,k)=>s+INS_BASE[k].rbcTrend[i]*INS_BASE[k].rbc.mmbr,0)/mmbr));
+  out.NAT={nama:'Industri Nasional (Agregat)',prem:sumArr('prem'),line:sumLine('line'),issue:issTop,
+    pol:keys.reduce((s,k)=>s+INS_BASE[k].pol,0),prov:38,claimTot:keys.reduce((s,k)=>s+INS_BASE[k].claimTot,0),
+    loss:+(keys.reduce((s,k)=>s+INS_BASE[k].loss*INS_BASE[k].claimTot,0)/keys.reduce((s,k)=>s+INS_BASE[k].claimTot,0)).toFixed(1),
+    cmix:sumLine('cmix'),ctrend:sumArr('ctrend'),rbc:{avail:avail,mmbr:mmbr},rbcTrend:rbcTrendNat};
+  return out;
+})();
+let regSel='NAT', regCharts={};
+function rbcRatio(d){return Math.round(d.rbc.avail/d.rbc.mmbr*100);}
+function rbcColor(r){return r>=120?'#177a43':r>=100?'#96690a':'#a53049';}
+function rbcStat(r){return r>=120?'SEHAT':r>=100?'PERHATIAN':'KRITIS';}
+function rbcStatBg(r){return r>=120?'var(--green-bg);color:var(--green);border:1px solid var(--green-line)':r>=100?'var(--amber-bg);color:var(--amber);border:1px solid var(--amber-line)':'var(--red-bg);color:var(--red);border:1px solid var(--red-line)';}
+function rpM(v){return 'Rp '+(v>=1000?(v/1000).toFixed(2).replace('.',',')+' T':v+' M');}
+function chart(id,cfg){if(regCharts[id]){try{regCharts[id].destroy();}catch(e){}}const el=document.getElementById(id);if(!el||typeof Chart==='undefined')return;regCharts[id]=new Chart(el.getContext('2d'),cfg);}
+function regSelChips(elId){
+  const el=document.getElementById(elId);if(!el)return;
+  const opts=[['NAT','Nasional'],['ASR-001','PT Asuransi Jaya'],['ASR-002','PT Lindung Sentosa'],['ASR-003','PT Mitra Proteksi']];
+  el.innerHTML=opts.map(o=>'<button class="chip'+(regSel===o[0]?' on':'')+'" onclick="regSelSet(\''+o[0]+'\')">'+o[1]+'</button>').join('');
+}
+function regSelSet(co){regSel=co;const a=document.querySelector('.page.active');if(a&&a.id==='pg-reg-policy')initRegPolicy();else if(a&&a.id==='pg-reg-claim')initRegClaim();}
+function rbcGaugeHTML(d){const r=rbcRatio(d),col=rbcColor(r),MAX=300,R=52,C=2*Math.PI*R;
+  const frac=Math.max(0,Math.min(1,r/MAX)),dash=(frac*C).toFixed(1),rem=(C-frac*C).toFixed(1);
+  const a=(120/MAX)*2*Math.PI, s=Math.sin(a), cs=Math.cos(a);
+  const x1=(65+(R-8)*s).toFixed(1),y1=(65-(R-8)*cs).toFixed(1),x2=(65+(R+8)*s).toFixed(1),y2=(65-(R+8)*cs).toFixed(1);
+  return '<div class="rbc-gauge"><svg viewBox="0 0 130 130">'
+   +'<circle cx="65" cy="65" r="'+R+'" fill="none" stroke="#eef1f6" stroke-width="12"/>'
+   +'<circle cx="65" cy="65" r="'+R+'" fill="none" stroke="'+col+'" stroke-width="12" stroke-linecap="round" stroke-dasharray="'+dash+' '+rem+'" transform="rotate(-90 65 65)"/>'
+   +'<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="#0b1f3d" stroke-width="2.4"/>'
+   +'<text x="65" y="61" text-anchor="middle" font-family="Georgia,\'Times New Roman\',serif" font-weight="700" font-size="27" fill="'+col+'">'+r+'%</text>'
+   +'<text x="65" y="79" text-anchor="middle" font-size="8" letter-spacing="1.4" font-weight="700" fill="#8a97ab">RBC · MIN 120%</text>'
+   +'</svg></div>';}
+function renderRBC(elId,trendId,d){
+  const el=document.getElementById(elId);if(!el)return;const r=rbcRatio(d);
+  el.innerHTML='<div class="rbc-panel">'+rbcGaugeHTML(d)+
+    '<div class="rbc-comp"><div class="rc-row"><span>Modal Tersedia (Available Capital)</span><b>'+rpM(d.rbc.avail)+'</b></div>'+
+    '<div class="rc-row"><span>MMBR (Modal Min. Berbasis Risiko)</span><b>'+rpM(d.rbc.mmbr)+'</b></div>'+
+    '<div class="rc-row"><span>Surplus Solvabilitas</span><b style="color:'+rbcColor(r)+'">'+rpM(d.rbc.avail-d.rbc.mmbr)+'</b></div>'+
+    '<div class="rc-row"><span>Rasio RBC</span><b style="color:'+rbcColor(r)+'">'+r+'%</b></div>'+
+    '<span class="rbc-status" style="background:'+rbcStatBg(r)+'">'+rbcStat(r)+' · min. 120%</span></div></div>'+
+    '<div class="rbc-trend" style="width:100%"><div class="sect-label" style="margin:14px 0 6px">TREN RASIO RBC — 6 BULAN</div><div class="chart-box" style="height:90px"><canvas id="'+trendId+'"></canvas></div></div>';
+  chart(trendId,{type:'line',data:{labels:['-5','-4','-3','-2','-1','Kini'],datasets:[{data:d.rbcTrend,borderColor:rbcColor(r),backgroundColor:'rgba(23,122,67,.08)',fill:true,tension:.35,pointRadius:2,borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v+'%',font:{size:9}},grid:{color:'#eef1f6'}},x:{ticks:{font:{size:9}},grid:{display:false}}}}});
+}
+function kpiCard(cls,label,val,sub){return '<div class="kpi '+(cls||'')+'"><label>'+label+'</label><div class="num" style="font-size:22px">'+val+'</div><div class="sub">'+sub+'</div></div>';}
+function initRegPolicy(){
+  regSelChips('rpSel');const d=REG_INS[regSel];if(!d)return;
+  const premYtd=d.prem.reduce((a,b)=>a+b,0),growth=Math.round((d.prem[11]/d.prem[0]-1)*100);
+  document.getElementById('rpKpi').innerHTML=
+    kpiCard('','PREMI BRUTO YTD',rpM(premYtd),d.nama)+
+    kpiCard('k-green','PERTUMBUHAN PREMI','▲ '+growth+'%','12 bulan berjalan')+
+    kpiCard('k-cyan','POLIS TERBIT YTD',d.pol.toLocaleString('id-ID'),'seluruh lini')+
+    kpiCard('k-gold','PROVINSI CAKUPAN',d.prov+' / 38','sebaran nasional');
+  chart('rpPremiChart',{type:'line',data:{labels:RMONTHS,datasets:[{label:'Premi bruto (Rp M)',data:d.prem,borderColor:'#1d4b85',backgroundColor:'rgba(29,75,133,.10)',fill:true,tension:.35,pointRadius:2,borderWidth:2.4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'#eef1f6'},ticks:{font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:10}}}}}});
+  chart('rpLineChart',{type:'doughnut',data:{labels:RLINES,datasets:[{data:d.line,backgroundColor:RPAL,borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:11}}}}});
+  const mx=Math.max.apply(null,d.issue.map(i=>i[1]));
+  document.getElementById('rpIssue').innerHTML=d.issue.map(i=>'<div class="issue-row"><span class="in">'+i[0]+'</span><span class="ib"><i style="width:'+Math.round(i[1]/mx*100)+'%"></i></span><span class="iv">'+i[1].toLocaleString('id-ID')+'</span></div>').join('');
+  renderRBC('rpRbc','rpRbcTrend',d);
+}
+function initRegClaim(){
+  regSelChips('rcSel');const d=REG_INS[regSel];if(!d)return;const r=rbcRatio(d);
+  const dom=RLINES[d.cmix.indexOf(Math.max.apply(null,d.cmix))];
+  document.getElementById('rcKpi').innerHTML=
+    kpiCard('','TOTAL KLAIM YTD',d.claimTot.toLocaleString('id-ID'),d.nama)+
+    kpiCard(d.loss>=70?'k-red':'k-amber','LOSS RATIO',d.loss+'%','klaim ÷ premi')+
+    kpiCard('k-cyan','JENIS DOMINAN',dom,'lini klaim terbesar')+
+    kpiCard(r>=120?'k-green':'k-red','RBC SAAT INI',r+'%',rbcStat(r));
+  chart('rcTrendChart',{type:'line',data:{labels:RMONTHS,datasets:[{label:'Beban klaim (Rp M)',data:d.ctrend,borderColor:'#a53049',backgroundColor:'rgba(165,48,73,.10)',fill:true,tension:.35,pointRadius:2,borderWidth:2.4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'#eef1f6'},ticks:{font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:10}}}}}});
+  chart('rcMixChart',{type:'bar',data:{labels:RLINES,datasets:[{data:d.cmix,backgroundColor:RPAL,borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'#eef1f6'},ticks:{font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:10}}}}}});
+  const tot=d.cmix.reduce((a,b)=>a+b,0),mx=Math.max.apply(null,d.cmix);
+  document.getElementById('rcMacro').innerHTML=RLINES.map((l,i)=>'<div class="issue-row"><span class="in">'+l+'</span><span class="ib"><i style="width:'+Math.round(d.cmix[i]/mx*100)+'%;background:'+RPAL[i]+'"></i></span><span class="iv">'+Math.round(d.cmix[i]/tot*100)+'%</span></div>').join('');
+  renderRBC('rcRbc','rcRbcTrend',d);
+}
+
+
+function hubFallback(im,name){var s=document.createElement('span');s.className='lf';s.textContent=name;if(im.parentNode)im.parentNode.replaceChild(s,im);}
 </script>
 </body>
 </html>

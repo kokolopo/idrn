@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IDRN · The Trust Layer of Indonesian Insurance</title>
-<meta name="description" content="IDRN (Insurance Digital Risk Network) is the shared trust infrastructure for Indonesian insurance. Like BI-Fast for banks, it is the neutral rail every insurer, adjuster, supervisor and association plugs into: explainable AI risk scoring and a permissioned blockchain ledger that make every claim verifiable, without any party surrendering raw customer data.">
+<title>IDRN · The Trust Infrastructure for Indonesia's Insurance Industry</title>
+<meta name="description" content="IDRN (Insurance Digital Risk Network) is the trust infrastructure for Indonesia's insurance industry, connecting insurers, banks, regulators and ecosystem partners through a shared network for policy verification, fraud detection and seamless claims. Two products: Policy Passport and Claim Passport.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root{
   --navy:#0b1f3d; --navy-2:#132c52; --navy-3:#1a3a68; --navy-4:#1d4b85;
@@ -69,20 +70,21 @@ nav:not(.scrolled) .btn-ghost:hover{background:#fff;color:var(--navy);border-col
 nav.scrolled .menu-btn span{background:var(--navy)}
 
 /* HERO with road canvas */
-.hero{position:relative;min-height:100vh;display:flex;align-items:center;background:radial-gradient(120% 90% at 60% 20%,#12294c,#081123 78%);color:#fff;overflow:hidden;padding:120px 0 70px}
-.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 50%;z-index:0;filter:brightness(.7) saturate(1.06) contrast(1.03)}
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;background:radial-gradient(120% 100% at 70% 12%,#16345f 0%,#0d2246 45%,#081226 82%);color:#fff;overflow:hidden;padding:120px 0 70px}
+.hero::before{content:"";position:absolute;width:640px;height:640px;border-radius:50%;right:-160px;top:-140px;background:radial-gradient(circle,rgba(201,169,78,.16),transparent 62%);filter:blur(30px);z-index:0}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 50%;z-index:0;filter:brightness(.82) saturate(1.05) contrast(1.02)}
 .nophoto .hero-photo{display:none}
 #road{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
-.hero-veil{position:absolute;inset:0;z-index:1;background:
-  linear-gradient(180deg,rgba(6,13,28,.42) 0%,rgba(6,13,28,.05) 32%,rgba(6,13,28,.32) 66%,rgba(6,13,28,.92) 100%),
-  linear-gradient(90deg,rgba(6,13,28,.84) 0%,rgba(6,13,28,.22) 54%,rgba(6,13,28,.04) 100%)}
+.hero-veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:
+  linear-gradient(180deg,rgba(6,13,28,.28) 0%,rgba(6,13,28,0) 30%,rgba(6,13,28,.14) 68%,rgba(6,13,28,.62) 100%),
+  linear-gradient(90deg,rgba(6,13,28,.62) 0%,rgba(6,13,28,.06) 56%,transparent 100%)}
 .hero-inner{position:relative;z-index:3;max-width:var(--max);margin:0 auto;padding:0 28px;width:100%}
 .hero-badge{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.4px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);padding:8px 16px;border-radius:40px;color:rgba(255,255,255,.9);margin-bottom:28px}
 .hero-badge i{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2.6s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(201,169,78,.55)}50%{box-shadow:0 0 0 7px rgba(201,169,78,0)}}
-.hero h1{font-size:clamp(38px,6.1vw,76px);font-weight:600;line-height:1.03;letter-spacing:-1.5px;max-width:16ch;text-shadow:0 2px 40px rgba(0,0,0,.4)}
-.hero h1 .accent{color:var(--gold);font-style:italic;font-weight:500}
-.hero-sub{font-size:clamp(16px,1.5vw,19px);line-height:1.7;color:rgba(255,255,255,.82);max-width:58ch;margin:28px 0 8px}
+.hero h1{font-size:clamp(29px,4.4vw,50px);font-weight:600;line-height:1.14;letter-spacing:-.7px;max-width:20ch;text-shadow:0 2px 40px rgba(0,0,0,.4)}
+.hero h1 .accent{color:var(--gold);font-style:italic;font-weight:500;font-size:.82em;display:inline-block;margin-top:6px}
+.hero-sub{font-size:clamp(15px,1.35vw,18px);line-height:1.7;color:rgba(255,255,255,.82);max-width:60ch;margin:24px 0 8px}
 .hero-sub b{color:#fff;font-weight:600}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
 .hero .btn-primary{padding:15px 30px;font-size:15px}
@@ -331,6 +333,57 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
   .wrap,.nav-inner,.hero-inner{padding-left:20px;padding-right:20px}
   .sec{padding:76px 0}.cta{padding:80px 0}.cta-box{padding:48px 26px}.foot-top{grid-template-columns:1fr}
 }
+
+/* TWO PASSPORTS + QR */
+.passports{background:var(--surface);border-top:1px solid var(--line)}
+.pp-lay{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:900px){.pp-lay{grid-template-columns:1fr}}
+.pp-card{position:relative;border:1px solid var(--line);border-radius:20px;padding:34px 32px;background:var(--surface);box-shadow:var(--shadow);overflow:hidden;transition:.35s}
+.pp-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.pp-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--navy-4)}
+.pp-card.claim::before{background:var(--gold)}
+.pp-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-4);background:#eef4fc;padding:7px 14px;border-radius:30px}
+.pp-card.claim .pp-tag{color:var(--gold-deep);background:var(--gold-soft)}
+.pp-card h3{font-size:25px;color:var(--navy);margin:20px 0 4px}
+.pp-card .pp-sub{font-size:14px;color:var(--gold-deep);font-family:var(--display);font-style:italic;margin-bottom:16px}
+.pp-card>p{font-size:14.5px;color:var(--muted);line-height:1.7;margin-bottom:16px}
+.pp-feat{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line-soft)}
+.pp-feat .pk{flex-shrink:0;width:22px;height:22px;border-radius:6px;background:#eef4fc;color:var(--navy-4);display:grid;place-items:center;font-size:12px;font-weight:700;margin-top:1px}
+.pp-card.claim .pp-feat .pk{background:var(--gold-soft);color:var(--gold-deep)}
+.pp-feat b{font-size:14px;color:var(--navy);font-weight:600;display:block}
+.pp-feat span{font-size:13px;color:var(--muted)}
+.qr-band{margin-top:24px;background:linear-gradient(150deg,#0b1f3d,#132c52);border-radius:22px;padding:38px 40px;display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.qr-band::after{content:"";position:absolute;right:-90px;top:-90px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,78,.18),transparent 70%)}
+@media(max-width:720px){.qr-band{grid-template-columns:1fr;text-align:center;justify-items:center}}
+.qr-box{background:#fff;border-radius:16px;padding:16px;width:196px;height:196px;display:grid;place-items:center;box-shadow:0 12px 34px rgba(0,0,0,.34);position:relative;z-index:2}
+.qr-box img,.qr-box canvas{width:164px!important;height:164px!important;display:block}
+.qr-box canvas{display:none!important}
+.qr-fallback{font-size:11px;color:#5b6a80;text-align:center;padding:14px;line-height:1.5}
+.qr-info{position:relative;z-index:2}
+.qr-info .eyebrow{color:var(--gold)}
+.qr-info h3{color:#fff;font-size:27px;margin:12px 0 10px}
+.qr-info p{color:rgba(255,255,255,.78);font-size:15px;line-height:1.7;max-width:54ch}
+.qr-meta{margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.qr-id{font-family:var(--mono);font-size:13px;color:#e8d59a;background:rgba(232,213,154,.1);border:1px solid rgba(232,213,154,.32);padding:9px 14px;border-radius:8px}
+.qr-verified{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.5px;color:#7ee2a8;background:rgba(46,158,100,.14);border:1px solid rgba(46,158,100,.4);padding:9px 14px;border-radius:8px}
+.qr-verified i{width:8px;height:8px;border-radius:50%;background:#2f9e64}
+.qr-hint{margin-top:16px;font-size:11.5px;color:rgba(255,255,255,.5);font-family:var(--mono);line-height:1.6}
+
+/* VISION network */
+.vis-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:52px;align-items:center;margin-bottom:54px}
+@media(max-width:900px){.vis-grid{grid-template-columns:1fr;gap:34px}}
+.vis-copy h3{font-family:var(--display);font-size:clamp(22px,2.6vw,30px);color:var(--navy);font-weight:600;letter-spacing:-.3px;margin-bottom:14px;line-height:1.22}
+.vis-copy p{font-size:15.5px;color:var(--muted);line-height:1.75;margin-bottom:14px}
+.vis-copy p b{color:var(--navy);font-weight:600}
+.vis-net{position:relative;background:linear-gradient(160deg,#0b1f3d,#132c52);border-radius:20px;padding:26px 24px 20px;box-shadow:var(--shadow-lg)}
+.vis-net svg{width:100%;height:auto;display:block;overflow:visible}
+.vis-link{stroke:#c9a94e;stroke-width:1.4;opacity:.55;stroke-dasharray:4 7;animation:vdash 2.4s linear infinite}
+@keyframes vdash{to{stroke-dashoffset:-44}}
+.vis-node-lbl{fill:rgba(255,255,255,.82);font-family:var(--sans);font-size:10.5px;font-weight:600}
+.vis-hub-lbl{fill:#e8d59a;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.5px}
+.vis-mesh{stroke:#c9a94e;stroke-width:1;opacity:.16;fill:none}
+.vis-chord{stroke:#8ea6c9;stroke-width:1;opacity:.13;fill:none}
+.vis-node-lbl{font-size:9.5px}
 </style>
 </head>
 <body>
@@ -344,15 +397,15 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
     <div class="nav-links">
       <a href="#bifast">Analogy</a>
       <a href="#problem">Problem</a>
+      <a href="#passports">Products</a>
       <a href="#solution">How It Works</a>
-      <a href="#engine">Risk Engine</a>
       <a href="#network">Network</a>
       <a href="#compliance">Compliance</a>
       <a href="#vision">Vision</a>
     </div>
     <div class="nav-cta">
       <a href="#cta" class="btn btn-ghost">Request Access</a>
-      <a href="portal.html" class="btn btn-primary">Explore Portal</a>
+      <a href="portal.html" target="_blank" rel="noopener" class="btn btn-primary">Explore Portal</a>
     </div>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
@@ -360,22 +413,21 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
 
 <!-- HERO -->
 <header class="hero" id="top">
-  <img class="hero-photo" src="https://images.unsplash.com/photo-1702752261116-e2a8e38aac1d?q=80&amp;w=2400&amp;auto=format&amp;fit=crop" alt="City skyline at night with freeway light trails" referrerpolicy="no-referrer" onerror="document.documentElement.classList.add('nophoto')">
   <div class="hero-veil"></div>
   <canvas id="road"></canvas>
   <div class="hero-inner">
-    <div class="hero-badge reveal in"><i></i> Insurance Digital Risk Network · Shared infrastructure for Indonesia</div>
-    <h1 class="reveal in d1">The rails every<br>insurer runs on.<br><span class="accent">Trust, made verifiable.</span></h1>
-    <p class="hero-sub reveal in d2">Today every insurer fights fraud in its own silo, so the same fake claim can slip undetected from one company to the next, honest claims crawl, and public trust in insurance stays low. Indonesia needs one shared, neutral layer for its insurance industry, the way banking has BI-Fast. IDRN is that infrastructure: explainable AI helps summarise every claim and map fraud patterns, and a permissioned blockchain keeps every document honest, so <b>claims move faster, trust rises, and protection reaches more Indonesians</b> without any party handing over raw customer data.</p>
+    <div class="hero-badge reveal in"><i></i> Insurance Digital Risk Network · National insurance infrastructure</div>
+    <h1 class="reveal in d1">The Trust Infrastructure for Indonesia's Insurance Industry.<br><span class="accent">From Policy to Claim. Trust You Can Verify.</span></h1>
+    <p class="hero-sub reveal in d2">Connecting insurers, banks, regulators, and ecosystem partners through a shared network for <b>policy verification, fraud detection, and seamless claims.</b></p>
     <div class="hero-actions reveal in d3">
-      <a href="portal.html" class="btn btn-primary">Explore the Portal →</a>
+      <a href="portal.html" target="_blank" rel="noopener" class="btn btn-primary">Explore Portal →</a>
       <a href="#bifast" class="btn btn-line">Why it matters</a>
     </div>
     <div class="hero-stats reveal in d4">
-      <div class="hstat"><b>&lt;1<span class="u">s</span></b><span>Risk score per claim</span><em>Design target</em></div>
-      <div class="hstat"><b>3</b><span>Independent ledger validators</span><em>IDRN · OJK · AAUI</em></div>
-      <div class="hstat"><b>0-100</b><span>Explainable risk score</span><em>5 weighted factors</em></div>
-      <div class="hstat"><b>SHA-256</b><span>Document integrity anchor</span><em>On-chain, Merkle-batched</em></div>
+      <div class="hstat"><b>2</b><span>Core products</span><em>Policy + Claim Passport</em></div>
+      <div class="hstat"><b>QR</b><span>Public policy verification</span><em>No login needed</em></div>
+      <div class="hstat"><b>RBC</b><span>Real-time solvency</span><em>120% min. threshold</em></div>
+      <div class="hstat"><b>3</b><span>Ledger validators</span><em>IDRN · OJK · AAUI</em></div>
     </div>
   </div>
   <div class="scroll-cue"><span>Scroll</span><span class="ln"></span></div>
@@ -405,9 +457,9 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
         <p>Not long ago, moving money between banks in Indonesia was slow, bound to office hours, and stitched together through fragmented bilateral links. In December 2021, Bank Indonesia launched <b>BI-Fast</b>: one shared national rail for real-time, round-the-clock interbank transfers. Today more than 120 banks plug into that same infrastructure, and a transfer that once took a day now clears in seconds.</p>
         <p>Insurance today looks like banking did before BI-Fast. Every insurer sits in its own silo, the same verification is repeated by each party, and fraud that crosses company lines stays invisible. There is no shared rail.</p>
         <div class="bf-pull reveal d1">
-          <b>IDRN is that shared rail for insurance. Not a bank, not an insurer: the neutral infrastructure the whole industry plugs into.</b>
+          <b>IDRN is that shared rail. Not a bank, not an insurer: the neutral infrastructure the whole industry plugs into, from policy to claim.</b>
         </div>
-        <p>Bank Indonesia did not replace the banks; it gave them a common rail so trust could move between them. IDRN does the same for claims, without ever pooling raw customer data in one place.</p>
+        <p>Bank Indonesia did not replace the banks; it gave them a common rail so trust could move between them. IDRN does the same for insurance, without ever pooling raw customer data in one place.</p>
       </div>
       <div class="bf-visual reveal d2">
         <div class="bf-compare">
@@ -442,7 +494,7 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
             </svg>
           </div>
         </div>
-        <p class="bf-foot">// BI-Fast, Bank Indonesia's national fast-payment rail, launched Dec 2021; 120+ participating banks. IDRN applies the same shared-infrastructure model to insurance claims and trust.</p>
+        <p class="bf-foot">// BI-Fast, Bank Indonesia national fast-payment rail, launched Dec 2021; 120+ participating banks. IDRN applies the same shared-infrastructure model across the policy-to-claim lifecycle.</p>
       </div>
     </div>
   </div>
@@ -454,15 +506,62 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
     <div class="sec-head reveal">
       <span class="eyebrow">The Problem</span>
       <h2>Trust, trapped in silos.</h2>
-      <p>Every insurer assesses claims inside its own data silo. The same policyholder can file the same loss with two insurers and go undetected, documents can be altered without a trace, and supervisors see the industry only through delayed periodic reports. Five structural failures compound one another.</p>
+      <p>Every insurer assesses policies and claims inside its own data silo. A policy's authenticity is hard to prove to outsiders, the same policyholder can file the same loss with two companies undetected, and supervisors see the industry only through delayed periodic reports. Five structural failures compound one another.</p>
     </div>
     <div class="prob-grid">
-      <div class="prob reveal"><span class="bar"></span><div class="n">F ·01</div><h3>Data silos between insurers</h3><p>A policyholder's claim history at one insurer is invisible to every other. Double claims on a single loss, filed across two insurers, are practically undetectable.</p></div>
-      <div class="prob reveal d1"><span class="bar"></span><div class="n">F ·02</div><h3>Document integrity is unprovable</h3><p>Damage photos, workshop estimates and policy files live on each party's own systems, and can be changed without leaving any auditable trace.</p></div>
-      <div class="prob reveal d2"><span class="bar"></span><div class="n">F ·03</div><h3>Fraud detection is manual</h3><p>Suspicion rests on an adjuster's intuition. There is no explainable risk standard that can be compared across cases and defended to supervisors or customers.</p></div>
-      <div class="prob reveal d3"><span class="bar"></span><div class="n">F ·04</div><h3>Oversight is report-based</h3><p>Regulators receive a delayed snapshot. Cross-company fraud patterns only surface after the losses have already occurred and accumulated.</p></div>
-      <div class="prob reveal d4"><span class="bar"></span><div class="n">F ·05</div><h3>Honest customers pay for it</h3><p>Because the system cannot quickly separate honest claims from suspicious ones, all claims are processed slowly, and premiums carry the cost of untraceable fraud.</p></div>
+      <div class="prob reveal"><span class="bar"></span><div class="n">F ·01</div><h3>Data silos between insurers</h3><p>A policyholder's policy and claim history at one insurer is invisible to every other. Double claims on a single loss are practically undetectable.</p></div>
+      <div class="prob reveal d1"><span class="bar"></span><div class="n">F ·02</div><h3>Policy authenticity is unprovable</h3><p>Policy files, damage photos and workshop estimates live on each party's own systems, and can be altered without leaving any auditable trace.</p></div>
+      <div class="prob reveal d2"><span class="bar"></span><div class="n">F ·03</div><h3>Fraud detection is manual</h3><p>Suspicion rests on an adjuster's intuition. There is no explainable risk standard that can be compared across cases and defended.</p></div>
+      <div class="prob reveal d3"><span class="bar"></span><div class="n">F ·04</div><h3>Oversight is report-based</h3><p>Regulators receive a delayed snapshot. Cross-company fraud patterns and RBC pressure only surface after losses accumulate.</p></div>
+      <div class="prob reveal d4"><span class="bar"></span><div class="n">F ·05</div><h3>Honest customers pay for it</h3><p>Because the system cannot quickly separate honest claims from suspicious ones, all claims are processed slowly, and premiums carry the cost of fraud.</p></div>
       <div class="prob reveal d4"><span class="bar" style="background:var(--gold)"></span><div class="n" style="color:var(--navy-4)">↳ Why point fixes fail</div><h3>AI and integrity must be one system</h3><p>The best fraud engine is useless if its data can be manipulated. The most secure ledger is useless if nothing flags which claim to inspect. The problem demands both, together.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TWO PASSPORTS + QR -->
+<section class="sec passports" id="passports">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Two Products, One Infrastructure</span>
+      <h2>Policy Passport &amp; Claim Passport.</h2>
+      <p>IDRN now spans the entire insurance lifecycle, from the moment a policy is issued to the moment a claim is resolved, through two products that share the same integrity backbone and oversight.</p>
+    </div>
+    <div class="pp-lay">
+      <div class="pp-card policy reveal">
+        <span class="pp-tag">◆ Policy Passport</span>
+        <h3>Policy Passport</h3>
+        <div class="pp-sub">The network entry point, from the moment a policy is issued</div>
+        <p>Every issued policy receives an <b>IDRN Number</b>, a <b>verification QR</b>, and a <b>SHA-256 digital fingerprint</b> anchored to the ledger. A policy authenticity can be proven by anyone, and premium growth is visible in real time.</p>
+        <div class="pp-feat"><span class="pk">✓</span><div><b>IDRN Number + QR on every policy</b><span>Issued automatically at underwriting, ready to download (single or batch/ZIP).</span></div></div>
+        <div class="pp-feat"><span class="pk">✓</span><div><b>Public authenticity verification</b><span>Scan the QR or enter the IDRN Number to confirm a policy is genuine.</span></div></div>
+        <div class="pp-feat"><span class="pk">✓</span><div><b>Risk-Based Capital (RBC) basis</b><span>Premium growth and issuance distribution feed real-time solvency.</span></div></div>
+        <div class="pp-feat"><span class="pk">✓</span><div><b>Personal data masked</b><span>Only fingerprints and signals cross the network, never raw data.</span></div></div>
+      </div>
+      <div class="pp-card claim reveal d2">
+        <span class="pp-tag">◈ Claim Passport</span>
+        <h3>Claim Passport</h3>
+        <div class="pp-sub">Claim oversight, from the macro view down to each case</div>
+        <p>Every claim is scored by the <b>IDRN-RS engine (0-100)</b> with explainable factors, its fraud patterns mapped, and its pressure on RBC monitored. The decision always stays with the insurer.</p>
+        <div class="pp-feat"><span class="pk">✓</span><div><b>IDRN-RS risk score 0-100</b><span>Explainable F1–F5 factors, in under a second.</span></div></div>
+        <div class="pp-feat"><span class="pk">✓</span><div><b>Fraud Intelligence &amp; entity graph</b><span>Maps relations between policyholders, partner workshops, and insurers.</span></div></div>
+        <div class="pp-feat"><span class="pk">✓</span><div><b>Threshold Simulator</b><span>Projects the impact of any fast-track policy before it goes live.</span></div></div>
+        <div class="pp-feat"><span class="pk">✓</span><div><b>RBC pressure signals</b><span>Claim severity's impact on solvency, kept in view.</span></div></div>
+      </div>
+    </div>
+
+    <div class="qr-band reveal">
+      <a href="portal.html" target="_blank" rel="noopener" class="qr-box" title="Open verification portal"><span id="idrnQR"></span></a>
+      <div class="qr-info">
+        <span class="eyebrow on-dark">Public Verification</span>
+        <h3>Scan. Confirm a policy is real.</h3>
+        <p>Every IDRN policy carries a unique QR. A policyholder, an agent, or anyone can scan it to verify the policy's authenticity against the network, with no login. It either matches or it does not, in a single scan.</p>
+        <div class="qr-meta">
+          <span class="qr-id">IDRN-2026-000742</span>
+          <span class="qr-verified"><i></i> VERIFIED</span>
+        </div>
+        <p class="qr-hint">// The SHA-256 fingerprint matches the Merkle root anchored on the ledger. Scan this QR to open the verification portal.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -473,13 +572,13 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
     <div class="sec-head center reveal">
       <span class="eyebrow">The IDRN Architecture</span>
       <h2>Two engines. One trust layer.</h2>
-      <p>IDRN is not an insurer and does not take over claim decisions. It provides three things: an explainable risk score for every claim, integrity proof for every document, and an audit trail for every decision, all powered by two complementary engines.</p>
+      <p>IDRN is not an insurer and does not take over decisions. It provides three things: an explainable risk score for every claim, integrity proof for every document, and an audit trail for every decision, powered by two complementary engines.</p>
     </div>
     <div class="pillars">
       <div class="pillar ai reveal">
         <span class="tag">◆ Artificial Intelligence</span>
         <h3>IDRN-RS Risk Engine</h3>
-        <div class="q">“Which claim is suspicious, and why?”</div>
+        <div class="q">Which claim is suspicious, and why?</div>
         <p>IDRN-RS is a tool, not a judge. It reads and summarises every incoming claim in under a second, maps the patterns that signal fraud, and returns a 0-100 score that is the sum of weighted, human-readable factors. Never a black box: every point traces back to the factor that produced it, and the call stays with the adjuster.</p>
         <div class="pfeat"><span class="ck">✓</span><div><b>Explainable factor decomposition</b><span>Each score breaks into F1–F5 with a confidence level.</span></div></div>
         <div class="pfeat"><span class="ck">✓</span><div><b>Entity network analysis</b><span>Maps relations between policyholders, insurers and workshops to surface fraud rings.</span></div></div>
@@ -488,7 +587,7 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
       <div class="pillar ledger reveal d2">
         <span class="tag">◈ Blockchain · Permissioned Ledger</span>
         <h3>The Integrity Engine</h3>
-        <div class="q">“Can this data and decision be trusted, unaltered?”</div>
+        <div class="q">Can this data and decision be trusted, unaltered?</div>
         <p>A permissioned blockchain, not a currency or token, but an integrity machine. Every document is fingerprinted with SHA-256, Merkle-batched, and <b>immutably anchored on-chain</b> to an append-only distributed ledger, secured by cryptographic consensus across three independent validator nodes.</p>
         <div class="pfeat"><span class="ck">✓</span><div><b>SHA-256 cryptographic fingerprints</b><span>Originals stay at the source; only the one-way hash is written to the chain.</span></div></div>
         <div class="pfeat"><span class="ck">✓</span><div><b>Merkle on-chain anchoring</b><span>Fingerprints anchored every 10 minutes. One flipped bit breaks the block and fails verification.</span></div></div>
@@ -551,20 +650,20 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
 <section class="sec flow">
   <div class="wrap">
     <div class="sec-head center reveal">
-      <span class="eyebrow">End-to-End</span>
-      <h2>The journey of a single claim.</h2>
-      <p>From submission to resolution, every step is scored, anchored, and logged.</p>
+      <span class="eyebrow">Full Lifecycle</span>
+      <h2>From policy to claim.</h2>
+      <p>From the moment a policy is issued to the moment a claim is resolved, every step is scored, anchored, and logged.</p>
     </div>
     <div class="flow-track">
-      <div class="step reveal"><div class="num">1</div><h4>Submit &amp; fingerprint</h4><p>The policyholder files through a insurer; documents are uploaded and hashed instantly.</p></div>
-      <div class="step reveal d1"><div class="num">2</div><h4>Score in &lt;1s</h4><p>IDRN-RS computes the risk score with factor decomposition and checks the industry registry for duplicates.</p></div>
-      <div class="step reveal d2"><div class="num">3</div><h4>Anchor to ledger</h4><p>Fingerprints enter the anchoring queue, validated by IDRN, OJK and AAUI in the next batch.</p></div>
-      <div class="step reveal d3"><div class="num">4</div><h4>Route by band</h4><p>LOW claims go fast-track; MEDIUM and above enter the adjuster queue, sorted by score.</p></div>
+      <div class="step reveal"><div class="num">1</div><h4>Issue the policy</h4><p>A policy is issued; its fingerprint is computed and it receives an IDRN Number and verification QR.</p></div>
+      <div class="step reveal d1"><div class="num">2</div><h4>Verify via QR</h4><p>Anyone scans the QR or enters the IDRN Number to confirm the policy is genuine. Status: VERIFIED.</p></div>
+      <div class="step reveal d2"><div class="num">3</div><h4>Anchor to the ledger</h4><p>Fingerprints enter the anchoring queue, validated by IDRN, OJK and AAUI.</p></div>
+      <div class="step reveal d3"><div class="num">4</div><h4>Claim in, scored</h4><p>IDRN-RS computes the score in under a second and checks for cross-insurer duplicates.</p></div>
     </div>
     <div class="flow-track row2">
-      <div class="step reveal"><div class="num">5</div><h4>Decide, with reasons</h4><p>The adjuster reviews the decomposition and approves, rejects or escalates, always with a mandatory written reason that is logged permanently.</p></div>
-      <div class="step reveal d1"><div class="num">6</div><h4>Notify on duplication</h4><p>If a cross-insurer duplicate is detected, supervisor and association are auto-notified; an advisory can go out to all members.</p></div>
-      <div class="step reveal d2"><div class="num">7</div><h4>Track &amp; appeal</h4><p>The policyholder follows every stage in real time and, if rejected, receives a readable basis and a 30-day right to appeal.</p></div>
+      <div class="step reveal"><div class="num">5</div><h4>Decide, with reasons</h4><p>The adjuster reviews the decomposition then approves, rejects or escalates, with a mandatory written reason logged permanently.</p></div>
+      <div class="step reveal d1"><div class="num">6</div><h4>Notify on duplication</h4><p>If a cross-insurer double claim is detected, supervisor and association are auto-notified.</p></div>
+      <div class="step reveal d2"><div class="num">7</div><h4>Track &amp; appeal</h4><p>The policyholder follows every stage in real time; a rejection comes with a readable basis and a 30-day right to appeal.</p></div>
     </div>
   </div>
 </section>
@@ -578,11 +677,11 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
       <p>IDRN connects the whole ecosystem in one shared trust layer, giving each role exactly the access it needs, with every session recorded on the audit trail.</p>
     </div>
     <div class="roles-grid">
-      <div class="role reveal"><div class="ri">◆</div><h4>Insurers</h4><div class="who">Operators</div><p>Register claims, receive risk scores, process payment, and monitor portfolio and high-risk entities.</p></div>
+      <div class="role reveal"><div class="ri">◆</div><h4>Insurers</h4><div class="who">Operators</div><p>Issue policies, register claims, receive risk scores, process payment, and monitor portfolio and high-risk entities.</p></div>
       <div class="role reveal d1"><div class="ri">◈</div><h4>Adjusters</h4><div class="who">Assessors</div><p>Review claims via score decomposition and decide with a mandatory, audited written reason.</p></div>
-      <div class="role reveal d2"><div class="ri">◉</div><h4>OJK</h4><div class="who">Supervisor</div><p>Aggregate cross-insurer monitoring, double-claim alerts, full audit-trail access, and ledger validator.</p></div>
-      <div class="role reveal d3"><div class="ri">◇</div><h4>AAUI</h4><div class="who">Association</div><p>Industry claim registry, watchlist and advisory distribution, data-schema standards, and ledger validator.</p></div>
-      <div class="role reveal d4"><div class="ri">●</div><h4>Policyholders</h4><div class="who">Customers</div><p>Policy transparency, real-time claim tracking like a parcel, and the right to appeal any rejection.</p></div>
+      <div class="role reveal d2"><div class="ri">◉</div><h4>OJK</h4><div class="who">Supervisor</div><p>Aggregate cross-insurer monitoring, real-time RBC, double-claim alerts, full audit-trail access, and ledger validator.</p></div>
+      <div class="role reveal d3"><div class="ri">◇</div><h4>AAUI</h4><div class="who">Association</div><p>Industry policy and claim registry, watchlist and advisory distribution, data-schema standards, and ledger validator.</p></div>
+      <div class="role reveal d4"><div class="ri">●</div><h4>Policyholders</h4><div class="who">Customers</div><p>Verify policy authenticity via QR, coverage transparency, real-time claim tracking, and the right to appeal any rejection.</p></div>
     </div>
   </div>
 </section>
@@ -640,7 +739,7 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
     <div class="sec-head reveal">
       <span class="eyebrow on-dark">Why Blockchain</span>
       <h2>An honest technology, by construction.</h2>
-      <p>The AI answers which claim to look at. The blockchain answers a different question: can this data and this decision be trusted, unaltered. That second question is why IDRN needs a ledger, not just a database.</p>
+      <p>The AI answers which claim to look at. The blockchain answers a different question: can this data and decision be trusted, unaltered. That second question is why IDRN needs a ledger, not just a database.</p>
     </div>
     <div class="why-grid">
       <div class="reveal">
@@ -680,15 +779,85 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
 <section class="sec vision" id="vision">
   <div class="wrap">
     <div class="sec-head center reveal">
-      <span class="eyebrow">The Road Ahead</span>
-      <h2>Where the AI goes from here.</h2>
-      <p>Today IDRN-RS is an explainable, weighted-factor tool. The far vision is an assistive risk intelligence for the whole industry: something that reads, summarises and maps the patterns of fraud, and always leaves the decision to people. A shared analyst for insurance, never its judge.</p>
+      <span class="eyebrow">The Vision</span>
+      <h2>From a shared rail to the national standard, and beyond.</h2>
+      <p>Today IDRN-RS is an explainable tool. The ambition is far bigger: the connective infrastructure that an entire industry, and eventually other markets, are built on.</p>
     </div>
+
+    <div class="vis-grid">
+      <div class="vis-copy reveal">
+        <h3>One network the whole ecosystem plugs into.</h3>
+        <p>The near-term goal is to become the <b>national standard</b>: the default trust layer Indonesian insurance is built on, from policy to claim, endorsed within the OJK framework.</p>
+        <p>As every participant connects, the ecosystem tightens. <b>Insurers, banks, reinsurers, regulators, and policyholders on one network</b>, so a fraud signal seen by one becomes protection for all, and fraud is pushed down across the whole market, not just inside a single company.</p>
+        <p>The same shared-infrastructure model that BI-Fast proved for payments can reach <b>beyond Indonesia</b>, giving other markets a verifiable trust layer of their own.</p>
+      </div>
+      <div class="vis-net reveal d2">
+        <svg viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IDRN connecting the whole insurance ecosystem: insurers, banks, reinsurers, brokers, adjusters, workshops, hospitals, policyholders, AAUI and OJK">
+          <g>
+            <circle cx="260" cy="180" r="166" fill="none" stroke="#c9a94e" stroke-width="1" stroke-dasharray="3 9" opacity="0.30">
+              <animateTransform attributeName="transform" type="rotate" from="0 260 180" to="360 260 180" dur="52s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="260" cy="180" r="192" fill="none" stroke="#c9a94e" stroke-width="1" stroke-dasharray="2 13" opacity="0.16">
+              <animateTransform attributeName="transform" type="rotate" from="360 260 180" to="0 260 180" dur="72s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+          <!-- perimeter mesh (everything connected) -->
+          <g>
+            <polygon class="vis-mesh" points="260,40 342,67 393,137 393,223 342,293 260,320 178,293 127,223 127,137 178,67"/>
+            <line class="vis-chord" x1="260" y1="40" x2="260" y2="320"/>
+            <line class="vis-chord" x1="393" y1="137" x2="127" y2="223"/>
+            <line class="vis-chord" x1="393" y1="223" x2="127" y2="137"/>
+            <line class="vis-chord" x1="342" y1="67" x2="178" y2="293"/>
+            <line class="vis-chord" x1="342" y1="293" x2="178" y2="67"/>
+            <line class="vis-chord" x1="260" y1="40" x2="393" y2="223"/>
+            <line class="vis-chord" x1="260" y1="320" x2="127" y2="137"/>
+          </g>
+          <!-- hub spokes -->
+          <g>
+            <line class="vis-link" x1="260" y1="180" x2="260" y2="40"/>
+            <line class="vis-link" x1="260" y1="180" x2="342" y2="67"/>
+            <line class="vis-link" x1="260" y1="180" x2="393" y2="137"/>
+            <line class="vis-link" x1="260" y1="180" x2="393" y2="223"/>
+            <line class="vis-link" x1="260" y1="180" x2="342" y2="293"/>
+            <line class="vis-link" x1="260" y1="180" x2="260" y2="320"/>
+            <line class="vis-link" x1="260" y1="180" x2="178" y2="293"/>
+            <line class="vis-link" x1="260" y1="180" x2="127" y2="223"/>
+            <line class="vis-link" x1="260" y1="180" x2="127" y2="137"/>
+            <line class="vis-link" x1="260" y1="180" x2="178" y2="67"/>
+          </g>
+          <!-- nodes -->
+          <g fill="#0b1f3d" stroke="#e8d59a" stroke-width="1.5">
+            <circle cx="260" cy="40" r="6"/><circle cx="342" cy="67" r="6"/><circle cx="393" cy="137" r="6"/>
+            <circle cx="393" cy="223" r="6"/><circle cx="342" cy="293" r="6"/><circle cx="260" cy="320" r="6"/>
+            <circle cx="178" cy="293" r="6"/><circle cx="127" cy="223" r="6"/><circle cx="127" cy="137" r="6"/><circle cx="178" cy="67" r="6"/>
+          </g>
+          <!-- labels -->
+          <text class="vis-node-lbl" x="260" y="28" text-anchor="middle">Insurers</text>
+          <text class="vis-node-lbl" x="356" y="64" text-anchor="start">Banks</text>
+          <text class="vis-node-lbl" x="407" y="141" text-anchor="start">Reinsurers</text>
+          <text class="vis-node-lbl" x="407" y="227" text-anchor="start">Brokers</text>
+          <text class="vis-node-lbl" x="356" y="297" text-anchor="start">Adjusters</text>
+          <text class="vis-node-lbl" x="260" y="342" text-anchor="middle">Workshops</text>
+          <text class="vis-node-lbl" x="164" y="297" text-anchor="end">Hospitals</text>
+          <text class="vis-node-lbl" x="113" y="227" text-anchor="end">Policyholders</text>
+          <text class="vis-node-lbl" x="113" y="141" text-anchor="end">AAUI</text>
+          <text class="vis-node-lbl" x="164" y="64" text-anchor="end">OJK</text>
+          <!-- hub -->
+          <circle cx="260" cy="180" r="30" fill="none" stroke="#c9a94e" opacity="0.5">
+            <animate attributeName="r" values="30;48;30" dur="3.4s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.5;0;0.5" dur="3.4s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="260" cy="180" r="30" fill="#0b1f3d" stroke="#c9a94e" stroke-width="2"/>
+          <text class="vis-hub-lbl" x="260" y="185" text-anchor="middle">IDRN</text>
+        </svg>
+      </div>
+    </div>
+
     <div class="vision-grid">
       <div class="vcard reveal"><div class="ph">Now</div><h4>Explainable scoring</h4><p>Weighted factors F1–F5 with a confidence level, so every claim can be summarised and defended, factor by factor.</p></div>
       <div class="vcard reveal d1"><div class="ph">Next</div><h4>A learning risk brain</h4><p>Machine-learning models trained on cross-insurer production data, with sharper value-anomaly detection and fuzzy matching that resists signature evasion.</p></div>
-      <div class="vcard reveal d2"><div class="ph">Then</div><h4>An analytics copilot</h4><p>Ask the portfolio in plain language: which claims are riskiest and why, how much loss was prevented this month. Every question and answer logged to the audit trail.</p></div>
-      <div class="vcard reveal d3"><div class="ph">Horizon</div><h4>One backbone, every line</h4><p>Verified external data under institutional agreements, and expansion from motor to health, property and marine, all on the same integrity backbone.</p></div>
+      <div class="vcard reveal d2"><div class="ph">Then</div><h4>The national standard</h4><p>Adopted as the default trust layer across Indonesian insurance: every line, every participant connected, and fraud pushed down across the whole ecosystem.</p></div>
+      <div class="vcard reveal d3"><div class="ph">Horizon</div><h4>Beyond borders</h4><p>The same shared-infrastructure model extended to regional and global insurance markets, one verifiable rail at a time.</p></div>
     </div>
   </div>
 </section>
@@ -699,18 +868,18 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
     <div class="cta-box reveal">
       <div class="cg cg1"></div><div class="cg cg2"></div>
       <div class="in">
-        <span class="eyebrow on-dark">Ground floor · A category in the making</span>
-        <h2>Back the shared rail before the category has a name.</h2>
-        <p>Every nation eventually builds the rails its industries run on. Banking got BI-Fast. Insurance has not built its trust layer yet. IDRN isn't competing in a market. It's creating one: shared trust infrastructure for Indonesian insurance, with regulation and network effects on its side. A window like this, first mover in a brand-new category, doesn't open twice.</p>
+        <span class="eyebrow on-dark">Join the founding network</span>
+        <h2>Build the rail an entire industry will run on.</h2>
+        <p>Banking got BI-Fast. Insurance is still waiting for its trust layer, and it only gets built once. IDRN is that infrastructure, from policy to claim, with regulation on its side and network effects that grow stronger with every member. Come in early: help set the national standard, drive fraud down across the whole market, and share in the category it creates. A window like this does not open twice.</p>
         <div class="cta-actions">
-          <a href="portal.html" class="btn btn-primary">Explore the Portal →</a>
-          <a href="mailto:invest@idrn.id?subject=IDRN%20Investment%20Enquiry" class="btn btn-out">Contact to Invest</a>
-          <a href="mailto:partnerships@idrn.id?subject=IDRN%20Partnership" class="btn btn-out">Partnership Enquiry</a>
+          <a href="portal.html" target="_blank" rel="noopener" class="btn btn-primary">Explore Portal →</a>
+          <a href="https://innovation.pidi.id/" target="_blank" rel="noopener" class="btn btn-out">Contact to Invest</a>
+          <a href="https://innovation.pidi.id/" target="_blank" rel="noopener" class="btn btn-out">Partnership Enquiry</a>
         </div>
         <div class="cta-tags">
-          <span>First mover in a new category</span>
+          <span>Ground-floor opportunity</span>
           <span>Network effects that compound</span>
-          <span>Built inside the regulation</span>
+          <span>Regulation on its side</span>
         </div>
       </div>
     </div>
@@ -726,34 +895,32 @@ footer{background:var(--navy);color:rgba(255,255,255,.6);padding:64px 0 32px;bor
           <span class="mk" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2)"><svg viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg" style="width:52%;height:52%"><path d="M6 5 L47 49 L47 105 L6 105 Z" fill="#fff"/><path d="M53 5 H94 V105 L53 53 Z" fill="#fff"/></svg></span>
           <span><b style="color:#fff">IDRN</b><small style="color:rgba(255,255,255,.55)">TRUST LAYER</small></span>
         </a>
-        <p>Insurance Digital Risk Network: the shared trust infrastructure for Indonesian insurance. The BI-Fast of insurance, where explainable AI risk scoring meets a permissioned integrity ledger.</p>
+        <p>Insurance Digital Risk Network: the trust infrastructure for Indonesia's insurance industry, from policy to claim. The BI-Fast of insurance, where explainable AI risk scoring meets a permissioned integrity ledger.</p>
       </div>
       <div class="foot-col">
-        <h5>Platform</h5>
-        <a href="#bifast">The Analogy</a>
-        <a href="#solution">Architecture</a>
+        <h5>Products</h5>
+        <a href="#passports">Policy Passport</a>
+        <a href="#passports">Claim Passport</a>
         <a href="#engine">Risk Engine</a>
-        <a href="#why">Why Blockchain</a>
-        <a href="#vision">Vision</a>
-        <a href="#compliance">Compliance</a>
+        <a href="#solution">Architecture</a>
       </div>
       <div class="foot-col">
         <h5>Network</h5>
         <a href="#network">Roles</a>
-        <a href="portal.html">Explore Portal</a>
+        <a href="portal.html" target="_blank" rel="noopener">Explore Portal</a>
         <a href="#cta">Request Access</a>
         <a href="mailto:partnerships@idrn.id">Partnerships</a>
       </div>
       <div class="foot-col">
         <h5>Governance</h5>
+        <a href="#why">Why Blockchain</a>
         <a href="#compliance">UU PDP 27/2022</a>
-        <a href="#compliance">OJK Sandbox</a>
-        <a href="#compliance">Multi-party Validation</a>
+        <a href="#vision">Vision</a>
         <a href="mailto:invest@idrn.id">Investor Relations</a>
       </div>
     </div>
     <div class="foot-bot">
-      <span>© 2026 Insurance Digital Risk Network · The Trust Layer of Indonesian Insurance</span>
+      <span>© 2026 Insurance Digital Risk Network · The Trust Infrastructure for Indonesian Insurance</span>
       <span class="badge">PROTOTYPE ARCHITECTURE · FOR DEMONSTRATION</span>
     </div>
   </div>
@@ -776,56 +943,105 @@ const engIO=new IntersectionObserver((es)=>{es.forEach(e=>{
   }})},{threshold:.4});
 engIO.observe(eng);
 
-// NIGHT HIGHWAY OVERLAY: real photo skyline behind; fast car light-trails animate on the road
+// NETWORK VISUALISATION: a crisp living mesh with data flowing along the links
 (function(){
   const c=document.getElementById('road'),x=c.getContext('2d');
   const DPR=Math.min(devicePixelRatio||1,2);
-  let w,h,vpx,vpy,maxD,lanes=[],parts=[],raf,mx=0,my=0,tx=0,ty=0;
   const R=(a,b)=>a+Math.random()*(b-a);
-  function posAt(th,p){const d=(Math.exp(p*2.9)-1)/(Math.exp(2.9)-1)*maxD;return [vpx+Math.cos(th)*d,vpy+Math.sin(th)*d];}
-  function spawn(){
-    const ang=lanes[(Math.random()*lanes.length)|0];
-    const tail=Math.random()<.4;
-    return {th:(ang+R(-2,2))*Math.PI/180,p:tail?1:Math.random(),sp:R(.008,.018),tail,len:R(.06,.12),cool:ang<90};
-  }
+  let w,h,pts=[],packs=[],raf,mx=-9999,my=-9999;
+  const LINK=172;
   function build(){
     w=c.clientWidth;h=c.clientHeight;c.width=w*DPR;c.height=h*DPR;x.setTransform(DPR,0,0,DPR,0,0);
-    vpx=w*.5;vpy=h*.46;maxD=Math.hypot(w,h)*1.15;
-    lanes=[];const N=13;for(let i=0;i<N;i++)lanes.push(90-28+(56/(N-1))*i);
-    parts=Array.from({length:Math.min(120,Math.max(50,Math.floor(w/11)))},spawn);
+    const n=Math.min(88,Math.max(36,Math.floor(w*h/16500)));
+    pts=Array.from({length:n},function(){
+      const hub=Math.random()<0.16;
+      return {x:Math.random()*w,y:Math.random()*h,vx:R(-.22,.22),vy:R(-.22,.22),
+              r:hub?R(3,4.2):R(1.3,2.1),hub:hub};
+    });
+    packs=Array.from({length:Math.min(20,Math.max(8,Math.floor(n/4)))},function(){return newPack();});
   }
-  function frame(){
-    tx+=(mx-tx)*.05;ty+=(my-ty)*.05;const ox=tx*16,oy=ty*7;
-    x.globalCompositeOperation='destination-out';x.fillStyle='rgba(0,0,0,.13)';x.fillRect(0,0,w,h);
-    x.globalCompositeOperation='lighter';x.lineCap='round';
-    for(const pt of parts){
-      const adv=pt.sp*(.3+pt.p*2.4);
-      if(!pt.tail){pt.p+=adv;if(pt.p>1)Object.assign(pt,spawn(),{p:0,tail:false});}
-      else{pt.p-=adv;if(pt.p<0)Object.assign(pt,spawn(),{p:1,tail:true});}
-      const a=posAt(pt.th,Math.max(0,pt.p-pt.len)),b=posAt(pt.th,pt.p);
-      if(b[1]<vpy-4)continue;
-      const wd=.4+pt.p*pt.p*4.6,al=Math.min(1,pt.p*1.4)*.82;
-      const g=x.createLinearGradient(a[0]+ox,a[1]+oy,b[0]+ox,b[1]+oy);
-      if(pt.cool){
-        if(pt.tail){g.addColorStop(0,'rgba(40,120,255,0)');g.addColorStop(1,'rgba(90,175,255,'+al+')');}
-        else{g.addColorStop(0,'rgba(90,170,255,0)');g.addColorStop(.55,'rgba(150,205,255,'+(al*.7)+')');g.addColorStop(1,'rgba(255,255,255,'+al+')');}
-      }else{
-        if(pt.tail){g.addColorStop(0,'rgba(255,60,40,0)');g.addColorStop(1,'rgba(255,95,60,'+al+')');}
-        else{g.addColorStop(0,'rgba(255,150,40,0)');g.addColorStop(.55,'rgba(255,190,90,'+(al*.75)+')');g.addColorStop(1,'rgba(255,248,214,'+al+')');}
-      }
-      x.strokeStyle=g;x.lineWidth=wd;x.beginPath();x.moveTo(a[0]+ox,a[1]+oy);x.lineTo(b[0]+ox,b[1]+oy);x.stroke();
-      if(pt.p>.66){x.fillStyle='rgba(255,255,255,'+(al*.5)+')';x.beginPath();x.arc(b[0]+ox,b[1]+oy,wd*.7,0,7);x.fill();}
+  function nearIdx(a){
+    const cand=[];
+    for(let i=0;i<pts.length;i++){if(i===a)continue;const d=Math.hypot(pts[i].x-pts[a].x,pts[i].y-pts[a].y);if(d<LINK)cand.push(i);}
+    if(!cand.length)return -1;
+    return cand[(Math.random()*cand.length)|0];
+  }
+  function newPack(){const a=(Math.random()*pts.length)|0;return {a:a,b:nearIdx(a),t:Math.random(),sp:R(.006,.013)};}
+  function draw(t){
+    x.clearRect(0,0,w,h);
+    for(const p of pts){
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<-10)p.x=w+10;else if(p.x>w+10)p.x=-10;
+      if(p.y<-10)p.y=h+10;else if(p.y>h+10)p.y=-10;
+      const dx=p.x-mx,dy=p.y-my,d=Math.hypot(dx,dy);
+      if(d<130&&d>0){const f=(130-d)/130*0.6;p.x+=dx/d*f;p.y+=dy/d*f;}
     }
-    x.globalCompositeOperation='source-over';
-    raf=requestAnimationFrame(frame);
+    // links (crisp, more defined)
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const a=pts[i],b=pts[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);
+        if(d<LINK){
+          const o=1-d/LINK;
+          x.strokeStyle='rgba(201,169,78,'+(0.12+o*0.44)+')';
+          x.lineWidth=0.7+o*1.15;
+          x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();
+        }
+      }
+    }
+    // cursor links
+    if(mx>-9000){
+      for(const p of pts){const d=Math.hypot(p.x-mx,p.y-my);if(d<184){const o=1-d/184;x.strokeStyle='rgba(150,190,255,'+(o*0.5)+')';x.lineWidth=0.7+o*1.2;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(mx,my);x.stroke();}}
+    }
+    // flowing data packets along the links
+    for(const k of packs){
+      if(k.b<0){k.a=(Math.random()*pts.length)|0;k.b=nearIdx(k.a);k.t=0;continue;}
+      const a=pts[k.a],b=pts[k.b];
+      const dd=Math.hypot(b.x-a.x,b.y-a.y);
+      if(dd<LINK){
+        const px=a.x+(b.x-a.x)*k.t, py=a.y+(b.y-a.y)*k.t;
+        x.fillStyle='rgba(201,169,78,0.22)';x.beginPath();x.arc(px,py,4.4,0,6.283);x.fill();
+        x.fillStyle='rgba(255,247,218,0.98)';x.beginPath();x.arc(px,py,1.8,0,6.283);x.fill();
+        k.t+=k.sp;
+      }
+      if(k.t>=1||dd>=LINK){k.a=k.b;k.b=nearIdx(k.a);k.t=0;k.sp=R(.006,.013);}
+    }
+    // nodes
+    for(const p of pts){
+      if(p.hub){
+        x.fillStyle='rgba(201,169,78,0.13)';x.beginPath();x.arc(p.x,p.y,p.r+5,0,6.283);x.fill();
+        x.strokeStyle='rgba(233,214,156,0.5)';x.lineWidth=1;x.beginPath();x.arc(p.x,p.y,p.r+3.5,0,6.283);x.stroke();
+        x.fillStyle='rgba(233,214,156,0.98)';x.beginPath();x.arc(p.x,p.y,p.r,0,6.283);x.fill();
+      }else{
+        x.fillStyle='rgba(214,228,248,0.82)';x.beginPath();x.arc(p.x,p.y,p.r,0,6.283);x.fill();
+      }
+    }
   }
-  function init(){cancelAnimationFrame(raf);build();frame();}
-  addEventListener('resize',()=>{clearTimeout(window._rz);window._rz=setTimeout(init,180)});
-  addEventListener('mousemove',e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2;},{passive:true});
-  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){init();}else{build();}
+  function loop(t){draw(t||0);raf=requestAnimationFrame(loop);}
+  function init(){cancelAnimationFrame(raf);build();raf=requestAnimationFrame(loop);}
+  addEventListener('resize',function(){clearTimeout(window._rz);window._rz=setTimeout(init,180);});
+  addEventListener('mousemove',function(e){const r=c.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;},{passive:true});
+  addEventListener('mouseleave',function(){mx=-9999;my=-9999;});
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){init();}else{build();draw(0);}
 })();
 
 document.getElementById('menuBtn').addEventListener('click',()=>{location.hash='#cta'});
+</script>
+<script>
+(function(){
+  var el=document.getElementById('idrnQR');
+  if(!el) return;
+  var url='https://idrn.id/verify/IDRN-2026-000742';
+  function fail(){ el.innerHTML='<span class="qr-fallback">QR memerlukan koneksi internet</span>'; }
+  function draw(){
+    try{
+      if(typeof QRCode==='undefined'){ fail(); return; }
+      el.innerHTML='';
+      new QRCode(el,{text:url,width:164,height:164,colorDark:'#0b1f3d',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});
+    }catch(e){ fail(); }
+  }
+  if(document.readyState!=='loading') draw();
+  else document.addEventListener('DOMContentLoaded',draw);
+})();
 </script>
 </body>
 </html>
